@@ -1,0 +1,17 @@
+*synctex.gz
+*.Rdata
+*.RData
+*.Rda
+*.rds
+*.rda
+*.Rds
+*.Rhistory
+analyses/.Rhistory
+*.Rapp.history
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.log
+*.out
+*.run.xml
