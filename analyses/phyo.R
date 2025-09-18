@@ -2,6 +2,9 @@
 ####Start by Mao####
 ####Sep 17####
 
+library(ape)
+library(phytools)
+library(viridisLite)
 # housekeeping
 rm(list=ls()) 
 options(stringsAsFactors = FALSE)
@@ -262,15 +265,34 @@ write.tree(silvicsSpliced,"output/silvicsPhylogenyFull.tre")
 
 silvicsTree <- read.tree("output/silvicsPhylogenyFull.tre")
 
-Tree<-ggtree(silvicsTree, layout = "circular", hang = -0.1, as.Date = TRUE)
+masting <- d[!duplicated(d$latbi), c("latbi","mastEvent")]
+masting$mastEvent[is.na(masting$mastEvent)] <- "No information"
 
-data(bird.orders)
-tree <- ggtree(bird.orders, layout = "circular")
-Tree$data <- left_join(Tree$data, d, by = c("label" = "latbi"))
+allspp <- silvicsTree$tip.label
 
-Tree + 
-  geom_tiplab(aes(color = mastEvent), size = 3) +  # color label text
-  scale_color_manual(
-    values = c("Yes" = "forestgreen", "No" = "firebrick", "NA" = "gray")
-  ) +
-  theme(legend.position = "right")
+# Assign colors to each dormancy class
+mastingYN <- unique(masting$mastEvent)
+mast_colors <- c("Y" = "#CD5555", "N" = "#698B22", "No information" = "Grey")
+
+masting$color <- mast_colors[masting$mastEvent]
+
+# Make a named vector for tip coloring
+tip_colors <- setNames(masting$color, masting$latbi)
+
+tip_label_colors <- tip_colors[allspp] 
+
+plot(
+  silvicsTree, type = 'fan', label.offset = 0.2,
+  cex = 0.6, no.margin = TRUE, tip.color = tip_label_colors
+)
+
+legend(
+  "bottomright",
+  legend = names(mast_colors),
+  col = mast_colors,
+  pch = 15,           
+  title = "Masting",
+  pt.cex = 1,          # size of legend symbols
+  cex = 1,             # text size
+  bty = "n"            # no box around legend
+)
