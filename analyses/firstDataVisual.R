@@ -12,9 +12,9 @@ d <- read.csv("data/silvics1.csv")
 
 library(ggplot2)
 library(corrplot)
-library(rpart)
-library(rpart.plot)
 library(magrittr)
+library(ape)
+library(phytools)
 
 str(d)
 summary(d)
@@ -272,5 +272,4 @@ ggplot(d, aes(x = logSeedWeights, y = mastCycleAve)) +
   custom_theme
 
 # To be honest, I don't really see a pattern here...
-
 
