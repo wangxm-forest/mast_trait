@@ -182,7 +182,7 @@ pollination <- ggplot(angio, aes(x = mastEvent, fill = pollination)) +
   labs(
     title = "Pollination",
     x = "Masting",
-    y = "Number of Species",
+    y = "Proportion",
     fill = "Pollination"  ) +
   custom_theme
 
@@ -206,7 +206,7 @@ dormancy <- ggplot(angio, aes(x = mastEvent, fill = dormancyClass)) +
   labs(
     title = "Seed Dormancy",
     x = "Masting",
-    y = "Number of Species",
+    y = "Proportion",
     fill = "Seed Dormancy" ) +
   custom_theme
 
@@ -222,7 +222,7 @@ drought <- ggplot(angio, aes(x = mastEvent, fill = droughtTolerance)) +
   labs(
     title = "Drought Tolerance",
     x = "Masting",
-    y = "Number of Species",
+    y = "Proportion",
     fill = "Drought Tolerance" ) +
   custom_theme
 
@@ -367,7 +367,7 @@ pollination <- ggplot(conifer, aes(x = mastEvent, fill = pollination)) +
   labs(
     title = "Pollination",
     x = "Masting",
-    y = "Number of Species",
+    y = "Proportion",
     fill = "Pollination"  ) +
   custom_theme
 
@@ -391,7 +391,7 @@ dormancy <- ggplot(conifer, aes(x = mastEvent, fill = dormancyClass)) +
   labs(
     title = "Seed Dormancy",
     x = "Masting",
-    y = "Number of Species",
+    y = "Proportion",
     fill = "Seed Dormancy" ) +
   custom_theme
 
@@ -407,7 +407,7 @@ drought <- ggplot(conifer, aes(x = mastEvent, fill = droughtTolerance)) +
   labs(
     title = "Drought Tolerance",
     x = "Masting",
-    y = "Number of Species",
+    y = "Proportion",
     fill = "Drought Tolerance" ) +
   custom_theme
 
