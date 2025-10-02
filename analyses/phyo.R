@@ -11,10 +11,7 @@ options(stringsAsFactors = FALSE)
 
 setwd("C:/PhD/Project/PhD_thesis/mast_trait")
 
-d <- read.csv("data/silvics.csv")
-
-# Combine genus and species
-d$latbi <- paste(d$genusName, d$speciesName, sep = "_")
+d <- read.csv("data/silvicsClean.csv")
 
 # Make a new column for mast cycle
 ave_freq <- function(x) {
@@ -29,6 +26,8 @@ ave_freq <- function(x) {
 
 d$mastCycleAve <- sapply(as.character(d$mastCycle), ave_freq)
 head(d$mastCycleAve)
+d$fruitSizeAve <- sapply(as.character(d$fruitSize.cm.), ave_freq)
+d$seedSizeAve <- sapply(as.character(d$seedSize.mm.), ave_freq)
 
 phy.plants<-read.tree("C:/PhD/Project/egret/analyses/input/ALLMB.tre")
 
@@ -285,6 +284,10 @@ plot(
   silvicsTree, type = 'fan', label.offset = 0.2,
   cex = 0.6, no.margin = TRUE, tip.color = tip_label_colors
 )
+
+# Add monoecious or dioecious
+monodiosp <- d[, c("latbi","typeMonoOrDio")]
+monodiosp <- monodiosp[!duplicated(monodiosp[c("latbi","typeMonoOrDio")]), ]
 
 legend(
   "bottomright",
