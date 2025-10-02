@@ -8,13 +8,14 @@ options(stringsAsFactors = FALSE)
 
 setwd("C:/PhD/Project/PhD_thesis/mast_trait")
 
-d <- read.csv("data/silvics1.csv")
+d <- read.csv("data/silvicsClean.csv")
 
 library(ggplot2)
 library(corrplot)
 library(magrittr)
 library(ape)
 library(phytools)
+library(gridExtra)
 
 str(d)
 summary(d)
@@ -23,13 +24,10 @@ summary(d)
 # Check missing values
 colSums(is.na(d))
 
+d[d == ""] <- NA
 
-# Combine genus and species
-d$latbi <- paste(d$genusName, d$speciesName, sep = "_")
-
-# Make a new column for mast cycle
 ave_freq <- function(x) {
-  x <- gsub(" to ", " to ", x)  # Replace en-dash if needed
+  x <- gsub(" to ", " to ", x) 
   if (grepl(" to ", x)) {
     parts <- as.numeric(strsplit(x, " to ")[[1]])
     return(mean(parts))
@@ -38,12 +36,23 @@ ave_freq <- function(x) {
   }
 }
 
+# Make a new column for mast cycle
 d$mastCycleAve <- sapply(as.character(d$mastCycle), ave_freq)
 head(d$mastCycleAve)
 
-# Plot seed drop time for masting and non-masting species
+# Make a new column for ave fruit size
+d$fruitSizeAve <- sapply(as.character(d$fruitSize.cm.), ave_freq)
+d$seedSizeAve <- sapply(as.character(d$seedSize.mm.), ave_freq)
 
-unique(d$mainSeedDropTime)
+# Make a subset of conifers only
+conifer <- subset(d, familyName %in% c("Pinaceae","Taxodiaceae"))
+conifer <- conifer[!is.na(conifer$mastEvent), ]
+# Make a subset of angiosperm only
+angio <- subset(d, !(familyName %in% c("Pinaceae","Taxodiaceae")))
+angio <- angio[!is.na(angio$mastEvent), ]
+
+# Plot seed drop time for masting and non-masting species for conifers
+unique(conifer$mainSeedDropTime)
 
 
 # Mapping from month name to number
@@ -88,13 +97,13 @@ parse_seed_months <- function(time_range) {
 
 expanded_seed_df <- data.frame()
 
-for (i in 1:nrow(d)) {
+for (i in 1:nrow(conifer)) {
   months <- parse_seed_months(d$mainSeedDropTime[i])
   
   if (!is.na(months[1])) {
     temp <- data.frame(
-      species = d$latbi[i],
-      Masting = d$mastEvent[i],
+      species = conifer$latbi[i],
+      Masting = conifer$mastEvent[i],
       Month = months
     )
     expanded_seed_df <- rbind(expanded_seed_df, temp)
@@ -104,9 +113,9 @@ for (i in 1:nrow(d)) {
 # mastEvent should be a factor
 expanded_seed_df$Masting <- factor(expanded_seed_df$Masting, levels = c("Y", "N"))
 
-custom_theme <- theme_minimal(base_size = 14) +
+custom_theme <- theme_minimal(base_size = 10) +
   theme(
-    plot.title = element_text(face = "bold", size = 16, hjust = 0.5),
+    plot.title = element_text(face = "bold", size = 10, hjust = 0.25),
     axis.title = element_text(face = "bold"),
     legend.title = element_text(face = "bold"),
     legend.position = "right",
@@ -127,29 +136,26 @@ ggplot(expanded_seed_df, aes(x = Month, fill = Masting)) +
 
 
 # Monoecious and Dioecious
-d$typeMonoOrDio <- tolower(d$typeMonoOrDio)
-d$typeMonoOrDio <- ifelse(d$typeMonoOrDio == "monoecious", "Monoecious",
-                                ifelse(d$typeMonoOrDio == "dioecious", "Dioecious", NA))
-d$typeMonoOrDio <- factor(d$typeMonoOrDio, levels = c("Monoecious", "Dioecious"))
-
-ggplot(d, aes(x = mastEvent, fill = typeMonoOrDio)) +
-  geom_bar(color = "black") +
-  scale_fill_manual(values = c("Monoecious" = "#95B958", "Dioecious" = "#F4D166")) +
-  labs(
-    title = "Reproductive System of Masting vs Non-Masting Species",
-    x = "Masting",
-    y = "Number of Species",
-    fill = "Reproductive System"
-  ) +
-  custom_theme
+angio$typeMonoOrDio[which(angio$typeMonoOrDio == "polygamo-dioecious")] <-"Polygamous"
+angio$typeMonoOrDio[which(angio$typeMonoOrDio == "polygamo-monoecious")] <-"Polygamous"
+angio$typeMonoOrDio[which(angio$typeMonoOrDio == "Polygamo-monoecious")] <-"Polygamous"
+angio$typeMonoOrDio[which(angio$typeMonoOrDio == "Polygamo-dioecious")] <-"Polygamous"
 
 
-ggplot(d[!is.na(d$mastEvent) & d$mastEvent != "", ], aes(x = mastEvent, fill = typeMonoOrDio)) +
+angio$typeMonoOrDio <- tolower(angio$typeMonoOrDio)
+angio$typeMonoOrDio <- ifelse(angio$typeMonoOrDio == "monoecious", "Monoecious",
+                                ifelse(angio$typeMonoOrDio == "dioecious", "Dioecious", 
+                                       ifelse(angio$typeMonoOrDio == "polygamous", "Polygamous",NA)))
+par(mfrow = c(2, 2))
+angio$typeMonoOrDio <- factor(angio$typeMonoOrDio, levels = c("Monoecious", "Dioecious","Polygamous"))
+
+
+mono <- ggplot(angio, aes(x = mastEvent, fill = typeMonoOrDio)) +
   geom_bar(position = "fill", color = "black", width = 0.4) +
   scale_y_continuous(labels = scales::percent_format()) +
-  scale_fill_manual(values = c("Monoecious" = "#95B958", "Dioecious" = "#F4D166")) +
+  scale_fill_manual(values = c("Monoecious" = "#95B958", "Dioecious" = "#F4D166","Polygamous" = "lightblue")) +
   labs(
-    title = "Proportion of Reproductive Systems in Masting vs Non-Masting Species",
+    title = "Reproductive Systems",
     x = "Masting",
     y = "Proportion",
     fill = "Reproductive System"
@@ -159,32 +165,22 @@ ggplot(d[!is.na(d$mastEvent) & d$mastEvent != "", ], aes(x = mastEvent, fill = t
 # Yes, masting species are more likely to be monoecious
 
 # Masting and pollination
-d$pollination[which(d$pollination == "insects")] <- "animals"
-d$pollination[which(d$pollination == "wind and insects")] <- "wind and animals"
-d$pollination[which(d$pollination == "bird and insects")] <- "animals"
-d$pollination[which(d$pollination == "insect and wind")] <- "wind and animals"
-d$pollination[which(d$pollination == "insect")] <- "animals"
+angio$pollination[which(angio$pollination == "insects")] <- "animals"
+angio$pollination[which(angio$pollination == "wind and insects")] <- "wind and animals"
+angio$pollination[which(angio$pollination == "bird and insects")] <- "animals"
+angio$pollination[which(angio$pollination == "insect and wind")] <- "wind and animals"
+angio$pollination[which(angio$pollination == "insect")] <- "animals"
 
 
-d$pollination <- factor(d$pollination, levels = c("wind", "animals", "wind and animals"))
+angio$pollination <- factor(angio$pollination, levels = c("wind", "animals", "wind and animals"))
 
-ggplot(d[!is.na(d$mastEvent) & d$mastEvent != "", ], aes(x = mastEvent, fill = pollination)) +
-  geom_bar(color = "black", width = 0.4) +
-  scale_fill_manual(values = c("wind" = "#95B958", "animals" = "#F4D166", "wind and animals" = "#6194BF")) +
-  labs(
-    title = "Pollination of Masting vs Non-Masting Species",
-    x = "Masting",
-    y = "Number of Species",
-    fill = "Pollination"
-  ) +
-  custom_theme
 
-ggplot(d[!is.na(d$mastEvent) & d$mastEvent != "", ], aes(x = mastEvent, fill = pollination)) +
+pollination <- ggplot(angio, aes(x = mastEvent, fill = pollination)) +
   geom_bar(position = "fill", color = "black", width=0.4) +
   scale_y_continuous(labels = scales::percent_format()) +
   scale_fill_manual(values = c("wind" = "#95B958", "animals" = "#F4D166", "wind and animals" = "#6194BF")) +
   labs(
-    title = "Pollination of Masting vs Non-Masting Species",
+    title = "Pollination",
     x = "Masting",
     y = "Number of Species",
     fill = "Pollination"  ) +
@@ -193,22 +189,22 @@ ggplot(d[!is.na(d$mastEvent) & d$mastEvent != "", ], aes(x = mastEvent, fill = p
 # Yes, masting species are more likely to be wind pollinated
 
 # Then let's check on the dormancy and masting
-unique(d$dormancyClass)
-d$dormancyClass[which(d$dormancyClass == "PD")] <- "Y"
-d$dormancyClass[which(d$dormancyClass == "ND")] <- "N"
-d$dormancyClass[which(d$dormancyClass == "MPD")] <- "Y"
-d$dormancyClass[which(d$dormancyClass == "PY")] <- "Y"
-d$dormancyClass[which(d$dormancyClass == "PYPD")] <- "Y"
-d$dormancyClass[which(d$dormancyClass == "MD")] <- "Y"
-d$dormancyClass <- factor(d$dormancyClass, levels = c("Y", "N"))
+unique(angio$dormancyClass)
+angio$dormancyClass[which(angio$dormancyClass == "PD")] <- "Y"
+angio$dormancyClass[which(angio$dormancyClass == "ND")] <- "N"
+angio$dormancyClass[which(angio$dormancyClass == "MPD")] <- "Y"
+angio$dormancyClass[which(angio$dormancyClass == "PY")] <- "Y"
+angio$dormancyClass[which(angio$dormancyClass == "PYPD")] <- "Y"
+angio$dormancyClass[which(angio$dormancyClass == "MD")] <- "Y"
+angio$dormancyClass <- factor(angio$dormancyClass, levels = c("Y", "N"))
 
 
-ggplot(d, aes(x = mastEvent, fill = dormancyClass)) +
+dormancy <- ggplot(angio, aes(x = mastEvent, fill = dormancyClass)) +
   geom_bar(position = "fill", color = "black", width = 0.4) +
   scale_y_continuous(labels = scales::percent_format()) +
   scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) +
   labs(
-    title = "Seed Dormancy of Masting vs Non-Masting Species",
+    title = "Seed Dormancy",
     x = "Masting",
     y = "Number of Species",
     fill = "Seed Dormancy" ) +
@@ -216,60 +212,290 @@ ggplot(d, aes(x = mastEvent, fill = dormancyClass)) +
 
 # Yes, masting species are more likely to have dormant seed? but there are so many NAs for non-masting species
 
-# Then let's check on the dormancy and masting
-d$shadeTolerance <- factor(d$shadeTolerance, levels = c("tolerant", "intolerant","intermediate"))
+# Then let's check on the shade tolerance and masting
+angio$droughtTolerance <- factor(angio$droughtTolerance, levels = c("High", "Moderate","Low"))
 
-ggplot(d, aes(x = mastEvent, fill = shadeTolerance)) +
-  geom_bar(color = "black") +
-  scale_fill_manual(values = c("tolerant" = "#95B958", "intolerant" = "#F4D166", "intermediate" = "#6194BF")) +
-  labs(
-    title = "Shade Tolerance of Masting vs Non-Masting Species",
-    x = "Masting",
-    y = "Number of Species",
-    fill = "Shade Tolerance"
-  ) +
-  theme_minimal()
-
-ggplot(d[!is.na(d$mastEvent) & d$mastEvent != "", ], aes(x = mastEvent, fill = shadeTolerance)) +
+drought <- ggplot(angio, aes(x = mastEvent, fill = droughtTolerance)) +
   geom_bar(position = "fill", color = "black", width = 0.4) +
   scale_y_continuous(labels = scales::percent_format()) +
-  scale_fill_manual(values = c("tolerant" = "#95B958", "intolerant" = "#F4D166", "intermediate" = "#6194BF")) +
+  scale_fill_manual(values = c("High" = "#95B958", "Low" = "#F4D166", "Moderate" = "#6194BF")) +
   labs(
-    title = "Shade Tolerance of Masting vs Non-Masting Species",
+    title = "Drought Tolerance",
     x = "Masting",
     y = "Number of Species",
-    fill = "Shade Tolerance" ) +
+    fill = "Drought Tolerance" ) +
   custom_theme
 
+grid.arrange(mono, pollination, dormancy, drought, nrow = 2, ncol = 2)
 # No big difference
 
 # Seed weight
 
 
-d$logSeedWeights <- log10(d$seedWeights)
+angio$logSeedWeights <- log10(angio$seedWeights)
 
-ggplot(d, aes(x = logSeedWeights, fill = mastEvent)) +
+weight <- ggplot(angio, aes(x = logSeedWeights, fill = mastEvent)) +
   geom_density(alpha = 0.5) +
   scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) +
   labs(
-    title = "Density of Seed Weight (Log Scale)",
     x = "Seed Weight (log10)",
     y = "Density"
   ) +
   custom_theme
 
+angio$logSeedSize <- log10(angio$seedSizeAve)
+
+seedsize <- ggplot(angio, aes(x = logSeedSize, fill = mastEvent)) +
+  geom_density(alpha = 0.5) +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) +
+  labs(
+    x = "Seed Size (log10)",
+    y = "Density"
+  ) +
+  custom_theme
+
+angio$logFruitSize <- log10(angio$fruitSizeAve)
+
+fruitsize <- ggplot(angio, aes(x = logFruitSize, fill = mastEvent)) +
+  geom_density(alpha = 0.5) +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) +
+  labs(
+    x = "Seed Size (log10)",
+    y = "Density"
+  ) +
+  custom_theme
+
+leafLongevity <- ggplot(angio, aes(x = leafLongevity, fill = mastEvent)) +
+  geom_density(alpha = 0.5) +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) +
+  labs(
+    x = "Leaf Longevity",
+    y = "Density"
+  ) +
+  custom_theme
+
+grid.arrange(weight, seedsize, fruitsize, leafLongevity, nrow = 2, ncol = 2)
+
 # Seed weight and mastFrequency
-
-
-ggplot(d, aes(x = logSeedWeights, y = mastCycleAve)) +
+weight <- ggplot(angio, aes(x = logSeedWeights, y = mastCycleAve)) +
   geom_point(alpha = 0.6, color = "#95B958", size = 2) +
   geom_smooth(method = "lm", color = "black", se = TRUE) +
   labs(
-    title = "Seed Weight vs Average Mast Frequency (Log Scale)",
     x = "Seed Weight (log10 scale)",
     y = "Average Mast Frequency (years)"
   ) +
   custom_theme
 
+seedsize <- ggplot(angio, aes(x = logSeedSize, y = mastCycleAve)) +
+  geom_point(alpha = 0.6, color = "#95B958", size = 2) +
+  geom_smooth(method = "lm", color = "black", se = TRUE) +
+  labs(
+    x = "Seed Size (log10 scale)",
+    y = "Average Mast Frequency (years)"
+  ) +
+  custom_theme
+
+fruitsize <- ggplot(angio, aes(x = logFruitSize, y = mastCycleAve)) +
+  geom_point(alpha = 0.6, color = "#95B958", size = 2) +
+  geom_smooth(method = "lm", color = "black", se = TRUE) +
+  labs(
+    x = "Fruit Size (log10 scale)",
+    y = "Average Mast Frequency (years)"
+  ) +
+  custom_theme
+
+leafLongevity <- ggplot(angio, aes(x = leafLongevity, y = mastCycleAve)) +
+  geom_point(alpha = 0.6, color = "#95B958", size = 2) +
+  geom_smooth(method = "lm", color = "black", se = TRUE) +
+  labs(
+    x = "Leaf Longevity",
+    y = "Average Mast Frequency (years)"
+  ) +
+  custom_theme
+
+grid.arrange(weight, seedsize, fruitsize, leafLongevity, nrow = 2, ncol = 2)
+
+
 # To be honest, I don't really see a pattern here...
 
+#### Conifers ####
+
+# Monoecious and Dioecious
+conifer$typeMonoOrDio[which(conifer$typeMonoOrDio == "polygamo-dioecious")] <-"Polygamous"
+conifer$typeMonoOrDio[which(conifer$typeMonoOrDio == "polygamo-monoecious")] <-"Polygamous"
+conifer$typeMonoOrDio[which(conifer$typeMonoOrDio == "Polygamo-monoecious")] <-"Polygamous"
+conifer$typeMonoOrDio[which(conifer$typeMonoOrDio == "Polygamo-dioecious")] <-"Polygamous"
+
+
+conifer$typeMonoOrDio <- tolower(conifer$typeMonoOrDio)
+conifer$typeMonoOrDio <- ifelse(conifer$typeMonoOrDio == "monoecious", "Monoecious",
+                              ifelse(conifer$typeMonoOrDio == "dioecious", "Dioecious", 
+                                     ifelse(conifer$typeMonoOrDio == "polygamous", "Polygamous",NA)))
+par(mfrow = c(2, 2))
+conifer$typeMonoOrDio <- factor(conifer$typeMonoOrDio, levels = c("Monoecious", "Dioecious","Polygamous"))
+
+
+mono <- ggplot(conifer, aes(x = mastEvent, fill = typeMonoOrDio)) +
+  geom_bar(position = "fill", color = "black", width = 0.4) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  scale_fill_manual(values = c("Monoecious" = "#8EB3D2", "Dioecious" = "#FFB2B6","Polygamous" = "lightblue")) +
+  labs(
+    title = "Reproductive Systems",
+    x = "Masting",
+    y = "Proportion",
+    fill = "Reproductive System"
+  ) +
+  custom_theme
+
+# Yes, masting species are more likely to be monoecious
+
+# Masting and pollination
+conifer$pollination[which(conifer$pollination == "insects")] <- "animals"
+conifer$pollination[which(conifer$pollination == "wind and insects")] <- "wind and animals"
+conifer$pollination[which(conifer$pollination == "bird and insects")] <- "animals"
+conifer$pollination[which(conifer$pollination == "insect and wind")] <- "wind and animals"
+conifer$pollination[which(conifer$pollination == "insect")] <- "animals"
+
+
+conifer$pollination <- factor(conifer$pollination, levels = c("wind", "animals", "wind and animals"))
+
+
+pollination <- ggplot(conifer, aes(x = mastEvent, fill = pollination)) +
+  geom_bar(position = "fill", color = "black", width=0.4) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  scale_fill_manual(values = c("wind" = "#8EB3D2", "animals" = "#FFB2B6", "wind and animals" = "#F4D166")) +
+  labs(
+    title = "Pollination",
+    x = "Masting",
+    y = "Number of Species",
+    fill = "Pollination"  ) +
+  custom_theme
+
+# Yes, masting species are more likely to be wind pollinated
+
+# Then let's check on the dormancy and masting
+unique(conifer$dormancyClass)
+conifer$dormancyClass[which(conifer$dormancyClass == "PD")] <- "Y"
+conifer$dormancyClass[which(conifer$dormancyClass == "ND")] <- "N"
+conifer$dormancyClass[which(conifer$dormancyClass == "MPD")] <- "Y"
+conifer$dormancyClass[which(conifer$dormancyClass == "PY")] <- "Y"
+conifer$dormancyClass[which(conifer$dormancyClass == "PYPD")] <- "Y"
+conifer$dormancyClass[which(conifer$dormancyClass == "MD")] <- "Y"
+conifer$dormancyClass <- factor(conifer$dormancyClass, levels = c("Y", "N"))
+
+
+dormancy <- ggplot(conifer, aes(x = mastEvent, fill = dormancyClass)) +
+  geom_bar(position = "fill", color = "black", width = 0.4) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  scale_fill_manual(values = c("Y" = "#8EB3D2", "N" = "#FFB2B6")) +
+  labs(
+    title = "Seed Dormancy",
+    x = "Masting",
+    y = "Number of Species",
+    fill = "Seed Dormancy" ) +
+  custom_theme
+
+# Yes, masting species are more likely to have dormant seed? but there are so many NAs for non-masting species
+
+# Then let's check on the shade tolerance and masting
+conifer$droughtTolerance <- factor(conifer$droughtTolerance, levels = c("High", "Moderate","Low"))
+
+drought <- ggplot(conifer, aes(x = mastEvent, fill = droughtTolerance)) +
+  geom_bar(position = "fill", color = "black", width = 0.4) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  scale_fill_manual(values = c("High" = "#8EB3D2", "Low" = "#FFB2B6", "Moderate" = "#F4D166")) +
+  labs(
+    title = "Drought Tolerance",
+    x = "Masting",
+    y = "Number of Species",
+    fill = "Drought Tolerance" ) +
+  custom_theme
+
+grid.arrange(mono, pollination, dormancy, drought, nrow = 2, ncol = 2)
+# No big difference
+
+# Seed weight
+
+
+conifer$logSeedWeights <- log10(conifer$seedWeights)
+
+weight <- ggplot(conifer, aes(x = logSeedWeights, fill = mastEvent)) +
+  geom_density(alpha = 0.5) +
+  scale_fill_manual(values = c("Y" = "#8EB3D2", "N" = "#FFB2B6")) +
+  labs(
+    x = "Seed Weight (log10)",
+    y = "Density"
+  ) +
+  custom_theme
+
+conifer$logSeedSize <- log10(conifer$seedSizeAve)
+
+seedsize <- ggplot(conifer, aes(x = logSeedSize, fill = mastEvent)) +
+  geom_density(alpha = 0.5) +
+  scale_fill_manual(values = c("Y" = "#8EB3D2", "N" = "#FFB2B6")) +
+  labs(
+    x = "Seed Size (log10)",
+    y = "Density"
+  ) +
+  custom_theme
+
+conifer$logFruitSize <- log10(conifer$fruitSizeAve)
+
+fruitsize <- ggplot(conifer, aes(x = logFruitSize, fill = mastEvent)) +
+  geom_density(alpha = 0.5) +
+  scale_fill_manual(values = c("Y" = "#8EB3D2", "N" = "#FFB2B6")) +
+  labs(
+    x = "Seed Size (log10)",
+    y = "Density"
+  ) +
+  custom_theme
+
+leafLongevity <- ggplot(conifer, aes(x = leafLongevity, fill = mastEvent)) +
+  geom_density(alpha = 0.5) +
+  scale_fill_manual(values = c("Y" = "#8EB3D2", "N" = "#FFB2B6")) +
+  labs(
+    x = "Leaf Longevity",
+    y = "Density"
+  ) +
+  custom_theme
+
+grid.arrange(weight, seedsize, fruitsize, leafLongevity, nrow = 2, ncol = 2)
+
+# Seed weight and mastFrequency
+weight <- ggplot(conifer, aes(x = logSeedWeights, y = mastCycleAve)) +
+  geom_point(alpha = 0.6, color = "#8EB3D2", size = 2) +
+  geom_smooth(method = "lm", color = "black", se = TRUE) +
+  labs(
+    x = "Seed Weight (log10 scale)",
+    y = "Average Mast Frequency (years)"
+  ) +
+  custom_theme
+
+seedsize <- ggplot(conifer, aes(x = logSeedSize, y = mastCycleAve)) +
+  geom_point(alpha = 0.6, color = "#8EB3D2", size = 2) +
+  geom_smooth(method = "lm", color = "black", se = TRUE) +
+  labs(
+    x = "Seed Size (log10 scale)",
+    y = "Average Mast Frequency (years)"
+  ) +
+  custom_theme
+
+fruitsize <- ggplot(conifer, aes(x = logFruitSize, y = mastCycleAve)) +
+  geom_point(alpha = 0.6, color = "#8EB3D2", size = 2) +
+  geom_smooth(method = "lm", color = "black", se = TRUE) +
+  labs(
+    x = "Fruit Size (log10 scale)",
+    y = "Average Mast Frequency (years)"
+  ) +
+  custom_theme
+
+leafLongevity <- ggplot(conifer, aes(x = leafLongevity, y = mastCycleAve)) +
+  geom_point(alpha = 0.6, color = "#8EB3D2", size = 2) +
+  geom_smooth(method = "lm", color = "black", se = TRUE) +
+  labs(
+    x = "Leaf Longevity",
+    y = "Average Mast Frequency (years)"
+  ) +
+  custom_theme
+
+grid.arrange(weight, seedsize, fruitsize, leafLongevity, nrow = 2, ncol = 2)
