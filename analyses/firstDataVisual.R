@@ -8,41 +8,13 @@ options(stringsAsFactors = FALSE)
 
 setwd("C:/PhD/Project/PhD_thesis/mast_trait")
 
-d <- read.csv("data/silvicsClean.csv")
+source(analyses/dataCleaning.R)
 
 library(ggplot2)
 library(corrplot)
 library(magrittr)
-library(ape)
-library(phytools)
 library(gridExtra)
 
-str(d)
-summary(d)
-
-
-# Check missing values
-colSums(is.na(d))
-
-d[d == ""] <- NA
-
-ave_freq <- function(x) {
-  x <- gsub(" to ", " to ", x) 
-  if (grepl(" to ", x)) {
-    parts <- as.numeric(strsplit(x, " to ")[[1]])
-    return(mean(parts))
-  } else {
-    return(as.numeric(x))
-  }
-}
-
-# Make a new column for mast cycle
-d$mastCycleAve <- sapply(as.character(d$mastCycle), ave_freq)
-head(d$mastCycleAve)
-
-# Make a new column for ave fruit size
-d$fruitSizeAve <- sapply(as.character(d$fruitSize.cm.), ave_freq)
-d$seedSizeAve <- sapply(as.character(d$seedSize.mm.), ave_freq)
 
 # Make a subset of conifers only
 conifer <- subset(d, familyName %in% c("Pinaceae","Taxodiaceae"))
@@ -135,13 +107,6 @@ ggplot(expanded_seed_df, aes(x = Month, fill = Masting)) +
   custom_theme
 
 
-# Monoecious and Dioecious
-angio$typeMonoOrDio[which(angio$typeMonoOrDio == "polygamo-dioecious")] <-"Polygamous"
-angio$typeMonoOrDio[which(angio$typeMonoOrDio == "polygamo-monoecious")] <-"Polygamous"
-angio$typeMonoOrDio[which(angio$typeMonoOrDio == "Polygamo-monoecious")] <-"Polygamous"
-angio$typeMonoOrDio[which(angio$typeMonoOrDio == "Polygamo-dioecious")] <-"Polygamous"
-
-
 angio$typeMonoOrDio <- tolower(angio$typeMonoOrDio)
 angio$typeMonoOrDio <- ifelse(angio$typeMonoOrDio == "monoecious", "Monoecious",
                                 ifelse(angio$typeMonoOrDio == "dioecious", "Dioecious", 
@@ -163,13 +128,6 @@ mono <- ggplot(angio, aes(x = mastEvent, fill = typeMonoOrDio)) +
   custom_theme
 
 # Yes, masting species are more likely to be monoecious
-
-# Masting and pollination
-angio$pollination[which(angio$pollination == "insects")] <- "animals"
-angio$pollination[which(angio$pollination == "wind and insects")] <- "wind and animals"
-angio$pollination[which(angio$pollination == "bird and insects")] <- "animals"
-angio$pollination[which(angio$pollination == "insect and wind")] <- "wind and animals"
-angio$pollination[which(angio$pollination == "insect")] <- "animals"
 
 
 angio$pollination <- factor(angio$pollination, levels = c("wind", "animals", "wind and animals"))
@@ -320,13 +278,6 @@ grid.arrange(weight, seedsize, fruitsize, leafLongevity, nrow = 2, ncol = 2)
 
 #### Conifers ####
 
-# Monoecious and Dioecious
-conifer$typeMonoOrDio[which(conifer$typeMonoOrDio == "polygamo-dioecious")] <-"Polygamous"
-conifer$typeMonoOrDio[which(conifer$typeMonoOrDio == "polygamo-monoecious")] <-"Polygamous"
-conifer$typeMonoOrDio[which(conifer$typeMonoOrDio == "Polygamo-monoecious")] <-"Polygamous"
-conifer$typeMonoOrDio[which(conifer$typeMonoOrDio == "Polygamo-dioecious")] <-"Polygamous"
-
-
 conifer$typeMonoOrDio <- tolower(conifer$typeMonoOrDio)
 conifer$typeMonoOrDio <- ifelse(conifer$typeMonoOrDio == "monoecious", "Monoecious",
                               ifelse(conifer$typeMonoOrDio == "dioecious", "Dioecious", 
@@ -348,13 +299,6 @@ mono <- ggplot(conifer, aes(x = mastEvent, fill = typeMonoOrDio)) +
   custom_theme
 
 # Yes, masting species are more likely to be monoecious
-
-# Masting and pollination
-conifer$pollination[which(conifer$pollination == "insects")] <- "animals"
-conifer$pollination[which(conifer$pollination == "wind and insects")] <- "wind and animals"
-conifer$pollination[which(conifer$pollination == "bird and insects")] <- "animals"
-conifer$pollination[which(conifer$pollination == "insect and wind")] <- "wind and animals"
-conifer$pollination[which(conifer$pollination == "insect")] <- "animals"
 
 
 conifer$pollination <- factor(conifer$pollination, levels = c("wind", "animals", "wind and animals"))
