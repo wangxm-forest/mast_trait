@@ -9,26 +9,11 @@ library(viridisLite)
 rm(list=ls()) 
 options(stringsAsFactors = FALSE)
 
-setwd("C:/PhD/Project/PhD_thesis/mast_trait")
+setwd("C:/PhD/Project/PhD_thesis/mast_trait/")
+source("analyses/dataCleaning.R")
 
-d <- read.csv("data/silvicsClean.csv")
-
-# Make a new column for mast cycle
-ave_freq <- function(x) {
-  x <- gsub(" to ", " to ", x)  # Replace en-dash if needed
-  if (grepl(" to ", x)) {
-    parts <- as.numeric(strsplit(x, " to ")[[1]])
-    return(mean(parts))
-  } else {
-    return(as.numeric(x))
-  }
-}
-
-d$mastCycleAve <- sapply(as.character(d$mastCycle), ave_freq)
-head(d$mastCycleAve)
-d$fruitSizeAve <- sapply(as.character(d$fruitSize.cm.), ave_freq)
-d$seedSizeAve <- sapply(as.character(d$seedSize.mm.), ave_freq)
-
+maketree <- FALSE
+if(maketree){
 phy.plants<-read.tree("C:/PhD/Project/egret/analyses/input/ALLMB.tre")
 
 d$latbi <- gsub(" ", "_", d$latbi)
@@ -261,6 +246,7 @@ unique(d$latbi)
 setdiff(d$latbi,silvicsSpliced$tip.label)
 # write out the tree
 write.tree(silvicsSpliced,"output/silvicsPhylogenyFull.tre")
+}
 
 silvicsTree <- read.tree("output/silvicsPhylogenyFull.tre")
 
@@ -275,19 +261,52 @@ mast_colors <- c("Y" = "#CD5555", "N" = "#698B22", "No information" = "Grey")
 
 masting$color <- mast_colors[masting$mastEvent]
 
-# Make a named vector for tip coloring
-tip_colors <- setNames(masting$color, masting$latbi)
-
-tip_label_colors <- tip_colors[allspp] 
-
 plot(
   silvicsTree, type = 'fan', label.offset = 0.2,
-  cex = 0.6, no.margin = TRUE, tip.color = tip_label_colors
+  cex = 0.6, no.margin = TRUE, tip.color = masting$color
 )
 
+
 # Add monoecious or dioecious
-monodiosp <- d[, c("latbi","typeMonoOrDio")]
-monodiosp <- monodiosp[!duplicated(monodiosp[c("latbi","typeMonoOrDio")]), ]
+monodio <- subset(d, !is.na(d$typeMonoOrDio))
+monodiosp <- monodio[!duplicated(monodio$latbi), c("latbi","typeMonoOrDio")]
+
+# Match species to tips
+tipindex_monodio <- match(monodiosp$latbi, allspp)
+
+monocolor <- c("Monoecious" = "#659794", "Dioecious" = "#A6739B", "Polygamous" = "#D4C95F")
+
+# Add symbols at tips
+for (i in seq_along(monodiosp$latbi)) {
+  sp <- monodiosp$latbi[i]
+  tip <- tipindex_monodio[i]
+  type <- monodiosp$typeMonoOrDio[i]
+  # Get color and shape
+  col <- monocolor
+  pch <- 21
+  tiplabels(pch = pch, tip = tip,  offset=75, col = "black", bg = col, cex = 1.2)
+}
+
+# Add seed dormancy
+dormancy <- subset(d, !is.na(d$seedDormancy))
+dormancysp <- dormancy[!duplicated(dormancy$latbi), c("latbi","seedDormancy")]
+
+# Match species to tips
+tipindex_dormancy <- match(dormancysp$latbi, allspp)
+
+colordorm <- c("#5BA2CC","#F2BA68")
+colordorm_map <- setNames(colordorm[1:length(unique(dormancysp$seedDormancy))], unique(dormancysp$seedDormancy))
+
+# Add symbols at tips
+for (i in seq_along(dormancysp$latbi)) {
+  sp <- dormancysp$latbi[i]
+  tip <- tipindex_dormancy[i]
+  type <- dormancysp$seedDormancy[i]
+  # Get color and shape
+  col <- colordorm_map[type]
+  pch <- 21
+  tiplabels(pch = pch, tip = tip,  offset=85, col = "black", bg = col, cex = 1.2)
+}
 
 legend(
   "bottomright",
@@ -299,3 +318,12 @@ legend(
   cex = 1,             # text size
   bty = "n"            # no box around legend
 )
+# Reproductive system legend
+legend(x=-70, y=-70,
+       legend = names(monocolor),
+       col = monocolor,     
+       pch = 21,        
+       pt.cex = 1.2,               
+       cex = 1.8,                  
+       title = "Reproductive system",
+       bty = "n")
