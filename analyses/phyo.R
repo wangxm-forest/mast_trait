@@ -261,6 +261,7 @@ mast_colors <- c("Y" = "#CD5555", "N" = "#698B22", "No information" = "Grey")
 
 masting$color <- mast_colors[masting$mastEvent]
 
+pdf("output/figures/mastTraitTree.pdf", width = 20, height = 20)
 plot(
   silvicsTree, type = 'fan', label.offset = 0.2,
   cex = 0.6, no.margin = TRUE, tip.color = masting$color
@@ -282,7 +283,7 @@ for (i in seq_along(monodiosp$latbi)) {
   tip <- tipindex_monodio[i]
   type <- monodiosp$typeMonoOrDio[i]
   # Get color and shape
-  col <- monocolor
+  col <- monocolor[type]
   pch <- 21
   tiplabels(pch = pch, tip = tip,  offset=75, col = "black", bg = col, cex = 1.2)
 }
@@ -294,8 +295,7 @@ dormancysp <- dormancy[!duplicated(dormancy$latbi), c("latbi","seedDormancy")]
 # Match species to tips
 tipindex_dormancy <- match(dormancysp$latbi, allspp)
 
-colordorm <- c("#5BA2CC","#F2BA68")
-colordorm_map <- setNames(colordorm[1:length(unique(dormancysp$seedDormancy))], unique(dormancysp$seedDormancy))
+dormcolor <- c("Y" = "#5BA2CC", "N" = "#F2BA68")
 
 # Add symbols at tips
 for (i in seq_along(dormancysp$latbi)) {
@@ -303,27 +303,82 @@ for (i in seq_along(dormancysp$latbi)) {
   tip <- tipindex_dormancy[i]
   type <- dormancysp$seedDormancy[i]
   # Get color and shape
-  col <- colordorm_map[type]
+  col <- dormcolor[type]
   pch <- 21
   tiplabels(pch = pch, tip = tip,  offset=85, col = "black", bg = col, cex = 1.2)
 }
 
+# Add seed Weight
+seedWeight <- subset(d, !is.na(d$seedWeights))
+seedWeightsp <- monodio[!duplicated(seedWeight$latbi), c("latbi","seedWeights")]
+values <- na.omit(log(seedWeightsp$seedWeight))
+
+# Normalize the values
+scaled_cex <- scales::rescale(values, to = c(0.5, 4)) 
+
+# Match species to tips
+tipindex_seedweight <- match(seedWeight$latbi, allspp)
+
+# Plot variable-size symbols
+for (i in seq_along(seedWeight$latbi)) {
+  tip <- tipindex_seedweight[i]
+  size <- scaled_cex[i]
+  
+  tiplabels(
+    pch = 21,                     # Circle shape
+    tip = tip, 
+    offset = 95,
+    col = "black", 
+    bg = "#E87687",              # Or another color if you like
+    cex = size
+  )
+}
+
+
+# Add legend
 legend(
-  "bottomright",
+  x=-90, y=100,
   legend = names(mast_colors),
   col = mast_colors,
   pch = 15,           
   title = "Masting",
-  pt.cex = 1,          # size of legend symbols
+  pt.cex = 1.2,          # size of legend symbols
   cex = 1,             # text size
   bty = "n"            # no box around legend
 )
 # Reproductive system legend
-legend(x=-70, y=-70,
+legend(x=70, y=40,
        legend = names(monocolor),
-       col = monocolor,     
+       pt.bg = unname(monocolor), 
        pch = 21,        
        pt.cex = 1.2,               
-       cex = 1.8,                  
+       cex = 1,                  
        title = "Reproductive system",
        bty = "n")
+# Seed dormancy legend
+legend(x=70, y=100,
+       legend = names(dormcolor),
+       pt.bg = unname(dormcolor), 
+       pch = 21,        
+       pt.cex = 1.2,               
+       cex = 1,                  
+       title = "Seed Dormancy",
+       bty = "n")
+
+# Seed weight legend
+legend_sizes <- c(min(values), median(values), max(values))
+legend_cex <- scales::rescale(legend_sizes, to = c(0.5, 2))
+
+legend(
+  x = -90, y = 40,
+  legend = round(legend_sizes, 2),
+  pt.cex = legend_cex,
+  pch = 21,
+  pt.bg = "#E87687",
+  col = "black",
+  title = "Fruit size",
+  bty = "n"
+)
+
+dev.off()
+
