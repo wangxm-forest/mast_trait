@@ -308,6 +308,70 @@ for (i in seq_along(dormancysp$latbi)) {
   tiplabels(pch = pch, tip = tip,  offset=85, col = "black", bg = col, cex = 1.2)
 }
 
+# Add pollination mode
+pollination <- subset(d, !is.na(d$pollination))
+pollinationsp <- pollination[!duplicated(pollination$latbi), c("latbi","pollination")]
+
+pollination_list <- strsplit(as.character(pollinationsp$pollination), "and\\s*")
+species <- as.character(pollinationsp$latbi)
+# Match species to tips
+tipindex_pollination <- match(species, allspp)
+
+pollinationcolor <- c("wind" = "#AC7299", "animals" = "#CFDAA8")
+
+base_offset <- 95         # where symbols begin
+symbol_spacing <- 5       # space between multiple symbols
+symbol_size <- 1.2        # size of symbols
+# Add symbols at tips
+for (i in seq_along(species)) {
+  tip <- tipindex_pollination[i]
+  modes <- pollination_list[[i]]
+  n_modes <- length(modes)
+  
+  # Calculate centered offsets
+  offsets <- base_offset + ((seq_len(n_modes) - (n_modes + 1)/2) * symbol_spacing)
+  
+  for (j in seq_along(modes)) {
+    mode <- modes[j]
+    col <- pollinationcolor[mode]
+    
+    # Plot symbol
+    tiplabels(pch = pch, tip = tip, offset = offsets[j], col = "black", bg = col, cex = symbol_size)
+  }
+}
+
+# Add seed dispersal mode
+dispersal <- subset(d, !is.na(d$seedDispersal))
+dispersalsp <- dispersal[!duplicated(dispersal$latbi), c("latbi","seedDispersal")]
+
+dispersal_list <- strsplit(as.character(dispersalsp$seedDispersal), ",\\s*")
+species <- as.character(dispersalsp$latbi)
+# Match species to tips
+tipindex_dispersal <- match(species, allspp)
+
+dispersalcolor <- c("wind" = "#C43142","gravity" = "#C43142", "water" ="#C43142", "fire" = "#C43142", "mammals" = "#387E46", "birds" = "#387E46", "rodents" = "#387E46")
+
+base_offset <- 110         # where symbols begin
+symbol_spacing <- 5       # space between multiple symbols
+symbol_size <- 1.2        # size of symbols
+# Add symbols at tips
+for (i in seq_along(species)) {
+  tip <- tipindex_dispersal[i]
+  modes <- dispersal_list[[i]]
+  n_modes <- length(modes)
+  
+  # Calculate centered offsets
+  offsets <- base_offset + ((seq_len(n_modes) - (n_modes + 1)/2) * symbol_spacing)
+  
+  for (j in seq_along(modes)) {
+    mode <- modes[j]
+    col <- dispersalcolor[mode]
+    
+    # Plot symbol
+    tiplabels(pch = pch, tip = tip, offset = offsets[j], col = "black", bg = col, cex = symbol_size)
+  }
+}
+
 # Add seed Weight
 seedWeight <- subset(d, !is.na(d$seedWeights))
 seedWeightsp <- monodio[!duplicated(seedWeight$latbi), c("latbi","seedWeights")]
@@ -327,13 +391,12 @@ for (i in seq_along(seedWeight$latbi)) {
   tiplabels(
     pch = 21,                     # Circle shape
     tip = tip, 
-    offset = 95,
+    offset = 130,
     col = "black", 
     bg = "#E87687",              # Or another color if you like
     cex = size
   )
 }
-
 
 # Add legend
 legend(
@@ -364,7 +427,25 @@ legend(x=70, y=100,
        cex = 1,                  
        title = "Seed Dormancy",
        bty = "n")
+# pollination mode legend
+legend(x=70, y=-10, 
+       legend = names(pollinationcolor),
+       pt.bg = pollinationcolor, 
+       pch = 21,
+       pt.cex = 1.2,
+       cex = 1,
+       title = "Pollination Mode",
+       bty = "n")  
 
+# dispersal mode legend
+legend(x=70, y=-50, 
+       legend = names(dispersalcolor),
+       pt.bg = dispersalcolor, 
+       pch = 21,
+       pt.cex = 1.2,
+       cex = 1,
+       title = "Dispersal Mode",
+       bty = "n") 
 # Seed weight legend
 legend_sizes <- c(min(values), median(values), max(values))
 legend_cex <- scales::rescale(legend_sizes, to = c(0.5, 2))

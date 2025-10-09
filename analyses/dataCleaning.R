@@ -63,3 +63,7 @@ d$seedDormancy[which(d$seedDormancy == "PY")] <- "Y"
 d$seedDormancy[which(d$seedDormancy == "PYPD")] <- "Y"
 d$seedDormancy[which(d$seedDormancy == "MD")] <- "Y"
 
+# Pollination data
+d$pollination[which(d$pollination == "wind, insects")] <- "wind and animals"
+d$pollination[which(d$pollination == "bird, insects")] <- "animals"
+d$pollination[which(d$pollination == "insects and wind")] <- "wind and animals"
