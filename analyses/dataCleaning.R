@@ -67,3 +67,14 @@ d$seedDormancy[which(d$seedDormancy == "MD")] <- "Y"
 d$pollination[which(d$pollination == "wind, insects")] <- "wind and animals"
 d$pollination[which(d$pollination == "bird, insects")] <- "animals"
 d$pollination[which(d$pollination == "insects and wind")] <- "wind and animals"
+
+# dispersal data
+unique(d$seedDispersal)
+d$seedDispersalDetails <- d$seedDispersal
+d$seedDispersal[d$seedDispersal %in% c("wind", "wind, water", "fire", "gravity", "gravity, wind", "water")] <- "abiotic"
+d$seedDispersalDetails[which(d$seedDispersal == "wind,mammals")] <- "wind, mammals"
+d$seedDispersal[d$seedDispersal %in% c("wind,mammals","wind, mammals","gravity, water, birds, mammals","wind, birds","wind, rodents, birds","gravity, wind, rodents, birds","gravity, water, mammals","birds, wind", "water, mammals", "water, birds","gravity, wind, water, birds", "wind, water, birds", "gravity, wind, rodents", "gravity, water, rodents", "water, rodents, birds", "water, mammals, birds", "gravity, wind, mammals", "wind, water, mammals", "gravity, wind, water, mammals")] <- "both"
+d$seedDispersal[d$seedDispersal %in% c("mammals", "birds", "birds, mammals", "gravity, birds, mammals", "rodents, birds", "gravity, rodents", "gravity, rodents, birds", "bird", "animals", "gravity, mammals", "mammals, birds", "bird, rodents, mammals", "rodents, mammals", "animals, rodents")] <- "biotic"
+d$seedDispersalDetails[which(d$seedDispersal == "bird")] <- "birds"
+d$seedDispersalDetails[which(d$seedDispersal == "animals")] <- "mammals"
+
