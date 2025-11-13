@@ -6,9 +6,9 @@
 rm(list=ls()) 
 options(stringsAsFactors = FALSE)
 
-setwd("C:/PhD/Project/PhD_thesis/mast_trait")
+setwd("C:/PhD/Project/PhD_thesis/mast_trait/")
 
-source(analyses/dataCleaning.R)
+source("analyses/dataCleaning.R")
 
 library(ggplot2)
 library(corrplot)
