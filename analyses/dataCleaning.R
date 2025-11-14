@@ -4,7 +4,7 @@
 # housekeeping
 rm(list=ls()) 
 options(stringsAsFactors = FALSE)
-
+library(dplyr)
 setwd("C:/PhD/Project/PhD_thesis/mast_trait")
 
 d <- read.csv("data/silvicsClean.csv")
@@ -55,13 +55,26 @@ d$pollination[which(d$pollination == "insect and wind")] <- "wind and animals"
 d$pollination[which(d$pollination == "insect")] <- "animals"
 
 # Seed dormancy data
-d$seedDormancy[is.na(d$seedDormancy)] <- d$dormancyClass[is.na(d$seedDormancy)]
+bask<-read.csv("C:/PhD/Project/egret/analyses/input/Baskin_Dormancy_Database.csv")
+
+colnames(bask)<-bask[2,]
+bask<-bask[3:14256,]
+bask$dormancy <- bask$`Dormancy Class`
+bask_collapsed <- bask %>%
+  group_by(Genus_species) %>%                                   # group by species
+  summarise(Dormancy_Class = paste(unique(dormancy),      # combine unique dormancy classes
+                                   collapse = ", ")) %>%        # separate by comma
+  ungroup()
+d <- d %>%
+  left_join(bask_collapsed, by = c("latbi" = "Genus_species"))
+
+d$seedDormancy[is.na(d$seedDormancy)] <- d$Dormancy_Class[is.na(d$seedDormancy)]
+unique(d$seedDormancy)
 d$seedDormancy[which(d$seedDormancy == "PD")] <- "Y"
 d$seedDormancy[which(d$seedDormancy == "ND")] <- "N"
 d$seedDormancy[which(d$seedDormancy == "MPD")] <- "Y"
-d$seedDormancy[which(d$seedDormancy == "PY")] <- "Y"
-d$seedDormancy[which(d$seedDormancy == "PYPD")] <- "Y"
-d$seedDormancy[which(d$seedDormancy == "MD")] <- "Y"
+d$seedDormancy[which(d$seedDormancy == "ND, PD")] <- "Y"
+d$seedDormancy[which(d$seedDormancy == "MD, MPD")] <- "Y"
 
 # Pollination data
 d$pollination[which(d$pollination == "wind, insects")] <- "wind and animals"
@@ -78,3 +91,10 @@ d$seedDispersal[d$seedDispersal %in% c("mammals", "birds", "birds, mammals", "gr
 d$seedDispersalDetails[which(d$seedDispersal == "bird")] <- "birds"
 d$seedDispersalDetails[which(d$seedDispersal == "animals")] <- "mammals"
 
+names(d)[4] <- "updateName"
+
+# flowering period
+unique(d$floweringDuration)
+d$floweringDuration[d$floweringDuration %in% c("a few days","8.5 days","3 days","two to three days","3-8 days","several days","2-4 days","1 week")] <- "<10"
+d$floweringDuration[d$floweringDuration %in% c("two weeks","two to three weeks","2-4 weeks", "one month")] <- "10-30"
+d$floweringDuration[d$floweringDuration %in% c("several weeks","several months","nearly continuous", "2-6 weeks")] <- ">30"
