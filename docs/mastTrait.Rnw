@@ -1,7 +1,9 @@
 \documentclass{article}
 \usepackage{graphicx}
 \usepackage{Sweave}
+\usepackage{float}
 \usepackage[top=1.00in, bottom=1.0in, left=1.1in, right=1.1in]{geometry}
+
 \title{Mast-Trait}
 \author{Xiaomao Wang}
 \date{\today}
@@ -14,42 +16,89 @@
 \section*{Predator Satiation}
 
 \begin{itemize}
-\item{Dispersal mode: Animal-dispersed species may be more likely to mast, or the mechanisms behind masting could differ depending on dispersal mode.}
-\end{itemize}
-\begin{figure}[h]
-\centering
- \includegraphics[width=1.1\textwidth]{C:/PhD/Project/PhD_thesis/mast_trait/output/figures/dispersalmode.pdf}
- \end{figure}
-\begin{itemize}
-  \item \textbf{Seed size:} Among animal-dispersed species, larger-seeded species might be more prone to masting.
-\end{itemize}
-\begin{figure}[h]
-\centering
- \includegraphics[width=1.1\textwidth]{C:/PhD/Project/PhD_thesis/mast_trait/output/figures/seedWeights.pdf}
- \end{figure}
-\begin{itemize}
-  \item \textbf{Seed dormancy:} Species with dormant seeds are expected to be more likely to mast.
+\item Dispersal mode: Animal-dispersed species may be more likely to mast, or
+the mechanisms behind masting could differ depending on dispersal mode.
 \end{itemize}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/dispersalmode.pdf}
+\end{figure}
+
 \begin{itemize}
-  \item \textbf{Nutrient content:} Species with more nutritious seeds may be more likely to mast.
+\item \textbf{Seed size:} Among animal-dispersed species, larger-seeded species might be more prone to masting.
 \end{itemize}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/seedWeights.pdf}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Seed dormancy:} Species with dormant seeds are expected to be more likely to mast.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/seedDormancy.pdf}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Nutrient content:} Species with more nutritious seeds may be more likely to mast.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/oilContent.pdf}
+\end{figure}
+
+% ------------------------------------------
 
 \section*{Pollination Coupling}
 
 \begin{itemize}
   \item Wind-pollinated species are expected to mast more frequently.
+\end{itemize}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/pollination.pdf}
+\end{figure}
+
+\begin{itemize}
   \item Monoecious species may be more likely to mast.
+\end{itemize}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/reproductiveType.pdf}
+\end{figure}
+\begin{itemize}
   \item Species with longer flowering periods may be more likely to mast.
 \end{itemize}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/flowerDuration.pdf}
+\end{figure}
+
+% ------------------------------------------
 
 \section*{Resource Matching}
 
 \begin{itemize}
   \item Leaf longevity: Species with long-lived leaves are expected to mast more frequently.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/leafLongevity.pdf}
+\end{figure}
+
+\begin{itemize}
   \item Drought tolerance: May go either way — tolerant species can accumulate resources; intolerant species respond to resource fluctuations.
 \end{itemize}
 
-\end{document}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/droughtTolerance.pdf}
+\end{figure}
 
+\end{document}
