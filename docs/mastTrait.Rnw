@@ -1,3 +1,4 @@
+% !Rnw encoding = UTF-8
 \documentclass{article}
 \usepackage{graphicx}
 \usepackage{Sweave}
@@ -13,7 +14,7 @@
 
 \maketitle
 
-<<>>=
+<<load-plots, eval=FALSE>>=
 source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/plottingSweave.R")
 @
 
