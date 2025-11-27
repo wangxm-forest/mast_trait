@@ -36,6 +36,8 @@ get_legend <- function(myplot) {
   leg[[1]]
 }
 
+
+#seedDispersal
 angio$seedDispersal <-  factor(angio$seedDispersal, levels = c("abiotic", "biotic","both"))
 conifer$seedDispersal <-  factor(conifer$seedDispersal, levels = c("abiotic", "biotic","both"))
 d$seedDispersal <-  factor(d$seedDispersal, levels = c("abiotic", "biotic","both"))
@@ -83,9 +85,12 @@ combined <- arrangeGrob(
   widths = c(1,1,1)  # adjust widths if needed
 )
 
+#save to a pdf
+pdf("output/figures/dispersalmode.pdf", width = 10, height = 4)
 # Draw the combined plots and add the shared legend
 grid.newpage()
 grid.draw(arrangeGrob(combined, shared_legend, ncol=2, widths=c(3, 0.4)))
+dev.off()
 
 ## seed weights
 angioanimal <- angio[!is.na(angio$seedPredator) & angio$seedPredator != "no", ]
@@ -124,10 +129,12 @@ combined <- arrangeGrob(
   nrow = 1,
   widths = c(1,1,1)  # adjust widths if needed
 )
-
+#save to a pdf
+pdf("output/figures/seedWeights.pdf", width = 10, height = 4)
 # Draw the combined plots and add the shared legend
 grid.newpage()
 grid.draw(arrangeGrob(combined, shared_legend, ncol=2, widths=c(3, 0.4)))
+dev.off()
 
 # seed size
 
@@ -163,10 +170,12 @@ combined <- arrangeGrob(
   nrow = 1,
   widths = c(1,1,1)  # adjust widths if needed
 )
-
+#save to a pdf
+pdf("output/figures/seedSize.pdf", width = 10, height = 4)
 # Draw the combined plots and add the shared legend
 grid.newpage()
 grid.draw(arrangeGrob(combined, shared_legend, ncol=2, widths=c(3, 0.4)))
+dev.off()
 
 # Fruit size
 angioanimal$logFruitSizeAve <- log10(angioanimal$fruitSizeAve)
@@ -201,10 +210,12 @@ combined <- arrangeGrob(
   nrow = 1,
   widths = c(1,1,1)  # adjust widths if needed
 )
-
+#save to a pdf
+pdf("output/figures/fruitSize.pdf", width = 10, height = 4)
 # Draw the combined plots and add the shared legend
 grid.newpage()
 grid.draw(arrangeGrob(combined, shared_legend, ncol=2, widths=c(3, 0.4)))
+dev.off()
 
 # Seed dormancy
 angioanimal$seedDormancy <-  factor(angioanimal$seedDormancy, levels = c("Y", "N"))
@@ -249,12 +260,13 @@ combined <- arrangeGrob(
   widths = c(1,1,1)  # adjust widths if needed
 )
 
+#save to a pdf
+pdf("output/figures/seedDormancy.pdf", width = 10, height = 4)
 # Draw the combined plots and add the shared legend
 grid.newpage()
 grid.draw(arrangeGrob(combined, shared_legend, ncol=2, widths=c(3, 0.4)))
+dev.off()
 
-# Nutrients
-d$proteinContent
 
 # pollination
 
@@ -315,10 +327,13 @@ combined <- arrangeGrob(
   nrow = 1,
   widths = c(1,1,1)  # adjust widths if needed
 )
-
+#save to a pdf
+pdf("output/figures/reproductiveType.pdf", width = 10, height = 4)
 # Draw the combined plots and add the shared legend
 grid.newpage()
 grid.draw(arrangeGrob(combined, shared_legend, ncol=2, widths=c(3, 0.4)))
+dev.off()
+
 
 # Drought tolerance
 angio$droughtTolerance <- factor(angio$droughtTolerance, levels = c("High", "Moderate","Low"))
@@ -366,9 +381,12 @@ combined <- arrangeGrob(
   widths = c(1,1,1)  # adjust widths if needed
 )
 
+#save to a pdf
+pdf("output/figures/droughtTolerance.pdf", width = 10, height = 4)
 # Draw the combined plots and add the shared legend
 grid.newpage()
 grid.draw(arrangeGrob(combined, shared_legend, ncol=2, widths=c(3, 0.4)))
+dev.off()
 
 # flowering duration
 angio$floweringDuration <- factor(angio$floweringDuration, levels = c("<10", "10-30",">30"))
@@ -416,9 +434,12 @@ combined <- arrangeGrob(
   widths = c(1,1,1)  # adjust widths if needed
 )
 
+#save to a pdf
+pdf("output/figures/flowerDuration.pdf", width = 10, height = 4)
 # Draw the combined plots and add the shared legend
 grid.newpage()
 grid.draw(arrangeGrob(combined, shared_legend, ncol=2, widths=c(3, 0.4)))
+dev.off()
 
 # Oil content
 o_angio <- ggplot(angioanimal, aes(x = oilContent, fill = mastEvent)) +
@@ -448,9 +469,13 @@ combined <- arrangeGrob(
   widths = c(1,1,1)  # adjust widths if needed
 )
 
+#save to a pdf
+pdf("output/figures/oilContent.pdf", width = 10, height = 4)
 # Draw the combined plots and add the shared legend
 grid.newpage()
 grid.draw(arrangeGrob(combined, shared_legend, ncol=2, widths=c(3, 0.4)))
+dev.off()
+
 # Leaf longevity
 
 l_angio <- ggplot(angio, aes(x = leafLongevity, fill = mastEvent)) +
@@ -475,9 +500,12 @@ combined <- arrangeGrob(
   widths = c(1,1)  # adjust widths if needed
 )
 
+#save to a pdf
+pdf("output/figures/leafLongevity.pdf", width = 10, height = 4)
 # Draw the combined plots and add the shared legend
 grid.newpage()
 grid.draw(arrangeGrob(combined, shared_legend, ncol=2, widths=c(3, 0.4)))
+dev.off()
 
 # pollination
 angio$pollination <- factor(angio$pollination, levels = c("wind", "animals", "wind and animals"))
@@ -523,6 +551,9 @@ combined <- arrangeGrob(
   widths = c(1,1,1)  # adjust widths if needed
 )
 
+#save to a pdf
+pdf("output/figures/pollination.pdf", width = 10, height = 4)
 # Draw the combined plots and add the shared legend
 grid.newpage()
 grid.draw(arrangeGrob(combined, shared_legend, ncol=2, widths=c(3, 0.4)))
+dev.off()
