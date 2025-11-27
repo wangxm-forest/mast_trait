@@ -49,7 +49,7 @@ p_angio <- ggplot(angio, aes(x = mastEvent, fill = seedDispersal)) +
   scale_fill_manual(values = c("abiotic" = "#95B958", 
                                "biotic" = "#F4D166",
                                "both" = "#F59A3A")) +
-  labs(title = "Angiosperms", x = "Masting", y = "Proportion") +
+  labs(title = "Angiosperms (N = 98)", x = "Masting", y = "Proportion") +
   custom_theme_noleg
 
 # Conifers plot
@@ -59,7 +59,7 @@ p_conifer <- ggplot(conifer, aes(x = mastEvent, fill = seedDispersal)) +
   scale_fill_manual(values = c("abiotic" = "#95B958", 
                                "biotic" = "#F4D166",
                                "both" = "#F59A3A")) +
-  labs(title = "Conifers", x = "Masting", y = "Proportion") +
+  labs(title = "Conifers (N = 61)", x = "Masting", y = "Proportion") +
   custom_theme_noleg
 
 # All species plot (keep legend)
@@ -69,7 +69,7 @@ p_all <- ggplot(d, aes(x = mastEvent, fill = seedDispersal)) +
   scale_fill_manual(values = c("abiotic" = "#95B958", 
                                "biotic" = "#F4D166",
                                "both" = "#F59A3A")) +
-  labs(title = "All Species", x = "Masting", y = "Proportion", fill = "Dispersal Mode") +
+  labs(title = "All Species (N = 159)", x = "Masting", y = "Proportion", fill = "Dispersal Mode") +
   custom_theme
 
 
@@ -101,21 +101,21 @@ angioanimal$logSeedWeights <- log10(angioanimal$seedWeights)
 
 w_angio <- ggplot(angioanimal, aes(x = logSeedWeights, fill = mastEvent)) +
   geom_density(alpha = 0.5) +
-  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Angiosperms", x = "Seed Weight (log10)", y = "Density") +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Angiosperms (N = 98)", x = "Seed Weight (log10)", y = "Density") +
   custom_theme_noleg
 
 coniferanimal$logSeedWeights <- log10(coniferanimal$seedWeights)
 
 w_conifer <- ggplot(coniferanimal, aes(x = logSeedWeights, fill = mastEvent)) +
   geom_density(alpha = 0.5) +
-  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Conifers", x = "Seed Weight (log10)", y = "Density") +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Conifers (N = 61)", x = "Seed Weight (log10)", y = "Density") +
   custom_theme_noleg
 
 danimal$logSeedWeights <- log10(danimal$seedWeights)
 
 w_all <- ggplot(danimal, aes(x = logSeedWeights, fill = mastEvent)) +
   geom_density(alpha = 0.5) +
-  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "All Species", x = "Seed Weight (log10)", y = "Density") +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "All Species (N = 159)", x = "Seed Weight (log10)", y = "Density") +
   custom_theme
 
 shared_legend <- get_legend(w_all)
@@ -142,21 +142,21 @@ angioanimal$logseedSizeAve <- log10(angioanimal$seedSizeAve)
 
 s_angio <- ggplot(angioanimal, aes(x = logseedSizeAve, fill = mastEvent)) +
   geom_density(alpha = 0.5) +
-  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Angiosperms", x = "Seed Size (log10)", y = "Density") +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Angiosperms (N = 98)", x = "Seed Size (log10)", y = "Density") +
   custom_theme_noleg
 
 coniferanimal$logseedSizeAve <- log10(coniferanimal$seedSizeAve)
 
 s_conifer <- ggplot(coniferanimal, aes(x = logseedSizeAve, fill = mastEvent)) +
   geom_density(alpha = 0.5) +
-  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Conifers", x = "Seed Size (log10)", y = "Density") +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Conifers (N = 61)", x = "Seed Size (log10)", y = "Density") +
   custom_theme_noleg
 
 danimal$logseedSizeAve <- log10(danimal$seedSizeAve)
 
 s_all <- ggplot(danimal, aes(x = logseedSizeAve, fill = mastEvent)) +
   geom_density(alpha = 0.5) +
-  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "All Species", x = "Seed Size (log10)", y = "Density") +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "All Species (N = 159)", x = "Seed Size (log10)", y = "Density") +
   custom_theme
 
 shared_legend <- get_legend(s_all)
@@ -182,21 +182,21 @@ angioanimal$logFruitSizeAve <- log10(angioanimal$fruitSizeAve)
 
 f_angio <- ggplot(angioanimal, aes(x = logFruitSizeAve, fill = mastEvent)) +
   geom_density(alpha = 0.5) +
-  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Angiosperms", x = "Fruit Size (log10)", y = "Density") +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Angiosperms (N = 98)", x = "Fruit Size (log10)", y = "Density") +
   custom_theme_noleg
 
 coniferanimal$logfruitSizeAve <- log10(coniferanimal$fruitSizeAve)
 
 f_conifer <- ggplot(coniferanimal, aes(x = logfruitSizeAve, fill = mastEvent)) +
   geom_density(alpha = 0.5) +
-  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Conifers", x = "Fruit Size (log10)", y = "Density") +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Conifers (N = 61)", x = "Fruit Size (log10)", y = "Density") +
   custom_theme_noleg
 
 danimal$logFruitSizeAve <- log10(danimal$fruitSizeAve)
 
 f_all <- ggplot(danimal, aes(x = logFruitSizeAve, fill = mastEvent)) +
   geom_density(alpha = 0.5) +
-  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "All Species", x = "Fruit Size (log10)", y = "Density") +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "All Species (N = 159)", x = "Fruit Size (log10)", y = "Density") +
   custom_theme
 
 shared_legend <- get_legend(f_all)
@@ -227,7 +227,7 @@ d_angio <- ggplot(angioanimal, aes(x = mastEvent, fill = seedDormancy)) +
   scale_y_continuous(labels = scales::percent_format()) +
   scale_fill_manual(values = c("Y" = "#95B958", 
                                "N" = "#F4D166")) +
-  labs(title = "Angiosperms", x = "Masting", y = "Proportion") +
+  labs(title = "Angiosperms (N = 98)", x = "Masting", y = "Proportion") +
   custom_theme_noleg
 
 # Conifers plot
@@ -236,7 +236,7 @@ d_conifer <- ggplot(coniferanimal, aes(x = mastEvent, fill = seedDormancy)) +
   scale_y_continuous(labels = scales::percent_format()) +
   scale_fill_manual(values = c("Y" = "#95B958", 
                                "N" = "#F4D166")) +
-  labs(title = "Conifers", x = "Masting", y = "Proportion") +
+  labs(title = "Conifers (N = 61)", x = "Masting", y = "Proportion") +
   custom_theme_noleg
 
 # All species plot (keep legend)
@@ -245,7 +245,7 @@ d_all <- ggplot(danimal, aes(x = mastEvent, fill = seedDormancy)) +
   scale_y_continuous(labels = scales::percent_format()) +
   scale_fill_manual(values = c("Y" = "#95B958", 
                                "N" = "#F4D166")) +
-  labs(title = "All Species", x = "Masting", y = "Proportion", fill = "seedDormancy") +
+  labs(title = "All Species (N = 159)", x = "Masting", y = "Proportion", fill = "seedDormancy") +
   custom_theme
 
 shared_legend <- get_legend(d_all)
@@ -293,7 +293,7 @@ r_angio <- ggplot(angio, aes(x = mastEvent, fill = typeMonoOrDio)) +
   scale_fill_manual(values = c("Monoecious" = "#95B958", 
                                "Dioecious" = "#F4D166",
                                "Polygamous" = "#F59A3A")) +
-  labs(title = "Angiosperms", x = "Masting", y = "Proportion") +
+  labs(title = "Angiosperms (N = 98)", x = "Masting", y = "Proportion") +
   custom_theme_noleg
 
 # Conifers plot
@@ -303,7 +303,7 @@ r_conifer <- ggplot(conifer, aes(x = mastEvent, fill = typeMonoOrDio)) +
   scale_fill_manual(values = c("Monoecious" = "#95B958", 
                                "Dioecious" = "#F4D166",
                                "Polygamous" = "#F59A3A")) +
-  labs(title = "Conifers", x = "Masting", y = "Proportion") +
+  labs(title = "Conifers (N = 61)", x = "Masting", y = "Proportion") +
   custom_theme_noleg
 
 # All species plot (keep legend)
@@ -313,7 +313,7 @@ r_all <- ggplot(d, aes(x = mastEvent, fill = typeMonoOrDio)) +
   scale_fill_manual(values = c("Monoecious" = "#95B958", 
                                "Dioecious" = "#F4D166",
                                "Polygamous" = "#F59A3A")) +
-  labs(title = "All Species", x = "Masting", y = "Proportion", fill = "typeMonoOrDio") +
+  labs(title = "All Species (N = 159)", x = "Masting", y = "Proportion", fill = "typeMonoOrDio") +
   custom_theme
 
 shared_legend <- get_legend(r_all)
@@ -346,7 +346,7 @@ t_angio <- ggplot(angio, aes(x = mastEvent, fill = droughtTolerance)) +
   scale_fill_manual(values = c("High" = "#BA4C23", 
                                "Moderate" = "#F59A3A",
                                "Low" = "#FDC17B")) +
-  labs(title = "Angiosperms", x = "Masting", y = "Proportion") +
+  labs(title = "Angiosperms (N = 98)", x = "Masting", y = "Proportion") +
   custom_theme_noleg
 
 # Conifers plot
@@ -356,7 +356,7 @@ t_conifer <- ggplot(conifer, aes(x = mastEvent, fill = droughtTolerance)) +
   scale_fill_manual(values = c("High" = "#BA4C23", 
                                "Moderate" = "#F59A3A",
                                "Low" = "#FDC17B")) +
-  labs(title = "Conifers", x = "Masting", y = "Proportion") +
+  labs(title = "Conifers (N = 61)", x = "Masting", y = "Proportion") +
   custom_theme_noleg
 
 # All species plot (keep legend)
@@ -366,7 +366,7 @@ t_all <- ggplot(d, aes(x = mastEvent, fill = droughtTolerance)) +
   scale_fill_manual(values = c("High" = "#BA4C23", 
                                "Moderate" = "#F59A3A",
                                "Low" = "#FDC17B")) +
-  labs(title = "All Species", x = "Masting", y = "Proportion", fill = "droughtTolerance") +
+  labs(title = "All Species (N = 159)", x = "Masting", y = "Proportion", fill = "droughtTolerance") +
   custom_theme
 
 shared_legend <- get_legend(t_all)
@@ -399,7 +399,7 @@ f_angio <- ggplot(angio, aes(x = mastEvent, fill = floweringDuration)) +
   scale_fill_manual(values = c(">30" = "#BA4C23", 
                                "10-30" = "#F59A3A",
                                "<10" = "#FDC17B")) +
-  labs(title = "Angiosperms", x = "Masting", y = "Proportion") +
+  labs(title = "Angiosperms (N = 98)", x = "Masting", y = "Proportion") +
   custom_theme_noleg
 
 # Conifers plot
@@ -409,7 +409,7 @@ f_conifer <- ggplot(conifer, aes(x = mastEvent, fill = floweringDuration)) +
   scale_fill_manual(values = c(">30" = "#BA4C23", 
                                "10-30" = "#F59A3A",
                                "<10" = "#FDC17B")) +
-  labs(title = "Conifers", x = "Masting", y = "Proportion") +
+  labs(title = "Conifers (N = 61)", x = "Masting", y = "Proportion") +
   custom_theme_noleg
 
 # All species plot (keep legend)
@@ -419,7 +419,7 @@ f_all <- ggplot(d, aes(x = mastEvent, fill = floweringDuration)) +
   scale_fill_manual(values = c(">30" = "#BA4C23", 
                                "10-30" = "#F59A3A",
                                "<10" = "#FDC17B")) +
-  labs(title = "All Species", x = "Masting", y = "Proportion", fill = "floweringDuration") +
+  labs(title = "All Species (N = 159)", x = "Masting", y = "Proportion", fill = "floweringDuration") +
   custom_theme
 
 shared_legend <- get_legend(f_all)
@@ -444,17 +444,17 @@ dev.off()
 # Oil content
 o_angio <- ggplot(angioanimal, aes(x = oilContent, fill = mastEvent)) +
   geom_density(alpha = 0.5) +
-  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Angiosperms", x = "Oil Content", y = "Density") +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Angiosperms (N = 98)", x = "Oil Content", y = "Density") +
   custom_theme_noleg
 
 o_conifer <- ggplot(coniferanimal, aes(x = oilContent, fill = mastEvent)) +
   geom_density(alpha = 0.5) +
-  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Conifers", x = "Oil Content", y = "Density") +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Conifers (N = 61)", x = "Oil Content", y = "Density") +
   custom_theme_noleg
 
 o_all <- ggplot(danimal, aes(x = oilContent, fill = mastEvent)) +
   geom_density(alpha = 0.5) +
-  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "All Species", x = "Oil Content", y = "Density") +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "All Species (N = 159)", x = "Oil Content", y = "Density") +
   custom_theme
 
 shared_legend <- get_legend(o_all)
@@ -480,12 +480,12 @@ dev.off()
 
 l_angio <- ggplot(angio, aes(x = leafLongevity, fill = mastEvent)) +
   geom_density(alpha = 0.5) +
-  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Angiosperms", x = "Leaf Longevity", y = "Density") +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Angiosperms (N = 98)", x = "Leaf Longevity", y = "Density") +
   custom_theme_noleg
 
 l_conifer <- ggplot(conifer, aes(x = leafLongevity, fill = mastEvent)) +
   geom_density(alpha = 0.5) +
-  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Conifers", x = "Leaf Longevity", y = "Density")  +
+  scale_fill_manual(values = c("Y" = "#95B958", "N" = "#F4D166")) + labs(title = "Conifers (N = 61)", x = "Leaf Longevity", y = "Density")  +
   custom_theme
 
 shared_legend <- get_legend(l_conifer)
@@ -514,7 +514,7 @@ p_angio <- ggplot(angio, aes(x = mastEvent, fill = pollination)) +
   scale_y_continuous(labels = scales::percent_format()) +
   scale_fill_manual(values = c("wind" = "#95B958", "animals" = "#F4D166", "wind and animals" = "#6194BF")) +
   labs(
-    title = "Angiosperms",
+    title = "Angiosperms (N = 98)",
     x = "Masting",
     y = "Proportion"  ) +
   custom_theme_noleg
@@ -524,7 +524,7 @@ p_conifer <- ggplot(conifer, aes(x = mastEvent, fill = pollination)) +
   scale_y_continuous(labels = scales::percent_format()) +
   scale_fill_manual(values = c("wind" = "#95B958", "animals" = "#F4D166", "wind and animals" = "#6194BF")) +
   labs(
-    title = "Conifers",
+    title = "Conifers (N = 61)",
     x = "Masting",
     y = "Proportion"  ) +
   custom_theme_noleg
@@ -534,7 +534,7 @@ p_all <- ggplot(d, aes(x = mastEvent, fill = pollination)) +
   scale_y_continuous(labels = scales::percent_format()) +
   scale_fill_manual(values = c("wind" = "#95B958", "animals" = "#F4D166", "wind and animals" = "#6194BF")) +
   labs(
-    title = "All Species",
+    title = "All Species (N = 159)",
     x = "Masting",
     y = "Proportion", fill ="pollination"  ) +
   custom_theme
