@@ -15,3 +15,5 @@ analyses/.Rhistory
 *.log
 *.out
 *.run.xml
+docs/mastTrait-concordance.tex
+
