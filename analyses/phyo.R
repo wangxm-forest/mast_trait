@@ -28,7 +28,7 @@ phy.sps.uniqu <- gsub(" ", "_", phy.sps.uniqu)
 
 silvics.sps <- sort(unique(d$latbi))
 
-silvics.phenosp.sps.inphylo <- silvics.sps[which(!silvics.sps%in%phy.sps.uniqu)] #25 out of 190
+silvics.phenosp.sps.inphylo <- silvics.sps[which(!silvics.sps%in%phy.sps.uniqu)] #20 out of 190
 
 kew <- read.csv("C:/PhD/Project/egret/wcvp_Mao/wcvp_names.csv", header = TRUE, sep = "|", stringsAsFactors = FALSE )
 kew$taxon_name <- gsub(" ", "_", kew$taxon_name)
@@ -79,32 +79,23 @@ matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Magnolia_
 #phy.sps.uniqu[grepl("Metrosideros_polymorpha", phy.sps.uniqu)]
 matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Metrosideros_polymorpha")] <-  "Metrosideros_polymorpha_var._glaberrima"
 
-#phy.sps.uniqu[grepl("Nyssa_biflora", phy.sps.uniqu)]
-matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Nyssa_sylvatica_var._biflora")] <-  "Nyssa_biflora"
+#phy.sps.uniqu[grepl("Quercus_texana", phy.sps.uniqu)]
+matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Quercus_texana")] <-  "Quercus_buckleyi"
 
-#phy.sps.uniqu[grepl("Notholithocarpus_densiflorus", phy.sps.uniqu)]
-matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Lithocarpus_densiflorus")] <-  "Notholithocarpus_densiflorus_var._densiflorus"
+phy.sps.uniqu[grepl("Notholithocarpus_densiflorus", phy.sps.uniqu)]
+matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Notholithocarpus_densiflorus")] <-  "Notholithocarpus_densiflorus_var._densiflorus"
 
 #phy.sps.uniqu[grepl("Calophyllum_calaba", phy.sps.uniqu)]
 matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Calophyllum_calaba")] <-  "Calophyllum_calaba_var._bracteatum"
 
-#phy.sps.uniqu[grepl("floridanum", phy.sps.uniqu)]
-matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Acer_barbatum")] <-  "Acer_saccharum_subsp._floridanum"
+#phy.sps.uniqu[grepl("Populus_deltoides", phy.sps.uniqu)]
+matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Populus_deltoides_subsp._monilifera")] <-  "Populus_deltoides"
+
+phy.sps.uniqu[grepl("Schefflera_morototoni", phy.sps.uniqu)]
+matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Didymopanax_morototoni")] <-  "Schefflera_morototoni"
 
 #phy.sps.uniqu[grepl("Acer", phy.sps.uniqu)]
 matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Acer_nigrum")] <-  "Acer_saccharum_subsp._nigrum"
-
-#phy.sps.uniqu[grepl("Aesculus_flava", phy.sps.uniqu)]
-matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Aesculus_octandra")] <-  "Aesculus_flava"
-
-#phy.sps.uniqu[grepl("Carya_illinoinensis", phy.sps.uniqu)]
-matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Carya_illinoensis")] <-  "Carya_illinoinensis"
-
-#phy.sps.uniqu[grepl("Callitropsis_nootkatensis", phy.sps.uniqu)]
-matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Chamaecyparis_nootkatensis")] <-  "Callitropsis_nootkatensis"
-
-#phy.sps.uniqu[grepl("Schefflera_morototoni", phy.sps.uniqu)]
-matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Didymopanax_morototoni")] <-  "Schefflera_morototoni"
 
 #phy.sps.uniqu[grepl("Eucalyptus_globulus", phy.sps.uniqu)]
 matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Eucalyptus_globulus")] <-  "Eucalyptus_globulus_subsp._globulus"
@@ -115,22 +106,11 @@ matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Magnolia_
 #phy.sps.uniqu[grepl("Quercus_falcata_var._pagodifolia", phy.sps.uniqu)]
 matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Quercus_falcata_var._pagodifolia")] <-  "Quercus_pagoda"
 
-#phy.sps.uniqu[grepl("Pithecellobium_saman", phy.sps.uniqu)]
-matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Pithecellobium_saman")] <-  "Samanea_saman"
-
-#phy.sps.uniqu[grepl("Populus_deltoides", phy.sps.uniqu)]
-matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Populus_deltoides_var_occidentalis")] <-  "Populus_deltoides"
-
-#Quercus_nuttallii
-
 #phy.sps.uniqu[grepl("", phy.sps.uniqu)]
 matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Taxodium_distichum_var._distichum")] <-  "Taxodium_distichum"
 
 #phy.sps.uniqu[grepl("Quercus_falcata", phy.sps.uniqu)]
 matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Quercus_falcata_var._falcata")] <-  "Quercus_falcata"
-
-#phy.sps.uniqu[grepl("Tilia", phy.sps.uniqu)]
-#Tilia_heterophylla
 
 nomatchAfterKewcheck <- subset(matchednamessilvics , is.na(sppMatch))
 nrow(nomatchAfterKewcheck)
@@ -152,7 +132,7 @@ d[!duplicated(d$latbi), c("latbi", "sppMatch")]
 silvics_sub <- d[c("latbi","genusName","sppMatch")]
 
 set.seed(123)
-vec <- c("Tilia", "Quercus")
+vec <- "Tilia"
 t <- subset(silvics_sub, genusName %in% vec)
 t <- t$latbi
 spp_smalltree <- unique(t)
