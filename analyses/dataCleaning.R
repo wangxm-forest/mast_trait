@@ -91,10 +91,17 @@ d$seedDispersal[d$seedDispersal %in% c("mammals", "birds", "birds, mammals", "gr
 d$seedDispersalDetails[which(d$seedDispersal == "bird")] <- "birds"
 d$seedDispersalDetails[which(d$seedDispersal == "animals")] <- "mammals"
 
-names(d)[4] <- "updateName"
 
 # flowering period
 unique(d$floweringDuration)
 d$floweringDuration[d$floweringDuration %in% c("a few days","8.5 days","3 days","two to three days","3-8 days","several days","2-4 days","1 week")] <- "<10"
 d$floweringDuration[d$floweringDuration %in% c("two weeks","two to three weeks","2-4 weeks", "one month")] <- "10-30"
 d$floweringDuration[d$floweringDuration %in% c("several weeks","several months","nearly continuous", "2-6 weeks")] <- ">30"
+
+# Update the names
+names(d)[4] <- "updateName"
+d$latbi <- ifelse(
+  is.na(d$updateName),
+  d$latbi,
+  d$updateName
+)
