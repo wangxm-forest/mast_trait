@@ -24,16 +24,17 @@ conifer <- subset(d, familyName %in% c("Pinaceae","Taxodiaceae"))
 angio <- subset(d, !(familyName %in% c("Pinaceae","Taxodiaceae")))
 
 # Prune the tree for conifer species only
-phyconifer<-drop.tip(phytree, setdiff(phytree$tip.label, angio$latbi))
-phyangio <- drop.tip(phytree,phytree$tip.label[-match(conifer$latbi, phytree$tip.label)])
+phyconifer<-drop.tip(phytree, setdiff(phytree$tip.label, conifer$latbi))
+phyangio <- drop.tip(phytree, setdiff(phytree$tip.label, angio$latbi))
 
 # names match between the tree and the data frame
 name.check(conifer, phyconifer)
 name.check(angio, phyangio)
 
 # Plot the tree
-plot(phyconifer,,cex=0.4)
+plot(phyconifer,cex=0.4)
+
+#
+compconifer <- comparative.data(phyconifer, conifer, names.col = "latbi", vcv = TRUE, na.omit = TRUE)
 ########################Mast (Y/N)###########################################
 ####
-pglsModel2 <- gls(hostility ~ ecomorph, correlation = corBrownian(phy = anoleTree),
-                  data = anoleData, method = "ML")
