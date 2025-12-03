@@ -84,10 +84,10 @@ d$pollination[which(d$pollination == "insects and wind")] <- "wind and animals"
 # dispersal data
 unique(d$seedDispersal)
 d$seedDispersalDetails <- d$seedDispersal
-d$seedDispersal[d$seedDispersal %in% c("wind", "wind, water", "fire", "gravity", "gravity, wind", "water")] <- "abiotic"
+d$seedDispersal[d$seedDispersal %in% c("wind", "wind, water", "fire", "gravity", "gravity, wind", "water","gravity, water")] <- "abiotic"
 d$seedDispersalDetails[which(d$seedDispersal == "wind,mammals")] <- "wind, mammals"
-d$seedDispersal[d$seedDispersal %in% c("wind,mammals","wind, mammals","gravity, water, birds, mammals","wind, birds","wind, rodents, birds","gravity, wind, rodents, birds","gravity, water, mammals","birds, wind", "water, mammals", "water, birds","gravity, wind, water, birds", "wind, water, birds", "gravity, wind, rodents", "gravity, water, rodents", "water, rodents, birds", "water, mammals, birds", "gravity, wind, mammals", "wind, water, mammals", "gravity, wind, water, mammals")] <- "both"
-d$seedDispersal[d$seedDispersal %in% c("mammals", "birds", "birds, mammals", "gravity, birds, mammals", "rodents, birds", "gravity, rodents", "gravity, rodents, birds", "bird", "animals", "gravity, mammals", "mammals, birds", "bird, rodents, mammals", "rodents, mammals", "animals, rodents")] <- "biotic"
+d$seedDispersal[d$seedDispersal %in% c("wind,mammals","wind, mammals","gravity, water, birds, mammals","wind, birds","wind, rodents, birds","gravity, wind, rodents, birds","gravity, water, mammals","birds, wind", "water, mammals", "water, birds","gravity, wind, water, birds", "wind, water, birds", "gravity, wind, rodents", "gravity, water, rodents", "water, rodents, birds", "water, mammals, birds", "gravity, wind, mammals", "wind, water, mammals", "gravity, wind, water, mammals", "wind, birds, mammals", "wind, rodents","wind, rodents, mammals", "gravity, birds, rodents" ,"gravity, rodents, birds, mammals", "gravity, rodents, mammals")] <- "both"
+d$seedDispersal[d$seedDispersal %in% c("mammals", "birds", "birds, mammals", "gravity, birds, mammals", "rodents, birds", "gravity, rodents", "gravity, rodents, birds", "bird", "animals", "gravity, mammals", "mammals, birds", "bird, rodents, mammals", "rodents, mammals", "animals, rodents","birds, rodents","rodents")] <- "biotic"
 d$seedDispersalDetails[which(d$seedDispersal == "bird")] <- "birds"
 d$seedDispersalDetails[which(d$seedDispersal == "animals")] <- "mammals"
 
@@ -95,7 +95,7 @@ d$seedDispersalDetails[which(d$seedDispersal == "animals")] <- "mammals"
 # flowering period
 unique(d$floweringDuration)
 d$floweringDuration[d$floweringDuration %in% c("a few days","8.5 days","3 days","two to three days","3-8 days","several days","2-4 days","1 week")] <- "<10"
-d$floweringDuration[d$floweringDuration %in% c("two weeks","two to three weeks","2-4 weeks", "one month")] <- "10-30"
+d$floweringDuration[d$floweringDuration %in% c("two weeks","two to three weeks","2-4 weeks", "one month")] <- "10 to 30"
 d$floweringDuration[d$floweringDuration %in% c("several weeks","several months","nearly continuous", "2-6 weeks")] <- ">30"
 
 # Update the names
@@ -105,3 +105,7 @@ d$latbi <- ifelse(
   d$latbi,
   d$updateName
 )
+
+d <- d[c("genusName", "speciesName", "updateName","evergreenDeciduous","fruitSize.cm.","seedSize.mm.", "droughtTolerance","familyName","typeMonoOrDio","Biome","Elevation","floweringDuration","pollination","seedDispersal","seedPredator","lifeSpanMax","reprodAge","seedDormancy","seedWeights","mastEvent","mastCycle","shadeTolerance","leafLongevity","oilContent","proteinContent","mastCycleAve", "fruitSizeAve","seedSizeAve","latbi","seedDispersalDetails")]
+
+#write.csv(d, "data/cleanSilvics.csv")
