@@ -65,7 +65,7 @@ run_model <- function(formula, data, phy, method, trait_name) {
 
 # Prepare Trait Columns
 categorical_traits <- c("seedDispersal", "seedDormancy",
-                        "typeMonoOrDio", "droughtTolerance")
+                        "typeMonoOrDio", "droughtTolerance", "pollination")
 
 for (t in categorical_traits) {
   conifer[[t]] <- factor(conifer[[t]])
@@ -87,6 +87,8 @@ angio$logSeedSizeStd   <- log_scale(angio$seedSizeAve)
 model_list <- list(
   list(name="Seed dispersal (conifer)", formula=mastEvent ~ seedDispersal, data=conifer, phy=phyconifer, method="logistic_MPLE"),
   list(name="Seed dispersal (angio)",   formula=mastEvent ~ seedDispersal, data=angio,   phy=phyangio,   method="logistic_MPLE"),
+  
+  list(name="Pollination (angio)",   formula=mastEvent ~ pollination, data=angio,   phy=phyangio,   method="logistic_MPLE"),
   
   list(name="Seed dormancy (conifer)",  formula=mastEvent ~ seedDormancy, data=conifer, phy=phyconifer, method="logistic_MPLE"),
   list(name="Seed dormancy (angio)",    formula=mastEvent ~ seedDormancy, data=angio,   phy=phyangio,   method="logistic_MPLE"),
@@ -134,3 +136,89 @@ for (m in model_list) {
 
 write.csv(results, "output/pglsResults.csv", row.names = FALSE)
 
+
+####Use conifer/angio as a fixed effect in the model####
+library(brglm2)
+
+# Create group variable
+d$group <- ifelse(d$familyName %in% c("Pinaceae", "Taxodiaceae"),
+                  "conifer", "angiosperm")
+d$group <- factor(d$group)
+
+# Prepare Trait Columns
+categorical_traits <- c("seedDispersal", "seedDormancy",
+                        "typeMonoOrDio", "droughtTolerance", "pollination")
+
+for (t in categorical_traits) {
+  d[[t]] <- factor(d[[t]])
+}
+
+# Continuous traits
+d$logSeedWeightStd <- log_scale(d$seedWeights)
+d$logFruitStd <- log_scale(d$fruitSizeAve)
+d$logSeedSizeStd   <- log_scale(d$seedSizeAve)
+
+# Extract key results from a phyloglm object
+tidy_glm <- function(model) {
+  s <- summary(model)$coefficients
+  out <- data.frame(
+    term = rownames(s),
+    estimate = s[,1],
+    std_error = s[,2],
+    z_value = s[,3],
+    p_value = s[,4],
+    row.names = NULL
+  )
+  return(out)
+}
+
+# Run model and attach metadata
+run_model <- function(formula, data, method, trait_name) {
+  model <- glm(formula, data = data, method = method)
+  tbl <- tidy_glm(model)
+  tbl$trait <- trait_name
+  tbl$model_formula <- deparse(formula)
+  return(tbl)
+}
+
+# Model definitions
+model_list <- list(
+  list(name="Seed dispersal", formula=mastEvent ~ seedDispersal + group, data=d, method="brglmFit"),
+ 
+  list(name="Pollination", formula=mastEvent ~ pollination + group, data=d, method="brglmFit"),
+  
+  list(name="Seed dormancy", formula=mastEvent ~ seedDormancy + group, data=d, method="brglmFit"),
+ 
+  list(name="Mono/Dio", formula=mastEvent ~ typeMonoOrDio + group, data=d, method="brglmFit"),
+ 
+  list(name="Seed weight",    formula=mastEvent ~ logSeedWeightStd + group, data=d, method="brglmFit"),
+  
+  list(name="Fruit size",     formula=mastEvent ~ logFruitStd + group, data=d, method="brglmFit"),
+  
+  list(name="Seed size",      formula=mastEvent ~ logSeedSizeStd + group, data=d, method="brglmFit"),
+  
+  list(name="Oil content",      formula=mastEvent ~ oilContent + group, data=d, method="brglmFit"),
+  
+  list(name="Leaf longevity", formula=mastEvent ~ leafLongevity + group, data=d, method="brglmFit"),
+  
+  list(name="Drought tolerance",    formula=mastEvent ~ droughtTolerance + group, data=d, method="brglmFit")
+)
+
+# Run models
+
+results <- NULL
+
+for (m in model_list) {
+  cat("Running model:", m$name, "\n")
+  
+  tbl <- run_model(
+    formula = m$formula,
+    data    = m$data,
+    method  = m$method,
+    trait_name = m$name
+  )
+  
+  results <- rbind(results, tbl)
+}
+
+write.csv(results, "output/glmResults.csv", row.names = FALSE)
