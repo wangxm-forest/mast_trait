@@ -222,3 +222,217 @@ for (m in model_list) {
 }
 
 write.csv(results, "output/glmResults.csv", row.names = FALSE)
+
+####Plot the probability for all traits####
+invlogit <- function(x) 1 / (1 + exp(-x))
+
+my_colors <- c("angiosperm" = "#95B958",
+               "conifer"    = "#6194BF")
+
+plot_prob_with_signif <- function(pred_df, trait_name, results_df, trait_var) {
+  
+  # Filter results for this trait (exclude intercept)
+  trait_results <- results_df %>%
+    filter(trait == trait_name & term != "(Intercept)")
+  # Create significance column: default "ns"
+  pred_df$signif <- "ns"
+  
+  # Assign "*" for significant contrasts (p < 0.05)
+  for (i in 1:nrow(trait_results)) {
+    term_name <- trait_results$term[i]
+    p_val <- trait_results$p_value[i]
+    
+    # remove trait_var prefix to match trait_level in pred_df
+    lvl <- gsub(trait_var, "", term_name)
+    
+    pred_df$signif[pred_df$trait_level == lvl] <- ifelse(p_val < 0.05, "*", "ns")
+  }
+  
+  # Plot with significance as text above points
+  ggplot(pred_df, aes(x = trait_level, y = prob, color = group, group = group)) +
+    geom_point(size = 3) +
+    geom_text(aes(label = signif), vjust = -0.5, size = 5, show.legend = FALSE) +
+    labs(
+      x = trait_name,
+      y = "Predicted probability of masting"
+    ) + scale_color_manual(values = my_colors) +
+    theme_bw() + 
+    theme(axis.text.x = element_text(angle = 30, hjust = 1))
+}
+
+# Pollination
+poll <- subset(results, trait == "Pollination")
+poll
+
+coefs <- setNames(poll$estimate, poll$term)
+coefs
+
+predPoll <- expand.grid(
+  trait_level = c("animal", "wind", "wind and animals"),
+  group = c("angiosperm", "conifer")
+)
+predPoll
+
+predPoll$logit <- coefs["(Intercept)"]
+
+predPoll$logit <- predPoll$logit +
+  ifelse(predPoll$group == "conifer", coefs["groupconifer"], 0)
+
+predPoll$logit <- predPoll$logit +
+  ifelse(predPoll$trait_level == "wind", coefs["pollinationwind"], 0) +
+  ifelse(predPoll$trait_level == "wind and animals", coefs["pollinationwind and animals"], 0)
+
+predPoll$prob <- invlogit(predPoll$logit)
+predPoll
+
+# Seed dispersal
+disp <- subset(results, trait == "Seed dispersal")
+disp
+
+coefs <- setNames(disp$estimate, disp$term)
+coefs
+
+predDisp <- expand.grid(
+  trait_level = c("abiotic", "biotic", "both"),
+  group = c("angiosperm", "conifer")
+)
+predDisp
+
+predDisp$logit <- coefs["(Intercept)"]
+
+predDisp$logit <- predDisp$logit +
+  ifelse(predDisp$group == "conifer", coefs["groupconifer"], 0)
+
+predDisp$logit <- predDisp$logit +
+  ifelse(predDisp$trait_level == "biotic", coefs["seedDispersalbiotic"], 0) +
+  ifelse(predDisp$trait_level == "both", coefs["seedDispersalboth"], 0)
+
+predDisp$prob <- invlogit(predDisp$logit)
+predDisp
+
+# Seed dormancy
+dorm <- subset(results, trait == "Seed dormancy")
+dorm
+
+coefs <- setNames(dorm$estimate, dorm$term)
+coefs
+
+predDorm <- expand.grid(
+  trait_level = c("N","Y"),
+  group = c("angiosperm", "conifer")
+)
+predDorm
+
+predDorm$logit <- coefs["(Intercept)"]
+
+predDorm$logit <- predDorm$logit +
+  ifelse(predDorm$group == "conifer", coefs["groupconifer"], 0)
+
+predDorm$logit <- predDorm$logit +
+  ifelse(predDorm$trait_level == "Y", coefs["seedDormancyY"], 0)
+
+predDorm$prob <- invlogit(predDorm$logit)
+predDorm
+
+# Mono/Dio
+mono <- subset(results, trait == "Mono/Dio")
+mono
+
+coefs <- setNames(mono$estimate, mono$term)
+coefs
+
+predMono <- expand.grid(
+  trait_level = c("Dioecious", "Monoecious", "Polygamous"),
+  group = c("angiosperm", "conifer")
+)
+predMono
+
+predMono$logit <- coefs["(Intercept)"]
+
+predMono$logit <- predMono$logit +
+  ifelse(predMono$group == "conifer", coefs["groupconifer"], 0)
+
+predMono$logit <- predMono$logit +
+  ifelse(predMono$trait_level == "Monoecious", coefs["typeMonoOrDioMonoecious"], 0)+
+  ifelse(predMono$trait_level == "Polygamous", coefs["typeMonoOrDioPolygamous"], 0)
+
+predMono$prob <- invlogit(predMono$logit)
+predMono
+
+# Drought tolerance
+drought <- subset(results, trait == "Drought tolerance")
+drought
+
+coefs <- setNames(drought$estimate, drought$term)
+coefs
+
+preddrought <- expand.grid(
+  trait_level = c("High", "Low", "Moderate"),
+  group = c("angiosperm", "conifer")
+)
+preddrought
+
+preddrought$logit <- coefs["(Intercept)"]
+
+preddrought$logit <- preddrought$logit +
+  ifelse(preddrought$group == "conifer", coefs["groupconifer"], 0)
+
+preddrought$logit <- preddrought$logit +
+  ifelse(preddrought$trait_level == "Low", coefs["droughtToleranceLow"], 0)+
+  ifelse(preddrought$trait_level == "Moderate", coefs["droughtToleranceModerate"], 0)
+
+preddrought$prob <- invlogit(preddrought$logit)
+preddrought
+
+#Plotting
+plot_prob_with_signif(predPoll, 
+                      trait_name = "Pollination", 
+                      results_df = results, 
+                      trait_var = "pollination")
+
+plot_prob_with_signif(predDisp, 
+                      trait_name = "Seed dispersal", 
+                      results_df = results, 
+                      trait_var = "seedDispersal")
+
+plot_prob_with_signif(predDorm, 
+                      trait_name = "Seed dormancy", 
+                      results_df = results, 
+                      trait_var = "seedDormancy")
+
+plot_prob_with_signif(predMono, 
+                      trait_name = "Mono/Dio", 
+                      results_df = results, 
+                      trait_var = "typeMonoOrDio")
+
+plot_prob_with_signif(predMono, 
+                      trait_name = "Drought tolerance", 
+                      results_df = results, 
+                      trait_var = "droughtTolerance")
+
+## Continuous traits
+
+cont_effects <- results %>%
+  filter(trait %in% c("Seed weight", "Fruit size", "Seed size","Leaf longevity"))%>%
+  filter(!term %in% "(Intercept)")
+
+cont_effects <- cont_effects %>%
+  mutate(
+    lower = estimate - 1.96 * std_error,
+    upper = estimate + 1.96 * std_error,
+    signif = ifelse(p_value < 0.05, "*", "ns"),
+    type = ifelse(grepl("group", term), "Group effect", "Trait effect"),
+    group = ifelse(grepl("groupconifer", term), "conifer", "angiosperm")
+  )
+ggplot(cont_effects, aes(x = trait, y = estimate, color = group)) +
+  geom_point(size = 3, position = position_dodge(width = 0.5)) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2,
+                position = position_dodge(width = 0.5)) +
+  geom_text(aes(label = signif), vjust = -1, size = 5,
+            position = position_dodge(width = 0.5)) +
+  labs(
+    x = "Trait / Group",
+    y = "Effect size (log-odds)"
+  ) +
+  theme_bw() + scale_color_manual(values = my_colors) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
