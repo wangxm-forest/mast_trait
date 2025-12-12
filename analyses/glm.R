@@ -7,6 +7,8 @@ library(geiger)
 library(phylolm)
 library(brglm2)
 library(detectseparation)
+library(gridExtra)
+library(grid)
 
 rm(list = ls())
 options(stringsAsFactors = FALSE)
@@ -138,7 +140,6 @@ write.csv(results, "output/pglsResults.csv", row.names = FALSE)
 
 
 ####Use conifer/angio as a fixed effect in the model####
-library(brglm2)
 
 # Create group variable
 d$group <- ifelse(d$familyName %in% c("Pinaceae", "Taxodiaceae"),
@@ -229,6 +230,23 @@ invlogit <- function(x) 1 / (1 + exp(-x))
 my_colors <- c("angiosperm" = "#95B958",
                "conifer"    = "#6194BF")
 
+custom_theme <- theme_minimal(base_size = 10) +
+  theme(
+    plot.title = element_text(face = "bold", size = 10, hjust = 0.25),
+    axis.title = element_text(face = "bold"),
+    legend.title = element_text(face = "bold"),
+    legend.position = "right",
+    panel.grid.major = element_line(color = "gray85"),
+    panel.grid.minor = element_blank()
+  )
+
+# Extract legend
+get_legend <- function(myplot) {
+  g <- ggplotGrob(myplot)
+  leg <- g$grobs[which(sapply(g$grobs, function(x) x$name) == "guide-box")]
+  leg[[1]]
+}
+
 plot_prob_with_signif <- function(pred_df, trait_name, results_df, trait_var) {
   
   # Filter results for this trait (exclude intercept)
@@ -251,12 +269,13 @@ plot_prob_with_signif <- function(pred_df, trait_name, results_df, trait_var) {
   # Plot with significance as text above points
   ggplot(pred_df, aes(x = trait_level, y = prob, color = group, group = group)) +
     geom_point(size = 3) +
-    geom_text(aes(label = signif), vjust = -0.5, size = 5, show.legend = FALSE) +
+    geom_text(aes(label = signif), vjust = -0.5, size = 5, show.legend = FALSE,
+              position = position_dodge(width = 1)) +
     labs(
       x = trait_name,
       y = "Predicted probability of masting"
     ) + scale_color_manual(values = my_colors) +
-    theme_bw() + 
+    custom_theme + 
     theme(axis.text.x = element_text(angle = 30, hjust = 1))
 }
 
@@ -385,31 +404,39 @@ preddrought$prob <- invlogit(preddrought$logit)
 preddrought
 
 #Plotting
-plot_prob_with_signif(predPoll, 
+plotPoll <- plot_prob_with_signif(predPoll, 
                       trait_name = "Pollination", 
                       results_df = results, 
-                      trait_var = "pollination")
+                      trait_var = "pollination") + theme(legend.position = "none")
 
-plot_prob_with_signif(predDisp, 
+plotDisp <- plot_prob_with_signif(predDisp, 
                       trait_name = "Seed dispersal", 
                       results_df = results, 
-                      trait_var = "seedDispersal")
+                      trait_var = "seedDispersal") + theme(legend.position = "none")
 
-plot_prob_with_signif(predDorm, 
+plotDorm <- plot_prob_with_signif(predDorm, 
                       trait_name = "Seed dormancy", 
                       results_df = results, 
-                      trait_var = "seedDormancy")
+                      trait_var = "seedDormancy") + theme(legend.position = "none")
 
-plot_prob_with_signif(predMono, 
+plotMono <- plot_prob_with_signif(predMono, 
                       trait_name = "Mono/Dio", 
                       results_df = results, 
-                      trait_var = "typeMonoOrDio")
+                      trait_var = "typeMonoOrDio") + theme(legend.position = "none")
 
-plot_prob_with_signif(predMono, 
+plotDrought <- plot_prob_with_signif(predMono, 
                       trait_name = "Drought tolerance", 
                       results_df = results, 
                       trait_var = "droughtTolerance")
+shared_legend <- get_legend(plotDrought)
+plotDrought <- plot_prob_with_signif(predMono, 
+                                     trait_name = "Drought tolerance", 
+                                     results_df = results, 
+                                     trait_var = "droughtTolerance") + theme(legend.position = "none")
 
+pdf("output/figures/glmCat.pdf", width = 10, height = 10)
+grid.arrange(plotPoll, plotDisp, plotDorm, plotMono,plotDrought, shared_legend, nrow = 2, ncol = 3)
+dev.off()
 ## Continuous traits
 
 cont_effects <- results %>%
@@ -424,15 +451,17 @@ cont_effects <- cont_effects %>%
     type = ifelse(grepl("group", term), "Group effect", "Trait effect"),
     group = ifelse(grepl("groupconifer", term), "conifer", "angiosperm")
   )
+pdf("output/figures/glmCon.pdf", width = 10, height = 10)
 ggplot(cont_effects, aes(x = trait, y = estimate, color = group)) +
   geom_point(size = 3, position = position_dodge(width = 0.5)) +
   geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2,
                 position = position_dodge(width = 0.5)) +
-  geom_text(aes(label = signif), vjust = -1, size = 5,
-            position = position_dodge(width = 0.5)) +
+  geom_text(aes(label = signif), vjust = -1, size = 5, show.legend = FALSE,
+            position = position_dodge(width = 1)) +
   labs(
     x = "Trait / Group",
     y = "Effect size (log-odds)"
   ) +
-  theme_bw() + scale_color_manual(values = my_colors) +
+  custom_theme + scale_color_manual(values = my_colors) +
   theme(axis.text.x = element_text(angle = 30, hjust = 1))
+dev.off()
