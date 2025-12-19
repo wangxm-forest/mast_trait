@@ -17,10 +17,12 @@
 \begin{Schunk}
 \begin{Sinput}
 > source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/plottingSweave.R")
+> source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/glm.R")
 \end{Sinput}
 \end{Schunk}
 
-\section*{Predator Satiation}
+\section*{Hypotheses}
+\subsection*{Predator Satiation}
 
 \begin{itemize}
 \item Dispersal mode: Animal-dispersed species may be more likely to mast, or
@@ -63,7 +65,7 @@ the mechanisms behind masting could differ depending on dispersal mode.
 
 % ------------------------------------------
 
-\section*{Pollination Coupling}
+\subsection*{Pollination Coupling}
 
 \begin{itemize}
   \item Wind-pollinated species are expected to mast more frequently.
@@ -90,7 +92,7 @@ the mechanisms behind masting could differ depending on dispersal mode.
 
 % ------------------------------------------
 
-\section*{Resource Matching}
+\subsection*{Resource Matching}
 
 \begin{itemize}
   \item Leaf longevity: Species with long-lived leaves are expected to mast more frequently.
@@ -108,6 +110,40 @@ the mechanisms behind masting could differ depending on dispersal mode.
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{../output/figures/droughtTolerance.pdf}
+\end{figure}
+
+% ------------------------------------------
+\section*{Data visualization}
+I calculated the mean and standard errors for the continuous traits in the raw dataset, with number of the data.
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/meanSE.pdf}
+\end{figure}
+
+
+Here's the version of raw data scattering on the plot
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/meanSERaw.pdf}
+\end{figure}
+
+
+
+% ------------------------------------------
+\section*{Results}
+I ran the phyloglm, including the phylogeny variation.
+
+I also ran the common glm, using conifer and angiosperm as a fixed effect in the model, and here's the results from these models:
+
+For the categorical traits, I calculated the probability (of being a strong masting species) for each level:
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/glmCat.pdf}
+\end{figure}
+For the continuous traits, I just presented the effect sizes, with the star indicating a p-value smaller than 0.05:
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/glmCon.pdf}
 \end{figure}
 
 \end{document}
