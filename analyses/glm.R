@@ -9,6 +9,8 @@ library(brglm2)
 library(detectseparation)
 library(gridExtra)
 library(grid)
+library(dplyr)
+library(ggplot2)
 
 rm(list = ls())
 options(stringsAsFactors = FALSE)
@@ -136,7 +138,7 @@ for (m in model_list) {
 }
 
 
-write.csv(results, "output/pglsResults.csv", row.names = FALSE)
+#write.csv(results, "output/pglsResults.csv", row.names = FALSE)
 
 
 ####Use conifer/angio as a fixed effect in the model####
@@ -192,15 +194,15 @@ model_list <- list(
  
   list(name="Mono/Dio", formula=mastEvent ~ typeMonoOrDio + group, data=d, method="brglmFit"),
  
-  list(name="Seed weight",    formula=mastEvent ~ logSeedWeightStd + group, data=d, method="brglmFit"),
+  list(name="Seed weight (log)",    formula=mastEvent ~ logSeedWeightStd + group, data=d, method="brglmFit"),
   
-  list(name="Fruit size",     formula=mastEvent ~ logFruitStd + group, data=d, method="brglmFit"),
+  list(name="Fruit size (log)",     formula=mastEvent ~ logFruitStd + group, data=d, method="brglmFit"),
   
-  list(name="Seed size",      formula=mastEvent ~ logSeedSizeStd + group, data=d, method="brglmFit"),
+  list(name="Seed size (log)",      formula=mastEvent ~ logSeedSizeStd + group, data=d, method="brglmFit"),
   
-  list(name="Oil content",      formula=mastEvent ~ oilContent + group, data=d, method="brglmFit"),
+  list(name="Oil content %",      formula=mastEvent ~ oilContent + group, data=d, method="brglmFit"),
   
-  list(name="Leaf longevity", formula=mastEvent ~ leafLongevity + group, data=d, method="brglmFit"),
+  list(name="Leaf longevity (years)", formula=mastEvent ~ leafLongevity + group, data=d, method="brglmFit"),
   
   list(name="Drought tolerance",    formula=mastEvent ~ droughtTolerance + group, data=d, method="brglmFit")
 )
@@ -222,7 +224,7 @@ for (m in model_list) {
   results <- rbind(results, tbl)
 }
 
-write.csv(results, "output/glmResults.csv", row.names = FALSE)
+#write.csv(results, "output/glmResults.csv", row.names = FALSE)
 
 ####Plot the probability for all traits####
 invlogit <- function(x) 1 / (1 + exp(-x))
@@ -230,9 +232,9 @@ invlogit <- function(x) 1 / (1 + exp(-x))
 my_colors <- c("angiosperm" = "#95B958",
                "conifer"    = "#6194BF")
 
-custom_theme <- theme_minimal(base_size = 10) +
+custom_theme <- theme_minimal(base_size = 12) +
   theme(
-    plot.title = element_text(face = "bold", size = 10, hjust = 0.25),
+    plot.title = element_text(face = "bold", size = 12, hjust = 0.25),
     axis.title = element_text(face = "bold"),
     legend.title = element_text(face = "bold"),
     legend.position = "right",
@@ -440,7 +442,7 @@ dev.off()
 ## Continuous traits
 
 cont_effects <- results %>%
-  filter(trait %in% c("Seed weight", "Fruit size", "Seed size","Leaf longevity"))%>%
+  filter(trait %in% c("Seed weight (log)", "Fruit size (log)", "Seed size (log)","Leaf longevity (years)", "Oil content %"))%>%
   filter(!term %in% "(Intercept)")
 
 cont_effects <- cont_effects %>%
@@ -464,4 +466,263 @@ ggplot(cont_effects, aes(x = trait, y = estimate, color = group)) +
   ) +
   custom_theme + scale_color_manual(values = my_colors) +
   theme(axis.text.x = element_text(angle = 30, hjust = 1))
+dev.off()
+
+# Plot the mean and SE
+plot_df <- d
+
+all_df <- d
+all_df$group <- "All species"
+
+plot_df <- rbind(plot_df, all_df)
+
+# Fruit size
+mean_vals <- tapply(plot_df$logFruitStd, plot_df$group, mean, na.rm = TRUE)
+sd_vals   <- tapply(plot_df$logFruitStd, plot_df$group, sd,   na.rm = TRUE)
+n_vals    <- tapply(plot_df$logFruitStd, plot_df$group, function(x) sum(!is.na(x)))
+
+se_vals <- sd_vals / sqrt(n_vals)
+
+summary_df <- data.frame(
+  group = names(mean_vals),
+  mean  = as.numeric(mean_vals),
+  se    = as.numeric(se_vals),
+  n     = as.numeric(n_vals)
+)
+
+# control order on x-axis
+summary_df$group <- factor(
+  summary_df$group,
+  levels = c("angiosperm", "conifer", "All species")
+)
+
+fruit_size <- ggplot(summary_df, aes(x = group, y = mean, color = group)) +
+  geom_point(size = 3) +
+  geom_errorbar(
+    aes(ymin = mean - se, ymax = mean + se),
+    width = 0.05
+  ) +
+  geom_text(
+    aes(label = paste0("n = ", n)),
+    nudge_x = 0.2,
+    size = 5,
+    show.legend = FALSE
+  ) +
+  custom_theme + scale_color_manual(values = my_colors) +
+  labs(
+    x = "",
+    y = "Fruit size (log)"
+  ) + theme(legend.position = "none")
+
+fruit_size_raw <- ggplot(plot_df, aes(x = group, y = logFruitStd, color = group)) +
+  geom_jitter(width = 0.15, alpha = 0.5) +
+  stat_summary(fun = mean, geom = "point", size = 3) +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.15) +
+  scale_color_manual(values = my_colors) +
+  theme_classic() +
+  labs(
+    x = "",
+    y = "Fruit size (log)"
+  ) + theme(legend.position = "none")
+# Seed size
+mean_vals <- tapply(plot_df$logSeedSizeStd, plot_df$group, mean, na.rm = TRUE)
+sd_vals   <- tapply(plot_df$logSeedSizeStd, plot_df$group, sd,   na.rm = TRUE)
+n_vals    <- tapply(plot_df$logSeedSizeStd, plot_df$group, function(x) sum(!is.na(x)))
+
+se_vals <- sd_vals / sqrt(n_vals)
+
+summary_df <- data.frame(
+  group = names(mean_vals),
+  mean  = as.numeric(mean_vals),
+  se    = as.numeric(se_vals),
+  n     = as.numeric(n_vals)
+)
+
+# control order on x-axis
+summary_df$group <- factor(
+  summary_df$group,
+  levels = c("angiosperm", "conifer", "All species")
+)
+
+seed_size <- ggplot(summary_df, aes(x = group, y = mean, color = group)) +
+  geom_point(size = 3) +
+  geom_errorbar(
+    aes(ymin = mean - se, ymax = mean + se),
+    width = 0.05
+  ) +
+  geom_text(
+    aes(label = paste0("n = ", n)),
+    nudge_x = 0.2,
+    size = 5,
+    show.legend = FALSE
+  ) +
+  custom_theme + scale_color_manual(values = my_colors) +
+  labs(
+    x = "",
+    y = "Seed size (log)"
+  ) + theme(legend.position = "none")
+seed_size_raw <- ggplot(plot_df, aes(x = group, y = logSeedSizeStd, color = group)) +
+  geom_jitter(width = 0.15, alpha = 0.5) +
+  stat_summary(fun = mean, geom = "point", size = 3) +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.15) +
+  scale_color_manual(values = my_colors) +
+  theme_classic() +
+  labs(
+    x = "",
+    y = "Seed size (log)"
+  ) + theme(legend.position = "none")
+# Seed weight
+mean_vals <- tapply(plot_df$logSeedWeightStd, plot_df$group, mean, na.rm = TRUE)
+sd_vals   <- tapply(plot_df$logSeedWeightStd, plot_df$group, sd,   na.rm = TRUE)
+n_vals    <- tapply(plot_df$logSeedWeightStd, plot_df$group, function(x) sum(!is.na(x)))
+
+se_vals <- sd_vals / sqrt(n_vals)
+
+summary_df <- data.frame(
+  group = names(mean_vals),
+  mean  = as.numeric(mean_vals),
+  se    = as.numeric(se_vals),
+  n     = as.numeric(n_vals)
+)
+
+# control order on x-axis
+summary_df$group <- factor(
+  summary_df$group,
+  levels = c("angiosperm", "conifer", "All species")
+)
+
+seed_weight <- ggplot(summary_df, aes(x = group, y = mean, color = group)) +
+  geom_point(size = 3) +
+  geom_errorbar(
+    aes(ymin = mean - se, ymax = mean + se),
+    width = 0.05
+  ) +
+  geom_text(
+    aes(label = paste0("n = ", n)),
+    nudge_x = 0.2,
+    size = 5,
+    show.legend = FALSE
+  ) +
+  custom_theme + scale_color_manual(values = my_colors) +
+  labs(
+    x = "",
+    y = "Seed weight (log)"
+  ) + theme(legend.position = "none")
+seed_weight_raw <- ggplot(plot_df, aes(x = group, y = logSeedWeightStd, color = group)) +
+  geom_jitter(width = 0.15, alpha = 0.5) +
+  stat_summary(fun = mean, geom = "point", size = 3) +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.15) +
+  scale_color_manual(values = my_colors) +
+  theme_classic() +
+  labs(
+    x = "",
+    y = "Seed weight (log)"
+  ) + theme(legend.position = "none")
+
+# oil content
+plot_df <- d
+
+all_df <- d
+all_df$group <- "All species"
+
+plot_df <- rbind(plot_df, all_df)
+mean_vals <- tapply(plot_df$oilContent, plot_df$group, mean, na.rm = TRUE)
+sd_vals   <- tapply(plot_df$oilContent, plot_df$group, sd,   na.rm = TRUE)
+n_vals    <- tapply(plot_df$oilContent, plot_df$group, function(x) sum(!is.na(x)))
+
+se_vals <- sd_vals / sqrt(n_vals)
+
+summary_df <- data.frame(
+  group = names(mean_vals),
+  mean  = as.numeric(mean_vals),
+  se    = as.numeric(se_vals),
+  n     = as.numeric(n_vals)
+) 
+
+# control order on x-axis
+summary_df$group <- factor(
+  summary_df$group,
+  levels = c("angiosperm", "conifer", "All species")
+)
+
+oil_content <- ggplot(summary_df, aes(x = group, y = mean, color = group)) +
+  geom_point(size = 3) +
+  geom_errorbar(
+    aes(ymin = mean - se, ymax = mean + se),
+    width = 0.05
+  ) +
+  geom_text(
+    aes(label = paste0("n = ", n)),
+    nudge_x = 0.2,
+    size = 5,
+    show.legend = FALSE
+  ) +
+  custom_theme + scale_color_manual(values = my_colors) + 
+  labs(
+    x = "",
+    y = "Oil content %"
+  ) + theme(legend.position = "none")
+oil_content_raw <- ggplot(plot_df, aes(x = group, y = oilContent, color = group)) +
+  geom_jitter(width = 0.15, alpha = 0.5) +
+  stat_summary(fun = mean, geom = "point", size = 3) +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.15) +
+  scale_color_manual(values = my_colors) +
+  theme_classic() +
+  labs(
+    x = "",
+    y = "Oil content %"
+  ) + theme(legend.position = "none")
+# leaf longevity
+plot_df <- d
+mean_vals <- tapply(plot_df$leafLongevity, plot_df$group, mean, na.rm = TRUE)
+sd_vals   <- tapply(plot_df$leafLongevity, plot_df$group, sd,   na.rm = TRUE)
+n_vals    <- tapply(plot_df$leafLongevity, plot_df$group, function(x) sum(!is.na(x)))
+
+se_vals <- sd_vals / sqrt(n_vals)
+
+summary_df <- data.frame(
+  group = names(mean_vals),
+  mean  = as.numeric(mean_vals),
+  se    = as.numeric(se_vals),
+  n     = as.numeric(n_vals)
+)
+
+# control order on x-axis
+summary_df$group <- factor(
+  summary_df$group,
+  levels = c("angiosperm", "conifer")
+)
+
+leaf_longevity <- ggplot(summary_df, aes(x = group, y = mean, color = group)) +
+  geom_point(size = 3) +
+  geom_errorbar(
+    aes(ymin = mean - se, ymax = mean + se),
+    width = 0.05
+  ) +
+  geom_text(
+    aes(label = paste0("n = ", n)),
+    nudge_x = 0.2,
+    size = 5,
+    show.legend = FALSE
+  ) +
+  custom_theme + scale_color_manual(values = my_colors) + 
+  labs(
+    x = "",
+    y = "Leaf longevity (year)"
+  ) + theme(legend.position = "none")
+leaf_longevity_raw <- ggplot(plot_df, aes(x = group, y = leafLongevity, color = group)) +
+  geom_jitter(width = 0.15, alpha = 0.5) +
+  stat_summary(fun = mean, geom = "point", size = 3) +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.15) +
+  scale_color_manual(values = my_colors) +
+  theme_classic() +
+  labs(
+    x = "",
+    y = "Leaf longevity (year)"
+  ) + theme(legend.position = "none")
+pdf("output/figures/meanSE.pdf", width = 25, height = 10)
+grid.arrange(fruit_size, seed_size, seed_weight, oil_content,leaf_longevity, nrow = 2, ncol = 3)
+dev.off()
+pdf("output/figures/meanSERaw.pdf", width = 25, height = 10)
+grid.arrange(fruit_size_raw, seed_size_raw, seed_weight_raw, oil_content_raw,leaf_longevity_raw, nrow = 2, ncol = 3)
 dev.off()
