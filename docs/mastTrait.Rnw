@@ -14,7 +14,7 @@
 
 \maketitle
 
-<<load-plots, eval=FALSE>>=
+<<load-plots, eval=FALSE, echo=FALSE>>=
 source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/plottingSweave.R")
 source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/glm.R")
 @
@@ -31,7 +31,7 @@ the mechanisms behind masting could differ depending on dispersal mode.
 \centering
 \includegraphics[width=\textwidth]{../output/figures/dispersalmode.pdf}
 \end{figure}
-
+\newpage
 \begin{itemize}
 \item \textbf{Seed size:} Among animal-dispersed species, larger-seeded species might be more prone to masting.
 \end{itemize}
@@ -42,7 +42,7 @@ the mechanisms behind masting could differ depending on dispersal mode.
 \includegraphics[width=\textwidth]{../output/figures/seedSize.pdf}
 \includegraphics[width=\textwidth]{../output/figures/fruitSize.pdf}
 \end{figure}
-
+\newpage
 \begin{itemize}
 \item \textbf{Seed dormancy:} Species with dormant seeds are expected to be more likely to mast.
 \end{itemize}
@@ -60,7 +60,7 @@ the mechanisms behind masting could differ depending on dispersal mode.
 \centering
 \includegraphics[width=\textwidth]{../output/figures/oilContent.pdf}
 \end{figure}
-
+\newpage
 % ------------------------------------------
 
 \subsection*{Pollination Coupling}
@@ -89,7 +89,7 @@ the mechanisms behind masting could differ depending on dispersal mode.
 \end{figure}
 
 % ------------------------------------------
-
+\newpage
 \subsection*{Resource Matching}
 
 \begin{itemize}
@@ -109,7 +109,7 @@ the mechanisms behind masting could differ depending on dispersal mode.
 \centering
 \includegraphics[width=\textwidth]{../output/figures/droughtTolerance.pdf}
 \end{figure}
-
+\newpage
 % ------------------------------------------
 \section*{Data visualization}
 I calculated the mean and standard errors for the continuous traits in the raw dataset, with number of the data.
@@ -126,18 +126,23 @@ Here's the version of raw data scattering on the plot
 \end{figure}
 
 
-
+\newpage
 % ------------------------------------------
 \section*{Results}
-I ran the phyloglm, including the phylogeny variation.
-
-I also ran the common glm, using conifer and angiosperm as a fixed effect in the model, and here's the results from these models:
+I ran the phyloglm, including the phylogeny variation.Here I reproted the direct model results in a table:
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/phyloglmResultsTable.pdf}
+\end{figure}
+\newpage
+I also ran the common glm, using conifer and angiosperm as a fixed effect in the model, and I modified the results for better visualization:
 
 For the categorical traits, I calculated the probability (of being a strong masting species) for each level:
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{../output/figures/glmCat.pdf}
 \end{figure}
+\newpage
 For the continuous traits, I just presented the effect sizes, with the star indicating a p-value smaller than 0.05:
 \begin{figure}[H]
 \centering
