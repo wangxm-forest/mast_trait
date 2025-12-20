@@ -11,6 +11,7 @@ library(gridExtra)
 library(grid)
 library(dplyr)
 library(ggplot2)
+library(xtable)
 
 rm(list = ls())
 options(stringsAsFactors = FALSE)
@@ -140,6 +141,75 @@ for (m in model_list) {
 
 #write.csv(results, "output/pglsResults.csv", row.names = FALSE)
 
+#Make a table to present the results:
+results_no_int <- results[results$term != "(Intercept)", ]
+
+results_no_int$signif <- cut(
+  results_no_int$p_value,
+  breaks = c(-Inf, 0.001, 0.01, 0.05, 0.1, Inf),
+  labels = c("***", "**", "*", ".", "")
+)
+
+results_no_int$estimate  <- round(results_no_int$estimate,  3)
+results_no_int$std_error <- round(results_no_int$std_error, 3)
+results_no_int$z_value   <- round(results_no_int$z_value,   2)
+results_no_int$p_value   <- signif(results_no_int$p_value,  3)
+results_no_int$alpha     <- round(results_no_int$alpha,     3)
+
+final_table <- results_no_int[, c(
+  "trait",
+  "term",
+  "estimate",
+  "std_error",
+  "z_value",
+  "p_value",
+  "signif",
+  "alpha"
+)]
+
+colnames(final_table) <- c(
+  "Trait (group)",
+  "Predictor",
+  "Estimate",
+  "SE",
+  "Z",
+  "P",
+  "Sig.",
+  "Phylo α"
+)
+
+
+final_table$Predictor <- gsub("logFruitStd",     "Fruit size (log, std)", final_table$Predictor)
+final_table$Predictor <- gsub("logSeedWeightStd","Seed weight (log, std)", final_table$Predictor)
+final_table$Predictor <- gsub("logSeedSizeStd",  "Seed size (log, std)", final_table$Predictor)
+final_table$Predictor <- gsub("seedDispersalbiotic",  "Biotic dispersed (compared to Abiotic)", final_table$Predictor)
+final_table$Predictor <- gsub("seedDispersalboth",  "Abiotic and Biotic dispersed (compared to Abiotic)", final_table$Predictor)
+final_table$Predictor <- gsub("pollinationwind",  "Wind pollinated (compared to Animal pollinated)", final_table$Predictor)
+final_table$Predictor <- gsub("pollinationwind and animals (compared to Animal pollinated)",  "Animal and wind pollinated", final_table$Predictor)
+final_table$Predictor <- gsub("seedDormancyY",  "Dormant", final_table$Predictor)
+final_table$Predictor <- gsub("typeMonoOrDioMonoecious",  "Monoecious (compared to Dioecious)", final_table$Predictor)
+final_table$Predictor <- gsub("typeMonoOrDioPolygamous",  "Polygamous (compared to Dioecious)", final_table$Predictor)
+final_table$Predictor <- gsub("oilContent",  "Oil content", final_table$Predictor)
+final_table$Predictor <- gsub("leafLongevity",  "Leaf longevity", final_table$Predictor)
+final_table$Predictor <- gsub("droughtToleranceLow",  "Low drought tolerated (compared to High drought tolerated)", final_table$Predictor)
+final_table$Predictor <- gsub("droughtToleranceModerate",  "Moderate drought tolerated (compared to High drought tolerated)", final_table$Predictor)
+
+
+rownames(final_table) <- NULL
+table_grob <- tableGrob(
+  final_table,
+  rows = NULL,
+  theme = ttheme_minimal(
+    core = list(fg_params = list(fontsize = 9)),
+    colhead = list(fg_params = list(fontsize = 10, fontface = "bold"))
+  )
+)
+ggsave(
+  filename = "output/phyloglmResultsTable.pdf",
+  plot = table_grob,
+  width = 10,
+  height = 8
+)
 
 ####Use conifer/angio as a fixed effect in the model####
 
@@ -209,7 +279,7 @@ model_list <- list(
 
 # Run models
 
-results <- NULL
+results_glm <- NULL
 
 for (m in model_list) {
   cat("Running model:", m$name, "\n")
@@ -221,10 +291,10 @@ for (m in model_list) {
     trait_name = m$name
   )
   
-  results <- rbind(results, tbl)
+  results_glm <- rbind(results_glm, tbl)
 }
 
-#write.csv(results, "output/glmResults.csv", row.names = FALSE)
+#write.csv(results_glm, "output/glmResults.csv", row.names = FALSE)
 
 ####Plot the probability for all traits####
 invlogit <- function(x) 1 / (1 + exp(-x))
@@ -282,7 +352,7 @@ plot_prob_with_signif <- function(pred_df, trait_name, results_df, trait_var) {
 }
 
 # Pollination
-poll <- subset(results, trait == "Pollination")
+poll <- subset(results_glm, trait == "Pollination")
 poll
 
 coefs <- setNames(poll$estimate, poll$term)
@@ -307,7 +377,7 @@ predPoll$prob <- invlogit(predPoll$logit)
 predPoll
 
 # Seed dispersal
-disp <- subset(results, trait == "Seed dispersal")
+disp <- subset(results_glm, trait == "Seed dispersal")
 disp
 
 coefs <- setNames(disp$estimate, disp$term)
@@ -332,7 +402,7 @@ predDisp$prob <- invlogit(predDisp$logit)
 predDisp
 
 # Seed dormancy
-dorm <- subset(results, trait == "Seed dormancy")
+dorm <- subset(results_glm, trait == "Seed dormancy")
 dorm
 
 coefs <- setNames(dorm$estimate, dorm$term)
@@ -356,7 +426,7 @@ predDorm$prob <- invlogit(predDorm$logit)
 predDorm
 
 # Mono/Dio
-mono <- subset(results, trait == "Mono/Dio")
+mono <- subset(results_glm, trait == "Mono/Dio")
 mono
 
 coefs <- setNames(mono$estimate, mono$term)
@@ -381,7 +451,7 @@ predMono$prob <- invlogit(predMono$logit)
 predMono
 
 # Drought tolerance
-drought <- subset(results, trait == "Drought tolerance")
+drought <- subset(results_glm, trait == "Drought tolerance")
 drought
 
 coefs <- setNames(drought$estimate, drought$term)
@@ -408,32 +478,32 @@ preddrought
 #Plotting
 plotPoll <- plot_prob_with_signif(predPoll, 
                       trait_name = "Pollination", 
-                      results_df = results, 
+                      results_df = results_glm, 
                       trait_var = "pollination") + theme(legend.position = "none")
 
 plotDisp <- plot_prob_with_signif(predDisp, 
                       trait_name = "Seed dispersal", 
-                      results_df = results, 
+                      results_df = results_glm, 
                       trait_var = "seedDispersal") + theme(legend.position = "none")
 
 plotDorm <- plot_prob_with_signif(predDorm, 
                       trait_name = "Seed dormancy", 
-                      results_df = results, 
+                      results_df = results_glm, 
                       trait_var = "seedDormancy") + theme(legend.position = "none")
 
 plotMono <- plot_prob_with_signif(predMono, 
                       trait_name = "Mono/Dio", 
-                      results_df = results, 
+                      results_df = results_glm, 
                       trait_var = "typeMonoOrDio") + theme(legend.position = "none")
 
 plotDrought <- plot_prob_with_signif(predMono, 
                       trait_name = "Drought tolerance", 
-                      results_df = results, 
+                      results_df = results_glm, 
                       trait_var = "droughtTolerance")
 shared_legend <- get_legend(plotDrought)
 plotDrought <- plot_prob_with_signif(predMono, 
                                      trait_name = "Drought tolerance", 
-                                     results_df = results, 
+                                     results_df = results_glm, 
                                      trait_var = "droughtTolerance") + theme(legend.position = "none")
 
 pdf("output/figures/glmCat.pdf", width = 10, height = 10)
@@ -441,7 +511,7 @@ grid.arrange(plotPoll, plotDisp, plotDorm, plotMono,plotDrought, shared_legend, 
 dev.off()
 ## Continuous traits
 
-cont_effects <- results %>%
+cont_effects <- results_glm %>%
   filter(trait %in% c("Seed weight (log)", "Fruit size (log)", "Seed size (log)","Leaf longevity (years)", "Oil content %"))%>%
   filter(!term %in% "(Intercept)")
 
