@@ -134,6 +134,127 @@ I ran the phyloglm, including the phylogeny variation.Here I reproted the direct
 \centering
 \includegraphics[width=\textwidth]{../output/phyloglmResultsTable.pdf}
 \end{figure}
+
+\subsection{Dispersal mode}
+\textbf{Conifers}\\
+\begin{itemize}
+\item Species being abiotic dispersed have an 82\% probability of being strong masting species.
+\item Species being biotic dispersed and both have a lower probability, but this difference is not statistically.
+\item Overall, the model provides no evidence that dispersal mode affects whether a species is strong masting or not.
+\end{itemize}
+\textbf{Angiosperms}\\
+\begin{itemize}
+\item Species being abiotic dispersed have an 32\% probability of being strong masting species.
+\item Species being biotic dispersed and both have a higher probability, but this difference is not statistically.
+\item Overall, the model provides no evidence that dispersal mode affects whether a species is strong masting or not.
+\end{itemize}
+\subsection{Pollination mode}
+\textbf{Conifers}\\
+\begin{itemize}
+\item All the conifers in our dataset are wind pollinated, and they are mostly strong masting species.
+\end{itemize}
+\textbf{Angiosperm}\\
+\begin{itemize}
+\item Animal pollinated species only have a relatively low probability (20\%) of being strong masting species.
+\item Wind pollinated species have asignificantly higher probability (59\%) of being strong masting species.
+\item Species pollinated by both animal and wind have an intermediate change (47\%) of being strong masting species, but is not significantly different from animal pollinated ones.
+\item Overall, pollination mode is an important predictor of whether species has strong masting pattern, because wind pollination increases the odds of strong masting compared to animal pollination.
+\end{itemize}
+\subsection{Seed dormancy}
+\textbf{Conifers}\\
+\begin{itemize}
+\item Species without dormant seeds have 80\% probability of being strong masting species.
+\item Species with dormant seeds have higher probability (89\%), but this difference is not significant.
+\item Overall, the model provides no evidence that seed dormancy affects whether a species is strong masting or not.
+\end{itemize}
+\textbf{Angiosperm}\\
+\begin{itemize}
+\item Species without dormant seeds have 39\% probability of being strong masting species.
+\item Species with domrmant seeds have a very similar probability (40\%) of being strong masting species, but the difference is not significant.
+\item Overall, the model provides no evidence that seed dormancy affects whether a species is strong masting or not.
+\end{itemize}
+\subsection{Reproductive type}
+\textbf{Conifers}\\
+\begin{itemize}
+\item Dioecious species have a higher probability (70\%) of being strong masting species compared to monoecious species (44\%), but the difference is not significant.
+\item The very low alpha (0.007) suggests little phylogenetic signal in this trait-masting relationship.
+\item Overall, the model provides no evidence that reproductive type affects whether a species is strong masting or not.
+\end{itemize}
+\textbf{Angiosperm}\\
+\begin{itemize}
+\item Dioecious species have 28\% probability of being strong masting species.
+\item Monoecious species have higher probability (49\%), but this difference is not significant. Polygamous species have similar probability (26\%), but the difference is not significant.
+\item The relatively low alpha (0.11) suggests low to moderate phylogenetic signal in this trait-masting relationship.
+\item Overall, the model provides no evidence that reproductive type affects whether a species is strong masting or not.
+\end{itemize}
+\subsection{Drought tolerance}
+\textbf{Conifers}\\
+\begin{itemize}
+\item High drought tolerance species have a high probability (91\%) of being strong masting species.
+\item Moderate and low drought tolerance species have lower or higher probabilities (68\% and 96\% respectively), but differences are not significant.
+\item Overall, the model provides no evidence that drought tolerance affects whether a species is strong masting or not.
+\end{itemize}
+\textbf{Angiosperm}\\
+\begin{itemize}
+\item High drought tolerance species have a low probability (44\%) of being strong masting species.
+\item Moderate and low drought tolerance species both have lower probabilities (40\% and 44\% respectively), but differences are not significant.
+\item The relatively low alpha (0.11) suggests low to moderate phylogenetic signal in this trait-masting relationship.
+\item Overall, the model provides no evidence that drought tolerance affects whether a species is strong masting or not.
+\end{itemize}
+\subsection{Seed weight}
+\textbf{Conifers}\\
+\begin{itemize}
+\item Seed weight has no significant effect on strong masting pattern
+\item The moderate alpha (0.43) suggests moderate phylogenetic signal in this trait-masting relationship.
+\end{itemize}
+\textbf{Angiosperm}\\
+\begin{itemize}
+\item Higher seed weight significantly increases chance of being strong masting species, seed weight is a strong predictor of masting.
+\item The relatively low alpha (0.063) suggests low phylogenetic signal in this trait-masting relationship.
+\end{itemize}
+\subsection{Fruit size}
+\textbf{Conifers}\\
+\begin{itemize}
+\item Fruit size has no significant effect on strong masting pattern.
+\item The moderate alpha (0.43) suggests moderate phylogenetic signal in this trait-masting relationship.
+\end{itemize}
+\textbf{Angiosperm}\\
+\begin{itemize}
+\item Fruit size has no significant effect on strong masting pattern.
+\item The relatively low alpha (0.17) suggests low phylogenetic signal in this trait-masting relationship.
+\end{itemize}
+\subsection{Seed size}
+\textbf{Conifers}\\
+\begin{itemize}
+\item Seed size has no significant effect on strong masting pattern.
+\item The moderate alpha (0.41) suggests moderate phylogenetic signal in this trait-masting relationship.
+\end{itemize}
+\textbf{Angiosperm}\\
+\begin{itemize}
+\item Seed size has no significant effect on strong masting pattern.
+\item The relatively low alpha (0.08) suggests low phylogenetic signal in this trait-masting relationship.
+\end{itemize}
+\subsection{Oil content}
+\textbf{Conifers}\\
+\begin{itemize}
+\item Not enough data available for conifers.
+\end{itemize}
+\textbf{Angiosperm}\\
+\begin{itemize}
+\item Oil content has no significant effect on strong masting pattern.
+\item The relatively low alpha (0.14) suggests low phylogenetic signal in this trait-masting relationship.
+\end{itemize}
+\subsection{Leaf longevity}
+\textbf{Conifers}\\
+\begin{itemize}
+\item Leaf longevity has no significant effect on strong masting pattern.
+\item The moderate alpha (0.42) suggests moderate phylogenetic signal in this trait-masting relationship.
+\end{itemize}
+\textbf{Angiosperm}\\
+\begin{itemize}
+\item Leaf longevity has no significant effect on strong masting pattern.
+\item The relatively low alpha (0.006) suggests low phylogenetic signal in this trait-masting relationship.
+\end{itemize}
 \newpage
 I also ran the common glm, using conifer and angiosperm as a fixed effect in the model, and I modified the results for better visualization:
 
