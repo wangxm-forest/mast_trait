@@ -129,7 +129,7 @@ the mechanisms behind masting could differ depending on dispersal mode.
 
 \newpage
 % ------------------------------------------
-\section*{Results}
+\section*{Results for Binary Response Variable}
 I ran the phyloglm, including the phylogeny variation.Here I reproted the direct model results in a table:
 \begin{figure}[H]
 \centering
@@ -299,4 +299,15 @@ I also ran the common glm, using conifer and angiosperm as a fixed effect in the
 \item Seed weight is a significant predictor of strong masting for both angiosperm and conifers, with log-odds of masting increasing with bigger seed weight.
 \item Leaf longevity is not a strong predictor of strong masting pattern for either conifer or angiosperm.
 \end{itemize}
+
+\section*{Results for Continous Response Variable}
+For the continuous response variable, I used the mean mast cycle obtained from Silvics and analyzed the data using PGLS. The results indicate that none of the traits is significantly related to mast cycle for either conifer or angiosperm species. There is no phylogenetic signal detected for any of the conifer traits, whereas weak phylogenetic signal is observed for seed dispersal, seed dormancy, reproductive type, drought tolerance, fruit size, and seed weight among angiosperm traits.
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/pglsConifer.pdf}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/pglsAngio.pdf}
+\end{figure}
 \end{document}
