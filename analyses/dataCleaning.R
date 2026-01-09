@@ -109,3 +109,9 @@ d$latbi <- ifelse(
 d <- d[c("genusName", "speciesName", "updateName","evergreenDeciduous","fruitSize.cm.","seedSize.mm.", "droughtTolerance","familyName","typeMonoOrDio","Biome","Elevation","floweringDuration","pollination","seedDispersal","seedPredator","lifeSpanMax","reprodAge","seedDormancy","seedWeights","mastEvent","mastCycle","shadeTolerance","leafLongevity","oilContent","proteinContent","mastCycleAve", "fruitSizeAve","seedSizeAve","latbi","seedDispersalDetails")]
 
 #write.csv(d, "data/cleanSilvics.csv")
+
+# remove rows with mastEvent data being NA
+# d <- d[!is.na(d$mastEvent), ]
+# 31 rows of data got removed
+
+
