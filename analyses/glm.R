@@ -2,6 +2,7 @@
 ## Started by Mao ##
 ## Nov-28-2025 ##
 
+library(ape)
 library(caper)
 library(geiger)
 library(phylolm)
@@ -30,11 +31,40 @@ d$mastEvent <- ifelse(d$mastEvent == "Y", 1, 0)
 conifer <- d[d$familyName %in% c("Pinaceae", "Taxodiaceae"), ]
 angio   <- d[!(d$familyName %in% c("Pinaceae", "Taxodiaceae")), ]
 
+# log10-transform + scale
+log_scale <- function(x) scale(log10(x))
+
+# Factorize all the categorical traits, I am doing this separately because conifer and angio have different levels for some traits
+conifer$droughtTolerance <- as.factor(conifer$droughtTolerance)
+conifer$typeMonoOrDio <- as.factor(conifer$typeMonoOrDio)
+conifer$pollination <- as.factor(conifer$pollination)
+conifer$seedDispersal <- as.factor(conifer$seedDispersal)
+conifer$seedDormancy <- as.factor(conifer$seedDormancy)
+angio$droughtTolerance <- as.factor(angio$droughtTolerance)
+angio$typeMonoOrDio <- as.factor(angio$typeMonoOrDio)
+angio$pollination <- as.factor(angio$pollination)
+angio$seedDispersal <- as.factor(angio$seedDispersal)
+angio$seedDormancy <- as.factor(angio$seedDormancy)
+
+# Continuous traits
+conifer$logSeedWeightStd <- log_scale(conifer$seedWeights)
+angio$logSeedWeightStd   <- log_scale(angio$seedWeights)
+
+conifer$logFruitStd <- log_scale(conifer$fruitSizeAve)
+angio$logFruitStd   <- log_scale(angio$fruitSizeAve)
+
+conifer$logSeedSizeStd <- log_scale(conifer$seedSizeAve)
+angio$logSeedSizeStd   <- log_scale(angio$seedSizeAve)
+
+phytree$node.label <- NULL
+
 phyconifer <- drop.tip(phytree, setdiff(phytree$tip.label, conifer$latbi))
 phyangio   <- drop.tip(phytree, setdiff(phytree$tip.label, angio$latbi))
 
 rownames(conifer) <- conifer$latbi
 rownames(angio)   <- angio$latbi
+
+
 
 # Make some functions
 
@@ -53,9 +83,6 @@ tidy_phyloglm <- function(model) {
   )
   return(out)
 }
-
-# log10-transform + scale
-log_scale <- function(x) scale(log10(x))
 
 
 # Run model and attach metadata
@@ -77,15 +104,7 @@ for (t in categorical_traits) {
   angio[[t]]   <- factor(angio[[t]])
 }
 
-# Continuous traits
-conifer$logSeedWeightStd <- log_scale(conifer$seedWeights)
-angio$logSeedWeightStd   <- log_scale(angio$seedWeights)
 
-conifer$logFruitStd <- log_scale(conifer$fruitSizeAve)
-angio$logFruitStd   <- log_scale(angio$fruitSizeAve)
-
-conifer$logSeedSizeStd <- log_scale(conifer$seedSizeAve)
-angio$logSeedSizeStd   <- log_scale(angio$seedSizeAve)
 
 
 # Model definitions
@@ -182,7 +201,7 @@ colnames(final_table) <- c(
 final_table$Predictor <- gsub("logFruitStd",     "Fruit size (log, std)", final_table$Predictor)
 final_table$Predictor <- gsub("logSeedWeightStd","Seed weight (log, std)", final_table$Predictor)
 final_table$Predictor <- gsub("logSeedSizeStd",  "Seed size (log, std)", final_table$Predictor)
-final_table$Predictor <- gsub("seedDispersalbiotic",  "Biotic dispersed (compared to Abiotic)", final_table$Predictor)
+final_table$Predictor <- gsub(,  "Biotic dispersed (compared to Abiotic)", final_table$Predictor)
 final_table$Predictor <- gsub("seedDispersalboth",  "Abiotic and Biotic dispersed (compared to Abiotic)", final_table$Predictor)
 final_table$Predictor <- gsub("pollinationwind",  "Wind pollinated (compared to Animal pollinated)", final_table$Predictor)
 final_table$Predictor <- gsub("pollinationwind and animals (compared to Animal pollinated)",  "Animal and wind pollinated", final_table$Predictor)
@@ -795,4 +814,206 @@ grid.arrange(fruit_size, seed_size, seed_weight, oil_content,leaf_longevity, nro
 dev.off()
 pdf("output/figures/meanSERaw.pdf", width = 25, height = 10)
 grid.arrange(fruit_size_raw, seed_size_raw, seed_weight_raw, oil_content_raw,leaf_longevity_raw, nrow = 2, ncol = 3)
+dev.off()
+
+#pgls
+## Make a function to subset traits
+subsetTrait <- function(data, cols) {
+  dataSub <- data[, cols, drop = FALSE]
+  dataSub <- dataSub[complete.cases(dataSub), ]
+  dataSub
+}
+
+## Make a function to run the model on different traits
+runPgls <- function(data, phy, traits,
+                         response = "mastCycleAveLog",
+                         speciesCol = "latbi",
+                         minN = 5) {
+  
+  models <- list()
+  
+  for (tr in traits) {message("Running PGLS for trait: ", tr)
+    
+    cols <- c(speciesCol, response, tr)
+    dSub <- subsetTrait(data, cols)
+    
+    if (nrow(dSub) < minN) {
+      message("  Skipped (too few species)")
+      next
+    }
+    
+    ## Comparative data
+    comp <- comparative.data(
+      phy = phy,
+      data = dSub,
+      names.col = "latbi",
+      vcv = TRUE,
+      warn.dropped = TRUE
+    )
+    
+    ## Fit PGLS
+    form <- as.formula(paste(response, "~", tr))
+    models[[tr]] <- pgls(form, data = comp, lambda = "ML")
+  }
+  
+  models
+}
+
+## Extract results
+extractResults <- function(models) {
+  
+  do.call(
+    rbind,
+    lapply(names(models), function(tr) {
+      
+      m <- models[[tr]]
+      coef <- as.data.frame(summary(m)$coefficients)
+      
+      data.frame(
+        trait     = tr,
+        term      = rownames(coef),
+        estimate  = coef$Estimate,
+        std_error = coef$`Std. Error`,
+        p_value   = coef$`Pr(>|t|)`,
+        lambda    = m$param["lambda"],
+        N         = m$n,
+        row.names = NULL
+      )
+    })
+    
+    
+  )
+}
+
+# Data prep
+##response has to be Gaussian distribution
+conifer$mastCycleAveLog <- log(conifer$mastCycleAve)
+angio$mastCycleAveLog <- log(angio$mastCycleAve)
+
+##traits of interest
+conTraits <- c(
+  "seedDispersal",
+  "seedDormancy",
+  "typeMonoOrDio",
+  "droughtTolerance",
+  "leafLongevity",
+  "oilContent",
+  "logFruitStd",
+  "logSeedSizeStd",
+  "logSeedWeightStd"
+)
+
+angioTraits <- c(
+  "seedDispersal",
+  "seedDormancy",
+  "typeMonoOrDio",
+  "droughtTolerance",
+  "pollination",
+  "leafLongevity",
+  "oilContent",
+  "logFruitStd",
+  "logSeedSizeStd",
+  "logSeedWeightStd"
+)
+
+# Run pgls
+pglsConifer <- runPgls(
+  data = conifer,
+  phy = phyconifer,
+  traits = conTraits
+)
+
+pglsAngio <- runPgls(
+  data = angio,
+  phy = phyangio,
+  traits = angioTraits
+)
+
+# Extract results
+resultsConifer <- extractResults(pglsConifer)
+resultsAngio <- extractResults(pglsAngio)
+
+# Clean the results
+numCols <- c("estimate", "std_error", "p_value", "lambda")
+
+resultsConifer[numCols] <- lapply(resultsConifer[numCols], round, 3)
+resultsAngio[numCols] <- lapply(resultsAngio[numCols], round, 3)
+
+traitLabels <- c(
+  seedDispersal = "Dispersal mode",
+  seedDormancy = "Seed dormancy",
+  typeMonoOrDio = "Reproductive type",
+  droughtTolerance = "Drought tolerance",
+  pollination = "Pollination mode",
+  leafLongevity = "Leaf longevity (years)",
+  oilContent = "Oil content (%)",
+  logSeedWeightStd = "Seed weight (log)",
+  logFruitStd = "Fruit size (log)",
+  logSeedSizeStd = "Seed size (log)"
+)
+
+termLabels <- c(
+  "(Intercept)" = "Intercept",
+  "seedDispersalbiotic" = "Biotic vs abiotic",
+  "seedDispersalboth" = "Both vs abiotic",
+  "seedDormancyY" = "Dormant vs non-dormant",
+  "typeMonoOrDioMonoecious" = "Monoecious vs dioecious",
+  "typeMonoOrDioPolygamous" = "Polygamous vs dioecious",
+  "droughtToleranceLow" = "Low vs high drought tolerance",
+  "droughtToleranceModerate" = "Moderate vs high drought tolerance",
+  "pollinationwind" = "Wind vs animal pollination",
+  "pollinationwind and animals" = "Wind+animal vs animal pollination",
+  "leafLongevity" = "Leaf longevity (years)",
+  "oilContent" = "Oil content (%)",
+  "logFruitStd" = "Fruit size (log)",
+  "logSeedSizeStd" = "Seed size (log)",
+  "logSeedWeightStd" = "Seed weight (log)"
+)
+
+resultsConifer$trait <- traitLabels[resultsConifer$trait]
+resultsConifer$term <- termLabels[resultsConifer$term]
+
+resultsAngio$trait <- traitLabels[resultsAngio$trait]
+resultsAngio$term <- termLabels[resultsAngio$term]
+
+resultsConifer <- subset(resultsConifer, term != "Intercept")
+resultsAngio <- subset(resultsAngio, term != "Intercept")
+
+colnames(resultsConifer) <- c(
+  "Trait", "Term", "Estimate", "Std_Error", "P_value", "Lambda", "N"
+)
+colnames(resultsAngio) <- c(
+  "Trait", "Term", "Estimate", "Std_Error", "P_value", "Lambda", "N"
+)
+
+table_grob <- tableGrob(
+  resultsConifer,
+  rows = NULL,
+  theme = ttheme_minimal(
+    core = list(fg_params = list(fontsize = 9)),
+    colhead = list(fg_params = list(fontsize = 10, fontface = "bold"))
+  )
+)
+ggsave(
+  filename = "output/pglsConifer.pdf",
+  plot = table_grob,
+  width = 8,
+  height = 4
+)
+dev.off()
+
+table_grob <- tableGrob(
+  resultsAngio,
+  rows = NULL,
+  theme = ttheme_minimal(
+    core = list(fg_params = list(fontsize = 9)),
+    colhead = list(fg_params = list(fontsize = 10, fontface = "bold"))
+  )
+)
+ggsave(
+  filename = "output/pglsAngio.pdf",
+  plot = table_grob,
+  width = 8,
+  height = 4
+)
 dev.off()
