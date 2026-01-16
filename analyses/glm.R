@@ -19,6 +19,7 @@ options(stringsAsFactors = FALSE)
 
 setwd("C:/PhD/Project/PhD_thesis/mast_trait")
 
+## Data preparation ----
 
 # Load & prepare Data
 d <- read.csv("data/cleanSilvics.csv")
@@ -28,11 +29,18 @@ d$latbi <- gsub(" ", "_", d$latbi)
 d <- d[!is.na(d$mastEvent), ]
 d$mastEvent <- ifelse(d$mastEvent == "Y", 1, 0)
 
+
+
+
+
+# Create group variable
+d$group <- ifelse(d$familyName %in% c("Pinaceae", "Taxodiaceae"),
+                  "conifer", "angiosperm")
+d$group <- factor(d$group)
+
 conifer <- d[d$familyName %in% c("Pinaceae", "Taxodiaceae"), ]
 angio   <- d[!(d$familyName %in% c("Pinaceae", "Taxodiaceae")), ]
 
-# log10-transform + scale
-log_scale <- function(x) scale(log10(x))
 
 # Factorize all the categorical traits, I am doing this separately because conifer and angio have different levels for some traits
 conifer$droughtTolerance <- as.factor(conifer$droughtTolerance)
@@ -46,13 +54,19 @@ angio$pollination <- as.factor(angio$pollination)
 angio$seedDispersal <- as.factor(angio$seedDispersal)
 angio$seedDormancy <- as.factor(angio$seedDormancy)
 
+# log10-transform + scale
+log_scale <- function(x) scale(log10(x))
+
 # Continuous traits
+d$logSeedWeightStd <- log_scale(d$seedWeights)
 conifer$logSeedWeightStd <- log_scale(conifer$seedWeights)
 angio$logSeedWeightStd   <- log_scale(angio$seedWeights)
 
+d$logFruitStd <- log_scale(d$fruitSizeAve)
 conifer$logFruitStd <- log_scale(conifer$fruitSizeAve)
 angio$logFruitStd   <- log_scale(angio$fruitSizeAve)
 
+d$logSeedSizeStd <- log_scale(d$seedSizeAve)
 conifer$logSeedSizeStd <- log_scale(conifer$seedSizeAve)
 angio$logSeedSizeStd   <- log_scale(angio$seedSizeAve)
 
@@ -66,12 +80,13 @@ rownames(angio)   <- angio$latbi
 
 
 
-# Make some functions
+## Functions used later for the analysis ----
 
 # Extract key results from a phyloglm object
 tidy_phyloglm <- function(model) {
   s <- summary(model)
   coefs <- s$coefficients
+  N <- nrow(model$X)
   out <- data.frame(
     term = rownames(coefs),
     estimate = coefs[, 1],
@@ -79,14 +94,53 @@ tidy_phyloglm <- function(model) {
     z_value = coefs[, 3],
     p_value = coefs[, 4],
     alpha = model$alpha,
+    N = N,
+    row.names = NULL
+  )
+  return(out)
+}
+# Extract key results from a glm object
+tidy_glm <- function(model) {
+  s <- summary(model)$coefficients
+  N <- nrow(model$X)
+  out <- data.frame(
+    term = rownames(s),
+    estimate = s[,1],
+    std_error = s[,2],
+    z_value = s[,3],
+    p_value = s[,4],
+    N = N,
     row.names = NULL
   )
   return(out)
 }
 
+# Extract key results from a lm object
+tidy_lm <- function(model) {
+  s <- summary(model)$coefficients
+  out <- data.frame(
+    term = rownames(s),
+    estimate = s[, 1],
+    std_error = s[, 2],
+    t_value = s[, 3],
+    p_value = s[, 4],
+    N = nobs(model),
+    row.names = NULL
+  )
+  return(out)
+}
 
-# Run model and attach metadata
-run_model <- function(formula, data, phy, method, trait_name) {
+# Run glm model and attach metadata
+run_glm <- function(formula, data, method, trait_name) {
+  model <- glm(formula, data = data, method = method)
+  tbl <- tidy_glm(model)
+  tbl$trait <- trait_name
+  tbl$model_formula <- deparse(formula)
+  return(tbl)
+}
+
+# Run phyloglm model and attach metadata
+run_phyloglm <- function(formula, data, phy, method, trait_name) {
   model <- phyloglm(formula, phy = phy, data = data, method = method)
   tbl <- tidy_phyloglm(model)
   tbl$trait <- trait_name
@@ -94,59 +148,51 @@ run_model <- function(formula, data, phy, method, trait_name) {
   return(tbl)
 }
 
-
-# Prepare Trait Columns
-categorical_traits <- c("seedDispersal", "seedDormancy",
-                        "typeMonoOrDio", "droughtTolerance", "pollination")
-
-for (t in categorical_traits) {
-  conifer[[t]] <- factor(conifer[[t]])
-  angio[[t]]   <- factor(angio[[t]])
+# Run LM model and attach metadata
+run_lm <- function(formula, data, trait_name) {
+  model <- lm(formula, data = data)
+  tbl <- tidy_lm(model)
+  tbl$trait <- trait_name
+  tbl$model_formula <- deparse(formula)
+  return(tbl)
 }
 
-
-
-
 # Model definitions
-model_list <- list(
-  list(name="Seed dispersal (conifer)", formula=mastEvent ~ seedDispersal, data=conifer, phy=phyconifer, method="logistic_MPLE"),
-  list(name="Seed dispersal (angio)",   formula=mastEvent ~ seedDispersal, data=angio,   phy=phyangio,   method="logistic_MPLE"),
-  
-  list(name="Pollination (angio)",   formula=mastEvent ~ pollination, data=angio,   phy=phyangio,   method="logistic_MPLE"),
-  
-  list(name="Seed dormancy (conifer)",  formula=mastEvent ~ seedDormancy, data=conifer, phy=phyconifer, method="logistic_MPLE"),
-  list(name="Seed dormancy (angio)",    formula=mastEvent ~ seedDormancy, data=angio,   phy=phyangio,   method="logistic_MPLE"),
-  
-  list(name="Mono/Dio (conifer)",       formula=mastEvent ~ typeMonoOrDio, data=conifer, phy=phyconifer, method="logistic_MPLE"),
-  list(name="Mono/Dio (angio)",         formula=mastEvent ~ typeMonoOrDio, data=angio,   phy=phyangio,   method="logistic_MPLE"),
-  
-  list(name="Seed weight (conifer)",    formula=mastEvent ~ logSeedWeightStd, data=conifer, phy=phyconifer, method="logistic_IG10"),
-  list(name="Seed weight (angio)",      formula=mastEvent ~ logSeedWeightStd, data=angio,   phy=phyangio,   method="logistic_IG10"),
-  
-  list(name="Fruit size (conifer)",     formula=mastEvent ~ logFruitStd, data=conifer, phy=phyconifer, method="logistic_IG10"),
-  list(name="Fruit size (angio)",       formula=mastEvent ~ logFruitStd, data=angio,   phy=phyangio,   method="logistic_IG10"),
-  
-  list(name="Seed size (conifer)",      formula=mastEvent ~ logSeedSizeStd, data=conifer, phy=phyconifer, method="logistic_IG10"),
-  list(name="Seed size (angio)",        formula=mastEvent ~ logSeedSizeStd, data=angio,   phy=phyangio,   method="logistic_IG10"),
-  
-  list(name="Oil content (angio)",      formula=mastEvent ~ oilContent, data=angio, phy=phyangio, method="logistic_IG10"),
-  
-  list(name="Leaf longevity (conifer)", formula=mastEvent ~ leafLongevity, data=conifer, phy=phyconifer, method="logistic_IG10"),
-  list(name="Leaf longevity (angio)",   formula=mastEvent ~ leafLongevity, data=angio,   phy=phyangio,   method="logistic_IG10"),
-  
-  list(name="Drought tol (conifer)",    formula=mastEvent ~ droughtTolerance, data=conifer, phy=phyconifer, method="logistic_IG10"),
-  list(name="Drought tol (angio)",      formula=mastEvent ~ droughtTolerance, data=angio,   phy=phyangio,   method="logistic_IG10")
+
+conifer_list <- list(
+  list(name="Seed dispersal", formula=mastEvent ~ seedDispersal, data=conifer, phy=phyconifer, method="logistic_MPLE"),
+  list(name="Seed dormancy",  formula=mastEvent ~ seedDormancy, data=conifer, phy=phyconifer, method="logistic_MPLE"),
+  list(name="Reproductive type",       formula=mastEvent ~ typeMonoOrDio, data=conifer, phy=phyconifer, method="logistic_MPLE"),
+  list(name="Seed weight (log)",    formula=mastEvent ~ logSeedWeightStd, data=conifer, phy=phyconifer, method="logistic_IG10"),
+  list(name="Fruit size (log)",     formula=mastEvent ~ logFruitStd, data=conifer, phy=phyconifer, method="logistic_IG10"),
+  list(name="Seed size (log)",      formula=mastEvent ~ logSeedSizeStd, data=conifer, phy=phyconifer, method="logistic_IG10"),
+  list(name="Leaf longevity (years)", formula=mastEvent ~ leafLongevity, data=conifer, phy=phyconifer, method="logistic_IG10"),
+  list(name="Drought tolerance",    formula=mastEvent ~ droughtTolerance, data=conifer, phy=phyconifer, method="logistic_IG10")
+)
+
+angio_list <- list(
+list(name="Dispersal mode",   formula=mastEvent ~ seedDispersal, data=angio,   phy=phyangio,   method="logistic_MPLE"),
+list(name="Pollination mode",   formula=mastEvent ~ pollination, data=angio,   phy=phyangio,   method="logistic_MPLE"),
+list(name="Seed dormancy",    formula=mastEvent ~ seedDormancy, data=angio,   phy=phyangio,   method="logistic_MPLE"),
+list(name="Reproductive type",         formula=mastEvent ~ typeMonoOrDio, data=angio,   phy=phyangio,   method="logistic_MPLE"),
+list(name="Seed weight (log)",      formula=mastEvent ~ logSeedWeightStd, data=angio,   phy=phyangio,   method="logistic_IG10"),
+list(name="Fruit size (log)",       formula=mastEvent ~ logFruitStd, data=angio,   phy=phyangio,   method="logistic_IG10"),
+list(name="Seed size (log)",        formula=mastEvent ~ logSeedSizeStd, data=angio,   phy=phyangio,   method="logistic_IG10"),
+list(name="Oil content (%)",      formula=mastEvent ~ oilContent, data=angio, phy=phyangio, method="logistic_IG10"),
+list(name="Leaf longevity (years)",   formula=mastEvent ~ leafLongevity, data=angio,   phy=phyangio,   method="logistic_IG10"),
+list(name="Drought tolerance",      formula=mastEvent ~ droughtTolerance, data=angio,   phy=phyangio,   method="logistic_IG10")
 )
 
 
 # Run models
 
-results <- NULL
+conifer_results <- NULL
+angio_results <- NULL
 
-for (m in model_list) {
+for (m in conifer_list) {
   cat("Running model:", m$name, "\n")
   
-  tbl <- run_model(
+  tbl <- run_phyloglm(
     formula = m$formula,
     data    = m$data,
     phy     = m$phy,
@@ -154,69 +200,80 @@ for (m in model_list) {
     trait_name = m$name
   )
   
-  results <- rbind(results, tbl)
+  conifer_results <- rbind(conifer_results, tbl)
 }
 
-
-#write.csv(results, "output/pglsResults.csv", row.names = FALSE)
+for (m in angio_list) {
+  cat("Running model:", m$name, "\n")
+  
+  tbl <- run_phyloglm(
+    formula = m$formula,
+    data    = m$data,
+    phy     = m$phy,
+    method  = m$method,
+    trait_name = m$name
+  )
+  
+  angio_results <- rbind(angio_results, tbl)
+}
 
 #Make a table to present the results:
-results_no_int <- results[results$term != "(Intercept)", ]
+clean_results <- function(results) {
+  
+  results_no_int <- results[results$term != "(Intercept)", ]
+  
+  results_no_int$signif <- cut(
+    results_no_int$p_value,
+    breaks = c(-Inf, 0.001, 0.01, 0.05, 0.1, Inf),
+    labels = c("***", "**", "*", ".", "")
+  )
+  
+  results_no_int$estimate  <- round(results_no_int$estimate,  3)
+  results_no_int$std_error <- round(results_no_int$std_error, 3)
+  results_no_int$z_value   <- round(results_no_int$z_value,   2)
+  results_no_int$p_value   <- signif(results_no_int$p_value,  3)
+  results_no_int$alpha     <- round(results_no_int$alpha,     3)
+  
+  final_table <- results_no_int[, c(
+    "trait",
+    "term",
+    "estimate",
+    "std_error",
+    "p_value",
+    "alpha",
+    "N"
+  )]
+  
+  colnames(final_table) <- c(
+    "Trait",
+    "Predictor",
+    "Estimate",
+    "SE",
+    "P",
+    "Phylo α",
+    "N"
+  )
+  final_table$Predictor <- gsub("logFruitStd",     "Fruit size (log, std)", final_table$Predictor)
+  final_table$Predictor <- gsub("logSeedWeightStd","Seed weight (log, std)", final_table$Predictor)
+  final_table$Predictor <- gsub("logSeedSizeStd",  "Seed size (log, std)", final_table$Predictor)
+  final_table$Predictor <- gsub("seedDispersalbiotic",  "Biotic vs abiotic", final_table$Predictor)
+  final_table$Predictor <- gsub("seedDispersalboth",  "Both vs abiotic", final_table$Predictor)
+  final_table$Predictor <- gsub("pollinationwind",  "Wind vs animal pollination", final_table$Predictor)
+  final_table$Predictor <- gsub("pollinationwind and animals",  "Wind+animal vs animal pollination", final_table$Predictor)
+  final_table$Predictor <- gsub("seedDormancyY",  "Dormant vs non−dormant", final_table$Predictor)
+  final_table$Predictor <- gsub("typeMonoOrDioMonoecious",  "Monoecious vs dioecious", final_table$Predictor)
+  final_table$Predictor <- gsub("typeMonoOrDioPolygamous",  "Monoecious vs polygamous", final_table$Predictor)
+  final_table$Predictor <- gsub("oilContent",  "Oil content (%)", final_table$Predictor)
+  final_table$Predictor <- gsub("leafLongevity",  "Leaf longevity (years)", final_table$Predictor)
+  final_table$Predictor <- gsub("droughtToleranceLow",  "Low vs high drought tolerance", final_table$Predictor)
+  final_table$Predictor <- gsub("droughtToleranceModerate",  "Moderate vs high drought tolerance", final_table$Predictor) 
+  return(final_table)
+}
 
-results_no_int$signif <- cut(
-  results_no_int$p_value,
-  breaks = c(-Inf, 0.001, 0.01, 0.05, 0.1, Inf),
-  labels = c("***", "**", "*", ".", "")
-)
+conifer_results <- clean_results(conifer_results)
 
-results_no_int$estimate  <- round(results_no_int$estimate,  3)
-results_no_int$std_error <- round(results_no_int$std_error, 3)
-results_no_int$z_value   <- round(results_no_int$z_value,   2)
-results_no_int$p_value   <- signif(results_no_int$p_value,  3)
-results_no_int$alpha     <- round(results_no_int$alpha,     3)
-
-final_table <- results_no_int[, c(
-  "trait",
-  "term",
-  "estimate",
-  "std_error",
-  "z_value",
-  "p_value",
-  "signif",
-  "alpha"
-)]
-
-colnames(final_table) <- c(
-  "Trait (group)",
-  "Predictor",
-  "Estimate",
-  "SE",
-  "Z",
-  "P",
-  "Sig.",
-  "Phylo α"
-)
-
-
-final_table$Predictor <- gsub("logFruitStd",     "Fruit size (log, std)", final_table$Predictor)
-final_table$Predictor <- gsub("logSeedWeightStd","Seed weight (log, std)", final_table$Predictor)
-final_table$Predictor <- gsub("logSeedSizeStd",  "Seed size (log, std)", final_table$Predictor)
-final_table$Predictor <- gsub(,  "Biotic dispersed (compared to Abiotic)", final_table$Predictor)
-final_table$Predictor <- gsub("seedDispersalboth",  "Abiotic and Biotic dispersed (compared to Abiotic)", final_table$Predictor)
-final_table$Predictor <- gsub("pollinationwind",  "Wind pollinated (compared to Animal pollinated)", final_table$Predictor)
-final_table$Predictor <- gsub("pollinationwind and animals (compared to Animal pollinated)",  "Animal and wind pollinated", final_table$Predictor)
-final_table$Predictor <- gsub("seedDormancyY",  "Dormant", final_table$Predictor)
-final_table$Predictor <- gsub("typeMonoOrDioMonoecious",  "Monoecious (compared to Dioecious)", final_table$Predictor)
-final_table$Predictor <- gsub("typeMonoOrDioPolygamous",  "Polygamous (compared to Dioecious)", final_table$Predictor)
-final_table$Predictor <- gsub("oilContent",  "Oil content", final_table$Predictor)
-final_table$Predictor <- gsub("leafLongevity",  "Leaf longevity", final_table$Predictor)
-final_table$Predictor <- gsub("droughtToleranceLow",  "Low drought tolerated (compared to High drought tolerated)", final_table$Predictor)
-final_table$Predictor <- gsub("droughtToleranceModerate",  "Moderate drought tolerated (compared to High drought tolerated)", final_table$Predictor)
-
-
-rownames(final_table) <- NULL
 table_grob <- tableGrob(
-  final_table,
+  conifer_results,
   rows = NULL,
   theme = ttheme_minimal(
     core = list(fg_params = list(fontsize = 9)),
@@ -224,54 +281,33 @@ table_grob <- tableGrob(
   )
 )
 ggsave(
-  filename = "output/phyloglmResultsTable.pdf",
+  filename = "output/phyloglmConifer.pdf",
   plot = table_grob,
-  width = 10,
-  height = 8
+  width = 8,
+  height = 4
 )
 
-####Use conifer/angio as a fixed effect in the model####
+angio_results <- clean_results(angio_results)
 
-# Create group variable
-d$group <- ifelse(d$familyName %in% c("Pinaceae", "Taxodiaceae"),
-                  "conifer", "angiosperm")
-d$group <- factor(d$group)
-
-# Prepare Trait Columns
-categorical_traits <- c("seedDispersal", "seedDormancy",
-                        "typeMonoOrDio", "droughtTolerance", "pollination")
-
-for (t in categorical_traits) {
-  d[[t]] <- factor(d[[t]])
-}
-
-# Continuous traits
-d$logSeedWeightStd <- log_scale(d$seedWeights)
-d$logFruitStd <- log_scale(d$fruitSizeAve)
-d$logSeedSizeStd   <- log_scale(d$seedSizeAve)
-
-# Extract key results from a phyloglm object
-tidy_glm <- function(model) {
-  s <- summary(model)$coefficients
-  out <- data.frame(
-    term = rownames(s),
-    estimate = s[,1],
-    std_error = s[,2],
-    z_value = s[,3],
-    p_value = s[,4],
-    row.names = NULL
+table_grob <- tableGrob(
+  angio_results,
+  rows = NULL,
+  theme = ttheme_minimal(
+    core = list(fg_params = list(fontsize = 9)),
+    colhead = list(fg_params = list(fontsize = 10, fontface = "bold"))
   )
-  return(out)
-}
+)
+ggsave(
+  filename = "output/phyloglmAngio.pdf",
+  plot = table_grob,
+  width = 8,
+  height = 4
+)
+dev.off()
 
-# Run model and attach metadata
-run_model <- function(formula, data, method, trait_name) {
-  model <- glm(formula, data = data, method = method)
-  tbl <- tidy_glm(model)
-  tbl$trait <- trait_name
-  tbl$model_formula <- deparse(formula)
-  return(tbl)
-}
+
+### Use conifer and angiosperm as a fixed effect ----
+
 
 # Model definitions
 model_list <- list(
@@ -303,7 +339,7 @@ results_glm <- NULL
 for (m in model_list) {
   cat("Running model:", m$name, "\n")
   
-  tbl <- run_model(
+  tbl <- run_glm(
     formula = m$formula,
     data    = m$data,
     method  = m$method,
@@ -557,7 +593,7 @@ ggplot(cont_effects, aes(x = trait, y = estimate, color = group)) +
   theme(axis.text.x = element_text(angle = 30, hjust = 1))
 dev.off()
 
-# Plot the mean and SE
+### Plot the mean and SE ----
 plot_df <- d
 
 all_df <- d
@@ -980,10 +1016,10 @@ resultsConifer <- subset(resultsConifer, term != "Intercept")
 resultsAngio <- subset(resultsAngio, term != "Intercept")
 
 colnames(resultsConifer) <- c(
-  "Trait", "Term", "Estimate", "Std_Error", "P_value", "Lambda", "N"
+  "Trait", "Predictor", "Estimate", "Std_Error", "P_value", "Lambda", "N"
 )
 colnames(resultsAngio) <- c(
-  "Trait", "Term", "Estimate", "Std_Error", "P_value", "Lambda", "N"
+  "Trait", "Predictor", "Estimate", "Std_Error", "P_value", "Lambda", "N"
 )
 
 table_grob <- tableGrob(
@@ -1000,7 +1036,6 @@ ggsave(
   width = 8,
   height = 4
 )
-dev.off()
 
 table_grob <- tableGrob(
   resultsAngio,
@@ -1016,4 +1051,105 @@ ggsave(
   width = 8,
   height = 4
 )
-dev.off()
+
+### including conifer/angiosperm as a fixed effect in a lm ----
+
+d$mastCycleAveLog <- log(d$mastCycleAve)
+# Model definitions
+model_list <- list(
+  list(name="Dispersal mode", formula=mastCycleAveLog ~ seedDispersal + group, data=d),
+  
+  list(name="Pollination mode", formula=mastCycleAveLog ~ pollination + group, data=d),
+  
+  list(name="Seed dormancy", formula=mastCycleAveLog ~ seedDormancy + group, data=d),
+  
+  list(name="Reproductive type", formula=mastCycleAveLog ~ typeMonoOrDio + group, data=d),
+  
+  list(name="Seed weight (log)",    formula=mastCycleAveLog ~ logSeedWeightStd + group, data=d),
+  
+  list(name="Fruit size (log)",     formula=mastCycleAveLog ~ logFruitStd + group, data=d),
+  
+  list(name="Seed size (log)",      formula=mastCycleAveLog ~ logSeedSizeStd + group, data=d),
+  
+  list(name="Oil content (%)",      formula=mastCycleAveLog ~ oilContent + group, data=d),
+  
+  list(name="Leaf longevity (years)", formula=mastCycleAveLog ~ leafLongevity + group, data=d),
+  
+  list(name="Drought tolerance",    formula=mastCycleAveLog ~ droughtTolerance + group, data=d)
+)
+
+# Run models
+
+results_lm <- NULL
+
+for (m in model_list) {
+  cat("Running model:", m$name, "\n")
+  
+  tbl <- run_lm(
+    formula = m$formula,
+    data    = m$data,
+    trait_name = m$name
+  )
+  
+  results_lm <- rbind(results_lm, tbl)
+}
+
+#Make a table to present the results:
+results_no_int <- results_lm[results_lm$term != "(Intercept)", ]
+
+##results_no_int$signif <- cut(results_no_int$p_value, breaks = c(-Inf, 0.001, 0.01, 0.05, 0.1, Inf), labels = c("***", "**", "*", ".", ""))
+
+results_no_int$estimate  <- round(results_no_int$estimate,  3)
+results_no_int$std_error <- round(results_no_int$std_error, 3)
+results_no_int$t_value   <- round(results_no_int$t_value,   2)
+results_no_int$p_value   <- round(results_no_int$p_value,  3)
+
+final_table <- results_no_int[, c(
+  "trait",
+  "term",
+  "estimate",
+  "std_error",
+  "p_value",
+  "N"
+)]
+
+colnames(final_table) <- c(
+  "Trait",
+  "Predictor",
+  "Estimate",
+  "SE",
+  "P",
+  "N"
+)
+
+
+final_table$Predictor <- gsub("logFruitStd",     "Fruit size (log, std)", final_table$Predictor)
+final_table$Predictor <- gsub("logSeedWeightStd","Seed weight (log, std)", final_table$Predictor)
+final_table$Predictor <- gsub("logSeedSizeStd",  "Seed size (log, std)", final_table$Predictor)
+final_table$Predictor <- gsub("seedDispersalbiotic",  "Biotic vs abiotic", final_table$Predictor)
+final_table$Predictor <- gsub("seedDispersalboth",  "Both vs abiotic", final_table$Predictor)
+final_table$Predictor <- gsub("pollinationwind",  "Wind vs animal pollination", final_table$Predictor)
+final_table$Predictor <- gsub("pollinationwind and animals",  "Wind+animal vs animal pollination", final_table$Predictor)
+final_table$Predictor <- gsub("seedDormancyY",  "Dormant vs non−dormant", final_table$Predictor)
+final_table$Predictor <- gsub("typeMonoOrDioMonoecious",  "Monoecious vs dioecious", final_table$Predictor)
+final_table$Predictor <- gsub("typeMonoOrDioPolygamous",  "Monoecious vs polygamous", final_table$Predictor)
+final_table$Predictor <- gsub("oilContent",  "Oil content (%)", final_table$Predictor)
+final_table$Predictor <- gsub("leafLongevity",  "Leaf longevity (years)", final_table$Predictor)
+final_table$Predictor <- gsub("droughtToleranceLow",  "Low vs high drought tolerance", final_table$Predictor)
+final_table$Predictor <- gsub("droughtToleranceModerate",  "Moderate vs high drought tolerance", final_table$Predictor) 
+final_table$Predictor <- gsub("groupconifer",  "Conifer compared to angiosperm", final_table$Predictor)
+
+table_grob <- tableGrob(
+  final_table,
+  rows = NULL,
+  theme = ttheme_minimal(
+    core = list(fg_params = list(fontsize = 9)),
+    colhead = list(fg_params = list(fontsize = 10, fontface = "bold"))
+  )
+)
+ggsave(
+  filename = "output/lmResults.pdf",
+  plot = table_grob,
+  width = 8,
+  height = 8
+)
