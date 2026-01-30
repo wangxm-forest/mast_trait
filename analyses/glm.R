@@ -29,10 +29,6 @@ d$latbi <- gsub(" ", "_", d$latbi)
 d <- d[!is.na(d$mastEvent), ]
 d$mastEvent <- ifelse(d$mastEvent == "Y", 1, 0)
 
-
-
-
-
 # Create group variable
 d$group <- ifelse(d$familyName %in% c("Pinaceae", "Taxodiaceae"),
                   "conifer", "angiosperm")
