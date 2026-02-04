@@ -98,14 +98,13 @@ tidy_phyloglm <- function(model) {
 # Extract key results from a glm object
 tidy_glm <- function(model) {
   s <- summary(model)$coefficients
-  N <- nrow(model$X)
   out <- data.frame(
     term = rownames(s),
     estimate = s[,1],
     std_error = s[,2],
     z_value = s[,3],
     p_value = s[,4],
-    N = N,
+    N = nobs(model),
     row.names = NULL
   )
   return(out)
@@ -118,7 +117,7 @@ tidy_lm <- function(model) {
     term = rownames(s),
     estimate = s[, 1],
     std_error = s[, 2],
-    t_value = s[, 3],
+    z_value = s[, 3],
     p_value = s[, 4],
     N = nobs(model),
     row.names = NULL
@@ -299,7 +298,6 @@ ggsave(
   width = 8,
   height = 4
 )
-dev.off()
 
 
 ### Use conifer and angiosperm as a fixed effect ----
@@ -370,7 +368,7 @@ get_legend <- function(myplot) {
   leg[[1]]
 }
 
-plot_prob_with_signif <- function(pred_df, trait_name, results_df, trait_var) {
+plot_log_with_signif <- function(pred_df, trait_name, results_df, trait_var) {
   
   # Filter results for this trait (exclude intercept)
   trait_results <- results_df %>%
@@ -390,16 +388,15 @@ plot_prob_with_signif <- function(pred_df, trait_name, results_df, trait_var) {
   }
   
   # Plot with significance as text above points
-  ggplot(pred_df, aes(x = trait_level, y = prob, color = group, group = group)) +
+  ggplot(pred_df, aes(x = trait_level, y = logit, color = group, group = group)) +
     geom_point(size = 3) +
     geom_text(aes(label = signif), vjust = -0.5, size = 5, show.legend = FALSE,
               position = position_dodge(width = 1)) +
     labs(
       x = trait_name,
-      y = "Predicted probability of masting"
+      y = "Effect size (log-odds)"
     ) + scale_color_manual(values = my_colors) +
-    custom_theme + 
-    theme(axis.text.x = element_text(angle = 30, hjust = 1))
+    theme_classic()
 }
 
 # Pollination
@@ -424,7 +421,8 @@ predPoll$logit <- predPoll$logit +
   ifelse(predPoll$trait_level == "wind", coefs["pollinationwind"], 0) +
   ifelse(predPoll$trait_level == "wind and animals", coefs["pollinationwind and animals"], 0)
 
-predPoll$prob <- invlogit(predPoll$logit)
+#transfer to probability
+#predPoll$prob <- invlogit(predPoll$logit)
 predPoll
 
 # Seed dispersal
@@ -449,7 +447,7 @@ predDisp$logit <- predDisp$logit +
   ifelse(predDisp$trait_level == "biotic", coefs["seedDispersalbiotic"], 0) +
   ifelse(predDisp$trait_level == "both", coefs["seedDispersalboth"], 0)
 
-predDisp$prob <- invlogit(predDisp$logit)
+#predDisp$prob <- invlogit(predDisp$logit)
 predDisp
 
 # Seed dormancy
@@ -473,7 +471,7 @@ predDorm$logit <- predDorm$logit +
 predDorm$logit <- predDorm$logit +
   ifelse(predDorm$trait_level == "Y", coefs["seedDormancyY"], 0)
 
-predDorm$prob <- invlogit(predDorm$logit)
+#predDorm$prob <- invlogit(predDorm$logit)
 predDorm
 
 # Mono/Dio
@@ -498,7 +496,7 @@ predMono$logit <- predMono$logit +
   ifelse(predMono$trait_level == "Monoecious", coefs["typeMonoOrDioMonoecious"], 0)+
   ifelse(predMono$trait_level == "Polygamous", coefs["typeMonoOrDioPolygamous"], 0)
 
-predMono$prob <- invlogit(predMono$logit)
+#predMono$prob <- invlogit(predMono$logit)
 predMono
 
 # Drought tolerance
@@ -523,42 +521,39 @@ preddrought$logit <- preddrought$logit +
   ifelse(preddrought$trait_level == "Low", coefs["droughtToleranceLow"], 0)+
   ifelse(preddrought$trait_level == "Moderate", coefs["droughtToleranceModerate"], 0)
 
-preddrought$prob <- invlogit(preddrought$logit)
+#preddrought$prob <- invlogit(preddrought$logit)
 preddrought
 
 #Plotting
-plotPoll <- plot_prob_with_signif(predPoll, 
+plotPoll <- plot_log_with_signif(predPoll, 
                       trait_name = "Pollination", 
                       results_df = results_glm, 
                       trait_var = "pollination") + theme(legend.position = "none")
 
-plotDisp <- plot_prob_with_signif(predDisp, 
+plotDisp <- plot_log_with_signif(predDisp, 
                       trait_name = "Seed dispersal", 
                       results_df = results_glm, 
-                      trait_var = "seedDispersal") + theme(legend.position = "none")
+                      trait_var = "seedDispersal") + theme(legend.position = "none",axis.title.y = element_blank()) 
 
-plotDorm <- plot_prob_with_signif(predDorm, 
+plotDorm <- plot_log_with_signif(predDorm, 
                       trait_name = "Seed dormancy", 
                       results_df = results_glm, 
-                      trait_var = "seedDormancy") + theme(legend.position = "none")
+                      trait_var = "seedDormancy") + theme(legend.position = "none",axis.title.y = element_blank())
 
-plotMono <- plot_prob_with_signif(predMono, 
+plotMono <- plot_log_with_signif(predMono, 
                       trait_name = "Mono/Dio", 
                       results_df = results_glm, 
-                      trait_var = "typeMonoOrDio") + theme(legend.position = "none")
+                      trait_var = "typeMonoOrDio") + theme(legend.position = "none",axis.title.y = element_blank())
 
-plotDrought <- plot_prob_with_signif(predMono, 
+plotDrought <- plot_log_with_signif(preddrought, 
                       trait_name = "Drought tolerance", 
                       results_df = results_glm, 
                       trait_var = "droughtTolerance")
 shared_legend <- get_legend(plotDrought)
-plotDrought <- plot_prob_with_signif(predMono, 
-                                     trait_name = "Drought tolerance", 
-                                     results_df = results_glm, 
-                                     trait_var = "droughtTolerance") + theme(legend.position = "none")
+plotDrought <- plotDrought + theme(legend.position = "none",axis.title.y = element_blank())
 
-pdf("output/figures/glmCat.pdf", width = 10, height = 10)
-grid.arrange(plotPoll, plotDisp, plotDorm, plotMono,plotDrought, shared_legend, nrow = 2, ncol = 3)
+pdf("output/figures/glmCat.pdf", width = 20, height = 5)
+grid.arrange(plotPoll, plotDisp, plotDorm, plotMono,plotDrought, shared_legend, ncol = 6)
 dev.off()
 ## Continuous traits
 

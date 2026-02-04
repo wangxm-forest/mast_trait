@@ -76,6 +76,8 @@ phyangio   <- drop.tip(phytree, setdiff(phytree$tip.label, angio$latbi))
 ## Make species x traits matrix ----
 matrixCon <- data.frame(conifer$droughtTolerance,conifer$typeMonoOrDio,conifer$seedDispersal,conifer$seedDormancy,conifer$mastEvent,conifer$leafLongevity,conifer$oilContent,conifer$logSeedWeightStd,conifer$logFruitStd,conifer$logSeedSizeStd,conifer$latbi)
 colnames(matrixCon) <- c('Drought Tolerance','Reproductive Type','Dispersal Mode','Dormancy','Mast','Leaf Longevity','Oil Content','Seed Weight','Fruit Size','Seed Size','Species')
+matrixConNoM <- data.frame(conifer$droughtTolerance,conifer$typeMonoOrDio,conifer$seedDispersal,conifer$seedDormancy,conifer$leafLongevity,conifer$oilContent,conifer$logSeedWeightStd,conifer$logFruitStd,conifer$logSeedSizeStd,conifer$latbi)
+colnames(matrixConNoM) <- c('Drought Tolerance','Reproductive Type','Dispersal Mode','Dormancy','Leaf Longevity','Oil Content','Seed Weight','Fruit Size','Seed Size','Species')
 
 ConNum <- c("Leaf Longevity","Oil Content","Seed Weight","Fruit Size","Seed Size")
 ConCat <- c("Drought Tolerance","Reproductive Type","Dispersal Mode","Dormancy","Mast")
@@ -87,6 +89,8 @@ colnames(matrixAngio) <- c('Drought Tolerance','Reproductive Type','Pollination'
 #levels(matrixAngio$Pollination)[levels(matrixAngio$Pollination) == "wind and animals"] <- "both"
 #matrixAngio$Pollination <- addNA(as.factor(matrixAngio$Pollination))
 #levels(matrixAngio$Pollination)[is.na(levels(matrixAngio$Pollination))] <- "Missing"
+matrixAngioNoM <- data.frame(angio$droughtTolerance,angio$typeMonoOrDio,angio$pollination,angio$seedDispersal,angio$seedDormancy, angio$leafLongevity,angio$oilContent,angio$logSeedWeightStd,angio$logFruitStd,angio$logSeedSizeStd,angio$latbi)
+colnames(matrixAngioNoM) <- c('Drought Tolerance','Reproductive Type','Pollination','Dispersal Mode','Dormancy','Leaf Longevity','Oil Content','Seed Weight','Fruit Size','Seed Size','Species')
 
 AngioNum <- c("Leaf Longevity","Oil Content","Seed Weight","Fruit Size","Seed Size")
 #AngioCat <- c("Drought Tolerance","Pollination","Reproductive Type","Dispersal Mode","Dormancy","Mast")
@@ -98,9 +102,17 @@ matrixCon$Species <- NULL
 
 rownames(matrixAngio)   <- matrixAngio$Species
 matrixAngio$Species <- NULL
+
+rownames(matrixConNoM) <- matrixConNoM$Species
+matrixConNoM$Species <- NULL
+
+rownames(matrixAngioNoM)   <- matrixAngioNoM$Species
+matrixAngioNoM$Species <- NULL
 ### Calculate the gower distance ----
 con_gower <- daisy(matrixCon, metric = "gower")
 angio_gower <- daisy(matrixAngio, metric = "gower")
+con_gower_noM <- daisy(matrixConNoM, metric = "gower")
+angio_gower_noM <- daisy(matrixAngioNoM, metric = "gower")
 
 ### NMDS ----
 set.seed(11223)
@@ -111,8 +123,15 @@ nmds_con <- metaMDS(
   autotransform = FALSE
 )
 
+nmds_con_noM <- metaMDS(
+  con_gower_noM,
+  k = 3,
+  trymax = 200,
+  autotransform = FALSE
+)
 
 nmds_con$stress
+nmds_con_noM$stress
 #nmds_con_vectors <- envfit(nmds_con, matrixCon, choices = c(1,2,3),permutations = 999, na.rm = TRUE)
 
 
@@ -122,6 +141,13 @@ conScores$"Reproductive" <- matrixCon$"Reproductive Type"
 conScores$"Dispersal" <- matrixCon$"Dispersal Mode"
 conScores$"Dormancy" <- matrixCon$"Dormancy"
 conScores$"Mast" <- matrixCon$"Mast"
+
+conScoresN <- as.data.frame(scores(nmds_con_noM))
+conScoresN$"Drought" <- matrixConNoM$"Drought Tolerance"
+conScoresN$"Reproductive" <- matrixConNoM$"Reproductive Type"
+conScoresN$"Dispersal" <- matrixConNoM$"Dispersal Mode"
+conScoresN$"Dormancy" <- matrixConNoM$"Dormancy"
+conScoresN$"Mast" <- matrixCon$"Mast"
 
 
 #enCoordCon <- as.data.frame(scores(nmds_con_vectors, "vectors")) * ordiArrowMul(nmds_con_vectors)
@@ -145,6 +171,20 @@ conDrought12 <- ggplot(data = conScores, aes(x = NMDS1, y = NMDS2)) +
         legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
         legend.text = element_text(size = 9, colour = "grey30")) + 
   labs(colour = "Drought Tolerance", shape = "Mast")
+
+
+conDrought12N <- ggplot(data = conScores_N, aes(x = NMDS1, y = NMDS2)) + 
+  geom_point(aes(colour = Drought, shape = Mast), size = 3, alpha = 0.6) + scale_shape_manual(values = c(1, 16)) +
+  scale_colour_manual(values = c("orange","steelblue", "darkgreen"), 
+                      na.value = "grey80") +
+  theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
+        axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
+        legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        legend.text = element_text(size = 9, colour = "grey30")) + 
+  labs(colour = "Drought Tolerance", shape = "Mast")
+
+conDrought12N
 
 conDrought23 <- ggplot(data = conScores, aes(x = NMDS2, y = NMDS3)) + 
   geom_point(aes(colour = Drought, shape = Mast), size = 3, alpha = 0.6) + scale_shape_manual(values = c(1, 16)) +
@@ -260,10 +300,17 @@ nmds_angio <- metaMDS(
   trymax = 100
 )
 
+nmds_angio_N <- metaMDS(
+  angio_gower_noM,
+  k = 3,
+  trymax = 100
+)
+
 #stressplot(nmds_angio)
 nmds_angio$stress
 
 angioScores <- as.data.frame(scores(nmds_angio))
+
 
 angioScores$"Drought" <- matrixAngio$"Drought Tolerance"
 angioScores$"Reproductive" <- matrixAngio$"Reproductive Type"
@@ -271,6 +318,13 @@ angioScores$"Dispersal" <- matrixAngio$"Dispersal Mode"
 angioScores$"Dormancy" <- matrixAngio$"Dormancy"
 angioScores$"Pollination" <- matrixAngio$"Pollination"
 angioScores$"Mast" <- matrixAngio$"Mast"
+
+angioScoresN <- as.data.frame(scores(nmds_angio_N))
+angioScoresN$"Drought" <- matrixAngio$"Drought Tolerance"
+angioScoresN$"Reproductive" <- matrixAngio$"Reproductive Type"
+angioScoresN$"Dispersal" <- matrixAngio$"Dispersal Mode"
+angioScoresN$"Dormancy" <- matrixAngio$"Dormancy"
+angioScoresN$"Mast" <- matrixAngio$"Mast"
 
 angioDrought12 <- ggplot(data = angioScores, aes(x = NMDS1, y = NMDS2)) + 
   geom_point(aes(colour = Drought, shape = Mast), size = 3, alpha = 0.6) + scale_shape_manual(values = c(1, 16)) +
@@ -410,6 +464,144 @@ grid.arrange(p1, p2, shared_legend1, p3, p4, shared_legend2, p5, p6, shared_lege
              widths = c(3, 3, 0.8))
 
 dev.off()
+# Conifer masting yes and masting no
+con12 <- ggplot(data = conScores, aes(x = NMDS1, y = NMDS2)) + 
+  geom_point(aes(colour = Mast), size = 3, alpha = 0.6)  +
+  scale_colour_manual(values = c("orange","steelblue"), 
+                      na.value = "grey80") +
+  theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
+        axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
+        legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        legend.text = element_text(size = 9, colour = "grey30")) + 
+  labs(colour = "Mast")
+
+con23 <- ggplot(data = conScores, aes(x = NMDS2, y = NMDS3)) + 
+  geom_point(aes(colour = Mast), size = 3, alpha = 0.6)  +
+  scale_colour_manual(values = c("orange","steelblue"), 
+                      na.value = "grey80") +
+  theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
+        axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
+        legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        legend.text = element_text(size = 9, colour = "grey30")) + 
+  labs(colour = "Mast")
+
+shared_legend1 <- get_legend(con12)
+p1 <- con12 + theme(legend.position = "none")
+p2 <- con23 + theme(legend.position = "none")
+
+pdf("output/figures/nmdsConYM.pdf", width = 10, height = 5)
+
+grid.arrange(p1, p2, shared_legend1,
+             ncol = 3, 
+             widths = c(3, 3, 0.8))
+
+dev.off()
+
+con12N <- ggplot(data = conScoresN, aes(x = NMDS1, y = NMDS2)) + 
+  geom_point(aes(colour = Mast), size = 3, alpha = 0.6)  +
+  scale_colour_manual(values = c("orange","steelblue"), 
+                      na.value = "grey80") +
+  theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
+        axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
+        legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        legend.text = element_text(size = 9, colour = "grey30")) + 
+  labs(colour = "Mast")
+
+con23N <- ggplot(data = conScoresN, aes(x = NMDS2, y = NMDS3)) + 
+  geom_point(aes(colour = Mast), size = 3, alpha = 0.6)  +
+  scale_colour_manual(values = c("orange","steelblue"), 
+                      na.value = "grey80") +
+  theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
+        axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
+        legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        legend.text = element_text(size = 9, colour = "grey30")) + 
+  labs(colour = "Mast")
+
+shared_legend1 <- get_legend(con23N)
+p1 <- con12N + theme(legend.position = "none")
+p2 <- con23N + theme(legend.position = "none")
+
+pdf("output/figures/nmdsConNM.pdf", width = 10, height = 5)
+
+grid.arrange(p1, p2, shared_legend1,
+             ncol = 3, 
+             widths = c(3, 3, 0.8))
+
+dev.off()
+# Angiosperm masting yes and masting no
+
+angio12 <- ggplot(data = angioScores, aes(x = NMDS1, y = NMDS2)) + 
+  geom_point(aes(colour = Mast), size = 3, alpha = 0.6)  +
+  scale_colour_manual(values = c("orange","steelblue"), 
+                      na.value = "grey80") +
+  theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
+        axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
+        legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        legend.text = element_text(size = 9, colour = "grey30")) + 
+  labs(colour = "Mast")
+
+angio23 <- ggplot(data = angioScores, aes(x = NMDS2, y = NMDS3)) + 
+  geom_point(aes(colour = Mast), size = 3, alpha = 0.6)  +
+  scale_colour_manual(values = c("orange","steelblue"), 
+                      na.value = "grey80") +
+  theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
+        axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
+        legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        legend.text = element_text(size = 9, colour = "grey30")) + 
+  labs(colour = "Mast")
+
+shared_legend1 <- get_legend(angio12)
+p1 <- angio12 + theme(legend.position = "none")
+p2 <- angio23 + theme(legend.position = "none")
+
+pdf("output/figures/nmdsAngioYM.pdf", width = 10, height = 5)
+
+grid.arrange(p1, p2, shared_legend1,
+             ncol = 3, 
+             widths = c(3, 3, 0.8))
+
+dev.off()
+
+angio12N <- ggplot(data = angioScoresN, aes(x = NMDS1, y = NMDS2)) + 
+  geom_point(aes(colour = Mast), size = 3, alpha = 0.6)  +
+  scale_colour_manual(values = c("orange","steelblue"), 
+                      na.value = "grey80") +
+  theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
+        axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
+        legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        legend.text = element_text(size = 9, colour = "grey30")) + 
+  labs(colour = "Mast")
+
+angio23N <- ggplot(data = angioScoresN, aes(x = NMDS2, y = NMDS3)) + 
+  geom_point(aes(colour = Mast), size = 3, alpha = 0.6)  +
+  scale_colour_manual(values = c("orange","steelblue"), 
+                      na.value = "grey80") +
+  theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
+        axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
+        legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
+        legend.text = element_text(size = 9, colour = "grey30")) + 
+  labs(colour = "Mast")
+
+shared_legend1 <- get_legend(angio23N)
+p1 <- angio12N + theme(legend.position = "none")
+p2 <- angio23N + theme(legend.position = "none")
+
+pdf("output/figures/nmdsAngioNM.pdf", width = 10, height = 5)
+
+grid.arrange(p1, p2, shared_legend1,
+             ncol = 3, 
+             widths = c(3, 3, 0.8))
+
+dev.off()
+
 
 phylomorphospace(
   phyconifer,
