@@ -305,25 +305,25 @@ ggsave(
 
 # Model definitions
 model_list <- list(
-  list(name="Seed dispersal", formula=mastEvent ~ seedDispersal + group, data=d, method="brglmFit"),
+  list(name="Seed dispersal", formula=mastEvent ~ seedDispersal * group, data=d, method="brglmFit"),
  
-  list(name="Pollination", formula=mastEvent ~ pollination + group, data=d, method="brglmFit"),
+  list(name="Pollination", formula=mastEvent ~ pollination * group, data=d, method="brglmFit"),
   
-  list(name="Seed dormancy", formula=mastEvent ~ seedDormancy + group, data=d, method="brglmFit"),
+  list(name="Seed dormancy", formula=mastEvent ~ seedDormancy * group, data=d, method="brglmFit"),
  
-  list(name="Mono/Dio", formula=mastEvent ~ typeMonoOrDio + group, data=d, method="brglmFit"),
+  list(name="Mono/Dio", formula=mastEvent ~ typeMonoOrDio * group, data=d, method="brglmFit"),
  
-  list(name="Seed weight (log)",    formula=mastEvent ~ logSeedWeightStd + group, data=d, method="brglmFit"),
+  list(name="Seed weight (log)",    formula=mastEvent ~ logSeedWeightStd * group, data=d, method="brglmFit"),
   
-  list(name="Fruit size (log)",     formula=mastEvent ~ logFruitStd + group, data=d, method="brglmFit"),
+  list(name="Fruit size (log)",     formula=mastEvent ~ logFruitStd * group, data=d, method="brglmFit"),
   
-  list(name="Seed size (log)",      formula=mastEvent ~ logSeedSizeStd + group, data=d, method="brglmFit"),
+  list(name="Seed size (log)",      formula=mastEvent ~ logSeedSizeStd * group, data=d, method="brglmFit"),
   
-  list(name="Oil content %",      formula=mastEvent ~ oilContent + group, data=d, method="brglmFit"),
+  list(name="Oil content %",      formula=mastEvent ~ oilContent * group, data=d, method="brglmFit"),
   
-  list(name="Leaf longevity (years)", formula=mastEvent ~ leafLongevity + group, data=d, method="brglmFit"),
+  list(name="Leaf longevity (years)", formula=mastEvent ~ leafLongevity * group, data=d, method="brglmFit"),
   
-  list(name="Drought tolerance",    formula=mastEvent ~ droughtTolerance + group, data=d, method="brglmFit")
+  list(name="Drought tolerance",    formula=mastEvent ~ droughtTolerance * group, data=d, method="brglmFit")
 )
 
 # Run models
@@ -368,7 +368,7 @@ get_legend <- function(myplot) {
   leg[[1]]
 }
 
-plot_log_with_signif <- function(pred_df, trait_name, results_df, trait_var) {
+plot_pred_with_signif <- function(pred_df, trait_name, results_df, trait_var) {
   
   # Filter results for this trait (exclude intercept)
   trait_results <- results_df %>%
@@ -388,164 +388,170 @@ plot_log_with_signif <- function(pred_df, trait_name, results_df, trait_var) {
   }
   
   # Plot with significance as text above points
-  ggplot(pred_df, aes(x = trait_level, y = logit, color = group, group = group)) +
+  ggplot(pred_df, aes(x = trait_level, y = prob, color = group, group = group)) +
     geom_point(size = 3) +
     geom_text(aes(label = signif), vjust = -0.5, size = 5, show.legend = FALSE,
               position = position_dodge(width = 1)) +
     labs(
       x = trait_name,
-      y = "Effect size (log-odds)"
+      y = "Probability"
     ) + scale_color_manual(values = my_colors) +
     theme_classic()
 }
 
 # Pollination
 poll <- subset(results_glm, trait == "Pollination")
-poll
-
 coefs <- setNames(poll$estimate, poll$term)
-coefs
 
 predPoll <- expand.grid(
   trait_level = c("animal", "wind", "wind and animals"),
   group = c("angiosperm", "conifer")
 )
-predPoll
 
-predPoll$logit <- coefs["(Intercept)"]
+predPoll$logit <- NA
 
-predPoll$logit <- predPoll$logit +
-  ifelse(predPoll$group == "conifer", coefs["groupconifer"], 0)
+predPoll$logit[predPoll$group == "angiosperm" &
+                 predPoll$trait_level == "animal"] <- coefs["(Intercept)"]
 
-predPoll$logit <- predPoll$logit +
-  ifelse(predPoll$trait_level == "wind", coefs["pollinationwind"], 0) +
-  ifelse(predPoll$trait_level == "wind and animals", coefs["pollinationwind and animals"], 0)
+predPoll$logit[predPoll$group == "angiosperm" &
+                 predPoll$trait_level == "wind"] <-
+  coefs["(Intercept)"] + coefs["pollinationwind"]
 
-#transfer to probability
-#predPoll$prob <- invlogit(predPoll$logit)
-predPoll
+predPoll$logit[predPoll$group == "angiosperm" &
+                 predPoll$trait_level == "wind and animals"] <-
+  coefs["(Intercept)"] + coefs["pollinationwind and animals"]
+
+predPoll$logit[predPoll$group == "conifer" &
+                 predPoll$trait_level == "wind"] <-
+  coefs["(Intercept)"] + coefs["groupconifer"]
+
+predPoll$prob <- invlogit(predPoll$logit)
 
 # Seed dispersal
 disp <- subset(results_glm, trait == "Seed dispersal")
-disp
-
 coefs <- setNames(disp$estimate, disp$term)
-coefs
 
 predDisp <- expand.grid(
   trait_level = c("abiotic", "biotic", "both"),
   group = c("angiosperm", "conifer")
 )
-predDisp
 
-predDisp$logit <- coefs["(Intercept)"]
+predDisp$logit <- NA
 
-predDisp$logit <- predDisp$logit +
-  ifelse(predDisp$group == "conifer", coefs["groupconifer"], 0)
+predDisp$logit[predDisp$group == "angiosperm" & predDisp$trait_level == "abiotic"] <- coefs["(Intercept)"]
 
-predDisp$logit <- predDisp$logit +
-  ifelse(predDisp$trait_level == "biotic", coefs["seedDispersalbiotic"], 0) +
-  ifelse(predDisp$trait_level == "both", coefs["seedDispersalboth"], 0)
+# Angiosperm effects
+predDisp$logit[predDisp$group == "angiosperm" & predDisp$trait_level == "biotic"] <- 
+  coefs["(Intercept)"] + coefs["seedDispersalbiotic"]
 
-#predDisp$prob <- invlogit(predDisp$logit)
-predDisp
+predDisp$logit[predDisp$group == "angiosperm" & predDisp$trait_level == "both"] <- 
+  coefs["(Intercept)"] + coefs["seedDispersalboth"]
 
+# Conifer effects
+predDisp$logit[predDisp$group == "conifer" & predDisp$trait_level == "abiotic"] <- 
+  coefs["(Intercept)"] + coefs["groupconifer"]
+
+predDisp$logit[predDisp$group == "conifer" & predDisp$trait_level == "biotic"] <- 
+  coefs["(Intercept)"] + coefs["groupconifer"] +
+  coefs["seedDispersalbiotic"] + coefs["seedDispersalbiotic:groupconifer"]
+
+predDisp$logit[predDisp$group == "conifer" & predDisp$trait_level == "both"] <- 
+  coefs["(Intercept)"] + coefs["groupconifer"] +
+  coefs["seedDispersalboth"] + coefs["seedDispersalboth:groupconifer"]
+
+predDisp$prob <- invlogit(predDisp$logit)
 # Seed dormancy
 dorm <- subset(results_glm, trait == "Seed dormancy")
-dorm
-
 coefs <- setNames(dorm$estimate, dorm$term)
-coefs
 
 predDorm <- expand.grid(
   trait_level = c("N","Y"),
   group = c("angiosperm", "conifer")
 )
-predDorm
 
-predDorm$logit <- coefs["(Intercept)"]
+predDorm$logit <- NA
 
-predDorm$logit <- predDorm$logit +
-  ifelse(predDorm$group == "conifer", coefs["groupconifer"], 0)
+predDorm$logit[predDorm$group == "angiosperm" &
+                 predDorm$trait_level == "N"] <- coefs["(Intercept)"]
+predDorm$logit[predDorm$group == "angiosperm" &
+                 predDorm$trait_level == "Y"] <- coefs["(Intercept)"] + coefs["seedDormancyY"]
+predDorm$logit[predDorm$group == "conifer" &
+                 predDorm$trait_level == "N"] <- coefs["(Intercept)"] + coefs["groupconifer"]
+predDorm$logit[predDorm$group == "conifer" &
+                 predDorm$trait_level == "Y"] <- coefs["(Intercept)"] + coefs["seedDormancyY"] + coefs["groupconifer"] + coefs["seedDormancyY:groupconifer"]
 
-predDorm$logit <- predDorm$logit +
-  ifelse(predDorm$trait_level == "Y", coefs["seedDormancyY"], 0)
-
-#predDorm$prob <- invlogit(predDorm$logit)
-predDorm
+predDorm$prob <- invlogit(predDorm$logit)
 
 # Mono/Dio
 mono <- subset(results_glm, trait == "Mono/Dio")
-mono
-
 coefs <- setNames(mono$estimate, mono$term)
-coefs
 
 predMono <- expand.grid(
   trait_level = c("Dioecious", "Monoecious", "Polygamous"),
   group = c("angiosperm", "conifer")
 )
-predMono
 
-predMono$logit <- coefs["(Intercept)"]
+predMono$logit <- NA
+predMono$logit[predMono$group == "angiosperm" &
+                 predMono$trait_level == "Dioecious"] <- coefs["(Intercept)"]
+predMono$logit[predMono$group == "angiosperm" &
+                 predMono$trait_level == "Monoecious"] <- coefs["(Intercept)"] + coefs["typeMonoOrDioMonoecious"]
+predMono$logit[predMono$group == "angiosperm" &
+                 predMono$trait_level == "Polygamous"] <- coefs["(Intercept)"] + coefs["typeMonoOrDioPolygamous"]
+predMono$logit[predMono$group == "conifer" &
+                 predMono$trait_level == "Dioecious"] <- coefs["(Intercept)"] + coefs["groupconifer"]
+predMono$logit[predMono$group == "conifer" &
+                 predMono$trait_level == "Monoecious"] <- coefs["(Intercept)"] + coefs["groupconifer"] + coefs["typeMonoOrDioMonoecious:groupconifer"]
 
-predMono$logit <- predMono$logit +
-  ifelse(predMono$group == "conifer", coefs["groupconifer"], 0)
-
-predMono$logit <- predMono$logit +
-  ifelse(predMono$trait_level == "Monoecious", coefs["typeMonoOrDioMonoecious"], 0)+
-  ifelse(predMono$trait_level == "Polygamous", coefs["typeMonoOrDioPolygamous"], 0)
-
-#predMono$prob <- invlogit(predMono$logit)
-predMono
+predMono$prob <- invlogit(predMono$logit)
 
 # Drought tolerance
 drought <- subset(results_glm, trait == "Drought tolerance")
-drought
-
 coefs <- setNames(drought$estimate, drought$term)
-coefs
 
 preddrought <- expand.grid(
   trait_level = c("High", "Low", "Moderate"),
   group = c("angiosperm", "conifer")
 )
-preddrought
 
-preddrought$logit <- coefs["(Intercept)"]
+preddrought$logit <- NA
+preddrought$logit[preddrought$group == "angiosperm" &
+                    preddrought$trait_level == "High"] <- coefs["(Intercept)"]
+preddrought$logit[preddrought$group == "angiosperm" &
+                    preddrought$trait_level == "Low"] <- coefs["(Intercept)"] + coefs["droughtToleranceLow"]
+preddrought$logit[preddrought$group == "angiosperm" &
+                    preddrought$trait_level == "Moderate"] <- coefs["(Intercept)"] + coefs["droughtToleranceModerate"]
+preddrought$logit[preddrought$group == "conifer" &
+                    preddrought$trait_level == "High"] <- coefs["(Intercept)"] + coefs["groupconifer"]
+preddrought$logit[preddrought$group == "conifer" &
+                    preddrought$trait_level == "Low"] <- coefs["(Intercept)"] + coefs["groupconifer"] + coefs["droughtToleranceLow:groupconifer"]
+preddrought$logit[preddrought$group == "conifer" &
+                    preddrought$trait_level == "Moderate"] <- coefs["(Intercept)"] + coefs["groupconifer"] + coefs["droughtToleranceModerate:groupconifer"]
 
-preddrought$logit <- preddrought$logit +
-  ifelse(preddrought$group == "conifer", coefs["groupconifer"], 0)
-
-preddrought$logit <- preddrought$logit +
-  ifelse(preddrought$trait_level == "Low", coefs["droughtToleranceLow"], 0)+
-  ifelse(preddrought$trait_level == "Moderate", coefs["droughtToleranceModerate"], 0)
-
-#preddrought$prob <- invlogit(preddrought$logit)
-preddrought
+preddrought$prob <- invlogit(preddrought$logit)
 
 #Plotting
-plotPoll <- plot_log_with_signif(predPoll, 
+plotPoll <- plot_pred_with_signif(predPoll, 
                       trait_name = "Pollination", 
                       results_df = results_glm, 
                       trait_var = "pollination") + theme(legend.position = "none")
 
-plotDisp <- plot_log_with_signif(predDisp, 
+plotDisp <- plot_pred_with_signif(predDisp, 
                       trait_name = "Seed dispersal", 
                       results_df = results_glm, 
                       trait_var = "seedDispersal") + theme(legend.position = "none",axis.title.y = element_blank()) 
 
-plotDorm <- plot_log_with_signif(predDorm, 
+plotDorm <- plot_pred_with_signif(predDorm, 
                       trait_name = "Seed dormancy", 
                       results_df = results_glm, 
                       trait_var = "seedDormancy") + theme(legend.position = "none",axis.title.y = element_blank())
 
-plotMono <- plot_log_with_signif(predMono, 
+plotMono <- plot_pred_with_signif(predMono, 
                       trait_name = "Mono/Dio", 
                       results_df = results_glm, 
                       trait_var = "typeMonoOrDio") + theme(legend.position = "none",axis.title.y = element_blank())
 
-plotDrought <- plot_log_with_signif(preddrought, 
+plotDrought <- plot_pred_with_signif(preddrought, 
                       trait_name = "Drought tolerance", 
                       results_df = results_glm, 
                       trait_var = "droughtTolerance")
