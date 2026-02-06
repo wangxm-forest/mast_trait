@@ -343,10 +343,10 @@ for (m in model_list) {
   results_glm <- rbind(results_glm, tbl)
 }
 
-#write.csv(results_glm, "output/glmResults.csv", row.names = FALSE)
+write.csv(results_glm, "output/glmResults.csv", row.names = FALSE)
 
 ####Plot the probability for all traits####
-invlogit <- function(x) 1 / (1 + exp(-x))
+#invlogit <- function(x) 1 / (1 + exp(-x))
 
 my_colors <- c("angiosperm" = "#95B958",
                "conifer"    = "#6194BF")
