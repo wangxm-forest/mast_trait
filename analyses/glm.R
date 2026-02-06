@@ -51,20 +51,20 @@ angio$seedDispersal <- as.factor(angio$seedDispersal)
 angio$seedDormancy <- as.factor(angio$seedDormancy)
 
 # log10-transform + scale
-log_scale <- function(x) scale(log10(x))
+#log_scale <- function(x) scale(log10(x))
 
 # Continuous traits
-d$logSeedWeightStd <- log_scale(d$seedWeights)
-conifer$logSeedWeightStd <- log_scale(conifer$seedWeights)
-angio$logSeedWeightStd   <- log_scale(angio$seedWeights)
+d$logSeedWeight <- log(d$seedWeights)
+conifer$logSeedWeight <- log(conifer$seedWeights)
+angio$logSeedWeight   <- log(angio$seedWeights)
 
-d$logFruitStd <- log_scale(d$fruitSizeAve)
-conifer$logFruitStd <- log_scale(conifer$fruitSizeAve)
-angio$logFruitStd   <- log_scale(angio$fruitSizeAve)
+d$logFruit <- log(d$fruitSizeAve)
+conifer$logFruit <- log(conifer$fruitSizeAve)
+angio$logFruit <- log(angio$fruitSizeAve)
 
-d$logSeedSizeStd <- log_scale(d$seedSizeAve)
-conifer$logSeedSizeStd <- log_scale(conifer$seedSizeAve)
-angio$logSeedSizeStd   <- log_scale(angio$seedSizeAve)
+d$logSeedSize <- log(d$seedSizeAve)
+conifer$logSeedSize <- log(conifer$seedSizeAve)
+angio$logSeedSize   <- log(angio$seedSizeAve)
 
 phytree$node.label <- NULL
 
@@ -313,11 +313,11 @@ model_list <- list(
  
   list(name="Mono/Dio", formula=mastEvent ~ typeMonoOrDio * group, data=d, method="brglmFit"),
  
-  list(name="Seed weight (log)",    formula=mastEvent ~ logSeedWeightStd * group, data=d, method="brglmFit"),
+  list(name="Seed weight (log)",    formula=mastEvent ~ logSeedWeight * group, data=d, method="brglmFit"),
   
-  list(name="Fruit size (log)",     formula=mastEvent ~ logFruitStd * group, data=d, method="brglmFit"),
+  list(name="Fruit size (log)",     formula=mastEvent ~ logFruit * group, data=d, method="brglmFit"),
   
-  list(name="Seed size (log)",      formula=mastEvent ~ logSeedSizeStd * group, data=d, method="brglmFit"),
+  list(name="Seed size (log)",      formula=mastEvent ~ logSeedSize * group, data=d, method="brglmFit"),
   
   list(name="Oil content %",      formula=mastEvent ~ oilContent * group, data=d, method="brglmFit"),
   
@@ -368,7 +368,7 @@ get_legend <- function(myplot) {
   leg[[1]]
 }
 
-plot_pred_with_signif <- function(pred_df, trait_name, results_df, trait_var) {
+plot_log_with_signif <- function(pred_df, trait_name, results_df, trait_var) {
   
   # Filter results for this trait (exclude intercept)
   trait_results <- results_df %>%
@@ -388,13 +388,13 @@ plot_pred_with_signif <- function(pred_df, trait_name, results_df, trait_var) {
   }
   
   # Plot with significance as text above points
-  ggplot(pred_df, aes(x = trait_level, y = prob, color = group, group = group)) +
+  ggplot(pred_df, aes(x = trait_level, y = logit, color = group, group = group)) +
     geom_point(size = 3) +
     geom_text(aes(label = signif), vjust = -0.5, size = 5, show.legend = FALSE,
               position = position_dodge(width = 1)) +
     labs(
       x = trait_name,
-      y = "Probability"
+      y = "Log odds"
     ) + scale_color_manual(values = my_colors) +
     theme_classic()
 }
@@ -421,11 +421,6 @@ predPoll$logit[predPoll$group == "angiosperm" &
                  predPoll$trait_level == "wind and animals"] <-
   coefs["(Intercept)"] + coefs["pollinationwind and animals"]
 
-predPoll$logit[predPoll$group == "conifer" &
-                 predPoll$trait_level == "wind"] <-
-  coefs["(Intercept)"] + coefs["groupconifer"]
-
-predPoll$prob <- invlogit(predPoll$logit)
 
 # Seed dispersal
 disp <- subset(results_glm, trait == "Seed dispersal")
@@ -459,7 +454,6 @@ predDisp$logit[predDisp$group == "conifer" & predDisp$trait_level == "both"] <-
   coefs["(Intercept)"] + coefs["groupconifer"] +
   coefs["seedDispersalboth"] + coefs["seedDispersalboth:groupconifer"]
 
-predDisp$prob <- invlogit(predDisp$logit)
 # Seed dormancy
 dorm <- subset(results_glm, trait == "Seed dormancy")
 coefs <- setNames(dorm$estimate, dorm$term)
@@ -480,7 +474,6 @@ predDorm$logit[predDorm$group == "conifer" &
 predDorm$logit[predDorm$group == "conifer" &
                  predDorm$trait_level == "Y"] <- coefs["(Intercept)"] + coefs["seedDormancyY"] + coefs["groupconifer"] + coefs["seedDormancyY:groupconifer"]
 
-predDorm$prob <- invlogit(predDorm$logit)
 
 # Mono/Dio
 mono <- subset(results_glm, trait == "Mono/Dio")
@@ -502,8 +495,6 @@ predMono$logit[predMono$group == "conifer" &
                  predMono$trait_level == "Dioecious"] <- coefs["(Intercept)"] + coefs["groupconifer"]
 predMono$logit[predMono$group == "conifer" &
                  predMono$trait_level == "Monoecious"] <- coefs["(Intercept)"] + coefs["groupconifer"] + coefs["typeMonoOrDioMonoecious:groupconifer"]
-
-predMono$prob <- invlogit(predMono$logit)
 
 # Drought tolerance
 drought <- subset(results_glm, trait == "Drought tolerance")
@@ -528,30 +519,28 @@ preddrought$logit[preddrought$group == "conifer" &
 preddrought$logit[preddrought$group == "conifer" &
                     preddrought$trait_level == "Moderate"] <- coefs["(Intercept)"] + coefs["groupconifer"] + coefs["droughtToleranceModerate:groupconifer"]
 
-preddrought$prob <- invlogit(preddrought$logit)
-
 #Plotting
-plotPoll <- plot_pred_with_signif(predPoll, 
+plotPoll <- plot_log_with_signif(predPoll, 
                       trait_name = "Pollination", 
                       results_df = results_glm, 
                       trait_var = "pollination") + theme(legend.position = "none")
 
-plotDisp <- plot_pred_with_signif(predDisp, 
+plotDisp <- plot_log_with_signif(predDisp, 
                       trait_name = "Seed dispersal", 
                       results_df = results_glm, 
                       trait_var = "seedDispersal") + theme(legend.position = "none",axis.title.y = element_blank()) 
 
-plotDorm <- plot_pred_with_signif(predDorm, 
+plotDorm <- plot_log_with_signif(predDorm, 
                       trait_name = "Seed dormancy", 
                       results_df = results_glm, 
                       trait_var = "seedDormancy") + theme(legend.position = "none",axis.title.y = element_blank())
 
-plotMono <- plot_pred_with_signif(predMono, 
+plotMono <- plot_log_with_signif(predMono, 
                       trait_name = "Mono/Dio", 
                       results_df = results_glm, 
                       trait_var = "typeMonoOrDio") + theme(legend.position = "none",axis.title.y = element_blank())
 
-plotDrought <- plot_pred_with_signif(preddrought, 
+plotDrought <- plot_log_with_signif(preddrought, 
                       trait_name = "Drought tolerance", 
                       results_df = results_glm, 
                       trait_var = "droughtTolerance")
@@ -562,32 +551,126 @@ pdf("output/figures/glmCat.pdf", width = 20, height = 5)
 grid.arrange(plotPoll, plotDisp, plotDorm, plotMono,plotDrought, shared_legend, ncol = 6)
 dev.off()
 ## Continuous traits
+#Seed weight
+mean <- mean(d$logSeedWeight, na.rm =TRUE)
+seedweight <- subset(results_glm, trait == "Seed weight (log)")
+coefs <- setNames(seedweight$estimate, seedweight$term)
 
-cont_effects <- results_glm %>%
-  filter(trait %in% c("Seed weight (log)", "Fruit size (log)", "Seed size (log)","Leaf longevity (years)", "Oil content %"))%>%
-  filter(!term %in% "(Intercept)")
+seedweight <- expand.grid(
+  mean = mean,
+  group = c("angiosperm", "conifer")
+)
 
-cont_effects <- cont_effects %>%
-  mutate(
-    lower = estimate - 1.96 * std_error,
-    upper = estimate + 1.96 * std_error,
-    signif = ifelse(p_value < 0.05, "*", "ns"),
-    type = ifelse(grepl("group", term), "Group effect", "Trait effect"),
-    group = ifelse(grepl("groupconifer", term), "conifer", "angiosperm")
-  )
+seedweight$logit <- with(seedweight,
+                   coefs["(Intercept)"] +
+                     coefs["logSeedWeight"] * mean +
+                     ifelse(group == "conifer", coefs["groupconifer"], 0) +
+                     ifelse(group == "conifer", coefs["logSeedWeight:groupconifer"] * mean, 0)
+)
+
+#Seed size
+mean <- mean(d$logSeedSize, na.rm =TRUE)
+seedsize <- subset(results_glm, trait == "Seed size (log)")
+coefs <- setNames(seedsize$estimate, seedsize$term)
+
+seedsize <- expand.grid(
+  mean = mean,
+  group = c("angiosperm", "conifer")
+)
+
+seedsize$logit <- with(seedsize,
+                   coefs["(Intercept)"] +
+                     coefs["logSeedSize"] * mean +
+                     ifelse(group == "conifer", coefs["groupconifer"], 0) +
+                     ifelse(group == "conifer", coefs["logSeedSize:groupconifer"] * mean, 0)
+)
+
+
+#Fruit size
+mean <- mean(d$logFruit, na.rm =TRUE)
+fruitsize <- subset(results_glm, trait == "Fruit size (log)")
+coefs <- setNames(fruitsize$estimate, fruitsize$term)
+
+fruitsize <- expand.grid(
+  mean = mean,
+  group = c("angiosperm", "conifer")
+)
+
+fruitsize$logit <- with(fruitsize,
+                       coefs["(Intercept)"] +
+                         coefs["logFruit"] * mean +
+                         ifelse(group == "conifer", coefs["groupconifer"], 0) +
+                         ifelse(group == "conifer", coefs["logFruit:groupconifer"] * mean, 0)
+)
+
+
+#Oil content
+mean <- mean(d$oilContent, na.rm =TRUE)
+oilcontent <- subset(results_glm, trait == "Oil content %")
+coefs <- setNames(oilcontent$estimate, oilcontent$term)
+
+oilcontent <- expand.grid(
+  mean = mean,
+  group = c("angiosperm", "conifer")
+)
+
+oilcontent$logit <- with(oilcontent,
+                        coefs["(Intercept)"] +
+                          coefs["oilContent"] * mean +
+                          ifelse(group == "conifer", coefs["groupconifer"], 0) +
+                          ifelse(group == "conifer", coefs["oilContent:groupconifer"] * mean, 0)
+)
+
+#leaf longevity
+mean <- mean(d$leafLongevity, na.rm =TRUE)
+leaflongevity <- subset(results_glm, trait == "Leaf longevity (years)")
+coefs <- setNames(leaflongevity$estimate, leaflongevity$term)
+
+leaflongevity <- expand.grid(
+  mean = mean,
+  group = c("angiosperm", "conifer")
+)
+
+leaflongevity$logit <- with(leaflongevity,
+                         coefs["(Intercept)"] +
+                           coefs["leafLongevity"] * mean +
+                           ifelse(group == "conifer", coefs["groupconifer"], 0) +
+                           ifelse(group == "conifer", coefs["leafLongevity:groupconifer"] * mean, 0)
+)
+
+plot_continuous_traits_combined <- function(pred_df) {
+  
+  ggplot(pred_df, aes(x = trait_name, y = logit, color = group, group = group)) +
+    geom_point(position = position_dodge(width = 0.5), size = 3) +
+    geom_text(aes(label = signif),
+              position = position_dodge(width = 0.5),
+              vjust = -0.8,
+              size = 5,
+              show.legend = FALSE) +
+    labs(
+      x = "Trait",
+      y = "Log odds"
+    ) +
+    scale_color_manual(values = my_colors) +
+    theme_classic()
+}
+
+# Add trait_name column to each pred_df
+seedweight$trait_name <- "Seed weight (log)"
+seedsize$trait_name <- "Seed size (log)"
+fruitsize$trait_name <- "Fruit size (log)"
+oilcontent$trait_name <- "Oil content %"
+leaflongevity$trait_name <- "Leaf longevity (years)"
+
+# Combine into one dataframe
+pred_all <- bind_rows(seedweight, seedsize, fruitsize, oilcontent, leaflongevity)
+pred_all$signif <- c("*","*","ns","ns","ns","ns","ns","ns","ns","ns")
+
+plot_combined <- plot_continuous_traits_combined(pred_all)
+plot_combined
+
 pdf("output/figures/glmCon.pdf", width = 10, height = 10)
-ggplot(cont_effects, aes(x = trait, y = estimate, color = group)) +
-  geom_point(size = 3, position = position_dodge(width = 0.5)) +
-  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2,
-                position = position_dodge(width = 0.5)) +
-  geom_text(aes(label = signif), vjust = -1, size = 5, show.legend = FALSE,
-            position = position_dodge(width = 1)) +
-  labs(
-    x = "Trait / Group",
-    y = "Effect size (log-odds)"
-  ) +
-  custom_theme + scale_color_manual(values = my_colors) +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+grid.arrange(plotSeedweight, plotSeedsize, plotFruitsize, plotOilcontent, plotLeaflongevity, shared_legend, ncol = 6)
 dev.off()
 
 ### Plot the mean and SE ----
