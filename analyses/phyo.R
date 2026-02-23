@@ -5,6 +5,7 @@
 library(ape)
 library(phytools)
 library(viridisLite)
+library(geiger)
 # housekeeping
 rm(list=ls()) 
 options(stringsAsFactors = FALSE)
@@ -441,5 +442,91 @@ legend(
   bty = "n"
 )
 
+dev.off()
+
+# Quercus tree
+phy.plants<-read.tree("C:/PhD/Project/egret/analyses/input/ALLMB.tre")
+quercus <- grep("^Quercus", phy.plants$tip.label, value = TRUE)
+quercusTree <- keep.tip(phy.plants, quercus)
+
+silvicsQuercus <- d[grep("^Quercus", d$latbi), ]
+quercusY <- silvicsQuercus$latbi[silvicsQuercus$mastEvent == "Y"]
+quercusN  <- silvicsQuercus$latbi[silvicsQuercus$mastEvent == "N"]
+tipColors <- rep("black", length(quercusTree$tip.label))
+tipColors[quercusTree$tip.label %in% quercusY] <- "#C43142"
+tipColors[quercusTree$tip.label %in% quercusN] <- "#387E46"
+
+pdf("output/figures/quercusTree.pdf", width = 50, height = 50)
+
+plot(
+  quercusTree, type = 'fan', label.offset = 0.2,
+  cex = 0.6, no.margin = TRUE, tip.color = tipColors
+)
+
+legend("bottomright",
+       legend = c("Mast", "Non-mast"),
+       col = c("#C43142", "#387E46"),
+       pch = 19,
+       bty = "n",
+       cex = 5)
+
+dev.off()
+
+# Seed Weight
+weight <- log(d$seedWeights)
+names(weight) <- d$latbi
+commonSp <- intersect(silvicsTree$tip.label, names(weight))
+
+
+weight <- weight[commonSp]
+weight <- weight[!is.na(weight)]
+weightTree <- drop.tip(silvicsTree,
+                        setdiff(silvicsTree$tip.label,
+                                names(weight)))
+name.check(weightTree, weight)
+
+weightK <- phylosig(weightTree,
+                    weight,
+                     method = "K",
+                     test = TRUE)
+
+weightMap <- contMap(weightTree,
+                     weight,
+                     plot = FALSE)
+
+weightMap <- setMap(weightMap,
+                    colors = colorRampPalette(c("navy", "white", "darkred"))(100))
+
+weightDf <- d[!is.na(d$seedWeights), ]
+spY <- weightDf$latbi[weightDf$mastEvent == "Y"]
+spN  <- weightDf$latbi[weightDf$mastEvent == "N"]
+tipColors <- rep("black", length(weightMap$tree$tip.label))
+tipColors[weightMap$tree$tip.label %in% spY] <- "#C43142"
+tipColors[weightMap$tree$tip.label %in% spN] <- "#387E46"
+
+pdf("output/figures/weightTree.pdf", width = 10, height = 10)
+plot(weightMap,
+     type = "fan", fsize = 0.6,
+     lwd = 1)
+
+tiplabels(pch = 19, 
+          col = tipColors,
+          cex = 0.6)
+
+mtext(paste0("Blomberg's K = ",
+             round(weightK$K, 3),
+             "\nP = ",
+             round(weightK$P, 4)),
+      side = 3,
+      line = -3,
+      adj = 0.02,
+      cex = 0.8)
+
+legend("topright",
+       legend = c("Mast", "Non-mast", "No Information"),
+       col = c("#C43142", "#387E46", "Black"),
+       pch = 19,
+       bty = "n",
+       cex = 0.8)
 dev.off()
 

@@ -158,9 +158,9 @@ conifer_list <- list(
   list(name="Seed dispersal", formula=mastEvent ~ seedDispersal, data=conifer, phy=phyconifer, method="logistic_MPLE"),
   list(name="Seed dormancy",  formula=mastEvent ~ seedDormancy, data=conifer, phy=phyconifer, method="logistic_MPLE"),
   list(name="Reproductive type",       formula=mastEvent ~ typeMonoOrDio, data=conifer, phy=phyconifer, method="logistic_MPLE"),
-  list(name="Seed weight (log)",    formula=mastEvent ~ logSeedWeightStd, data=conifer, phy=phyconifer, method="logistic_IG10"),
-  list(name="Fruit size (log)",     formula=mastEvent ~ logFruitStd, data=conifer, phy=phyconifer, method="logistic_IG10"),
-  list(name="Seed size (log)",      formula=mastEvent ~ logSeedSizeStd, data=conifer, phy=phyconifer, method="logistic_IG10"),
+  list(name="Seed weight (log)",    formula=mastEvent ~ logSeedWeight, data=conifer, phy=phyconifer, method="logistic_IG10"),
+  list(name="Fruit size (log)",     formula=mastEvent ~ logFruit, data=conifer, phy=phyconifer, method="logistic_IG10"),
+  list(name="Seed size (log)",      formula=mastEvent ~ logSeedSize, data=conifer, phy=phyconifer, method="logistic_IG10"),
   list(name="Leaf longevity (years)", formula=mastEvent ~ leafLongevity, data=conifer, phy=phyconifer, method="logistic_IG10"),
   list(name="Drought tolerance",    formula=mastEvent ~ droughtTolerance, data=conifer, phy=phyconifer, method="logistic_IG10")
 )
@@ -170,9 +170,9 @@ list(name="Dispersal mode",   formula=mastEvent ~ seedDispersal, data=angio,   p
 list(name="Pollination mode",   formula=mastEvent ~ pollination, data=angio,   phy=phyangio,   method="logistic_MPLE"),
 list(name="Seed dormancy",    formula=mastEvent ~ seedDormancy, data=angio,   phy=phyangio,   method="logistic_MPLE"),
 list(name="Reproductive type",         formula=mastEvent ~ typeMonoOrDio, data=angio,   phy=phyangio,   method="logistic_MPLE"),
-list(name="Seed weight (log)",      formula=mastEvent ~ logSeedWeightStd, data=angio,   phy=phyangio,   method="logistic_IG10"),
-list(name="Fruit size (log)",       formula=mastEvent ~ logFruitStd, data=angio,   phy=phyangio,   method="logistic_IG10"),
-list(name="Seed size (log)",        formula=mastEvent ~ logSeedSizeStd, data=angio,   phy=phyangio,   method="logistic_IG10"),
+list(name="Seed weight (log)",      formula=mastEvent ~ logSeedWeight, data=angio,   phy=phyangio,   method="logistic_IG10"),
+list(name="Fruit size (log)",       formula=mastEvent ~ logFruit, data=angio,   phy=phyangio,   method="logistic_IG10"),
+list(name="Seed size (log)",        formula=mastEvent ~ logSeedSize, data=angio,   phy=phyangio,   method="logistic_IG10"),
 list(name="Oil content (%)",      formula=mastEvent ~ oilContent, data=angio, phy=phyangio, method="logistic_IG10"),
 list(name="Leaf longevity (years)",   formula=mastEvent ~ leafLongevity, data=angio,   phy=phyangio,   method="logistic_IG10"),
 list(name="Drought tolerance",      formula=mastEvent ~ droughtTolerance, data=angio,   phy=phyangio,   method="logistic_IG10")
@@ -1233,3 +1233,114 @@ ggsave(
   width = 8,
   height = 8
 )
+
+# Plot the raw data with the phyloglm results
+getAnnotation <- function(trait_name, model_results) {
+  df <- model_results[model_results$Trait == trait_name, ]
+  n_text <- paste0("N=", unique(df$N))
+  alpha_text <- paste0("Phylo α=", unique(df$'Phylo α'))
+  
+  # Check if there are multiple predictors (categorical trait)
+  if(length(unique(df$Predictor)) > 1){
+    # Collapse each predictor with its P-value
+    pred_p <- paste(df$Predictor,  ": Estimate=", round(df$Estimate, 3), "±", round(df$SE, 3), " P=", round(df$P, 3), sep="", collapse="; ")
+    label <- paste(n_text, alpha_text, pred_p, sep="\n")
+  } else {
+    # Numeric trait: just show P
+    label <- paste(n_text, alpha_text, " P=", round(df$P[1],3), sep="\n")
+  }
+  
+  return(label)
+}
+
+getAnnotation("Dispersal mode", angio_results)
+# "n=50, P=0.03,0.12"
+
+dispData <- angio[, c("mastEvent", "seedDispersal")]
+dispData$mastEvent <- as.factor(dispData$mastEvent)
+dispData$seedDispersal <- as.factor(dispData$seedDispersal)
+# Create ggplot object
+disp <- ggplot(dispData, aes(x = seedDispersal, fill = mastEvent)) +
+  geom_bar(position = "dodge", colour = "black") +
+  annotate("text", x = 2.5, y = max(table(dispData$seedDispersal))*1.05, 
+           label = getAnnotation("Dispersal mode", angio_results),
+           size = 4) +
+  scale_fill_manual(values = c("0"="#1b9e77", "1"="#d95f02")) +
+  labs(y = "Count", x = NULL) +
+  theme_classic(base_size = 12) +
+  theme(legend.position = "none")
+
+dormData <- angio[, c("mastEvent", "seedDormancy")]
+dormData$mastEvent <- as.factor(dormData$mastEvent)
+dormData$seedDormancy <- as.factor(dormData$seedDormancy)
+# Create ggplot object
+dorm <- ggplot(dormData, aes(x = seedDormancy, fill = mastEvent)) +
+  geom_bar(position = "dodge", colour = "black") +
+  scale_fill_manual(values = c("0"="#1b9e77", "1"="#d95f02")) +
+  labs(y = "Count", x = NULL) +
+  theme_classic(base_size = 12) +
+  theme(legend.position = "none")
+
+weightData <- angio[, c("mastEvent", "logSeedWeight")]
+weightData$mastEvent <- as.factor(weightData$mastEvent)
+
+weight <- ggplot(weightData, aes(x = mastEvent, y = logSeedWeight, fill = mastEvent)) +
+  geom_violin(trim = FALSE, alpha = 0.5, colour = "black") +
+  geom_point(position = position_jitter(width = 0.08), size = 1.5, alpha = 0.7) +
+  scale_fill_manual(values = c("0"="#1b9e77", "1"="#d95f02")) +
+  labs(y = "Seed Weight (log)", x = NULL) +
+  theme_classic(base_size = 12) +
+  theme(legend.position = "none")
+
+fruitData <- angio[, c("mastEvent", "logFruit")]
+fruitData$mastEvent <- as.factor(fruitData$mastEvent)
+
+fruit <- ggplot(fruitData, aes(x = mastEvent, y = logFruit, fill = mastEvent)) +
+  geom_violin(trim = FALSE, alpha = 0.5, colour = "black") +
+  geom_point(position = position_jitter(width = 0.08), size = 1.5, alpha = 0.7) +
+  scale_fill_manual(values = c("0"="#1b9e77", "1"="#d95f02")) +
+  labs(y = "Fruit size (log)", x = NULL) +
+  theme_classic(base_size = 12) +
+  theme(legend.position = "none")
+
+oilData <- angio[, c("mastEvent", "oilContent")]
+oilData$mastEvent <- as.factor(oilData$mastEvent)
+
+oil <- ggplot(oilData, aes(x = mastEvent, y = oilContent, fill = mastEvent)) +
+  geom_violin(trim = FALSE, alpha = 0.5, colour = "black") +
+  geom_point(position = position_jitter(width = 0.08), size = 1.5, alpha = 0.7) +
+  scale_fill_manual(values = c("0"="#1b9e77", "1"="#d95f02")) +
+  labs(y = "Oil content %", x = NULL) +
+  theme_classic(base_size = 12) +
+  theme(legend.position = "none")
+
+pollData <- angio[, c("mastEvent", "pollination")]
+pollData$mastEvent <- as.factor(pollData$mastEvent)
+pollData$pollination <- as.factor(pollData$pollination)
+# Create ggplot object
+poll <- ggplot(pollData, aes(x = pollination, fill = mastEvent)) +
+  geom_bar(position = "dodge", colour = "black") +
+  scale_fill_manual(values = c("0"="#1b9e77", "1"="#d95f02")) +
+  labs(y = "Count", x = NULL) +
+  theme_classic(base_size = 12) +
+  theme(legend.position = "none")
+
+repData <- angio[, c("mastEvent", "typeMonoOrDio")]
+repData$mastEvent <- as.factor(repData$mastEvent)
+repData$typeMonoOrDio <- as.factor(repData$typeMonoOrDio)
+# Create ggplot object
+rep <- ggplot(repData, aes(x = typeMonoOrDio, fill = mastEvent)) +
+  geom_bar(position = "dodge", colour = "black") +
+  scale_fill_manual(values = c("0"="#1b9e77", "1"="#d95f02")) +
+  labs(y = "Count", x = NULL) +
+  theme_classic(base_size = 12) +
+  theme(legend.position = "none")
+
+predation <- weight + fruit + oil + disp + dorm
+pollination <- poll + rep + plot_layout(ncol = 3, widths = c(1,1,1))
+
+final <- predation / pollination + plot_layout(heights = c(1,0.5))
+library(patchwork)
+library(gridExtra)
+
+grid.arrange(plot_numeric, plot_categorical, ncol = 1)
