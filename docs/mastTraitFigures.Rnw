@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage{Sweave}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{indentfirst}
+\usepackage[top=1.0in, bottom=1.0in, left=1.1in, right=1.1in]{geometry}
+
+\title{Mast-Trait}
+\author{Xiaomao Wang}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/rawDataWithStatsAngio.pdf}
+\caption{Relationships between plant traits (a) Seed weight; (b) Fruit size; (c) Oil content; (d) Dispersal mode; (e) Seed dormancy; (f) Pollination mode; (g) Reproductive mode; (h) Drought tolerance; (i) Leaf longevity and masting based on phylogenetic logistic regression for angiosperm species. Raw data are shown for each trait: continuous traits are displayed as violin plots, and categorical traits as histograms. Overlaid model summaries are derived from phylogenetic logistic regression models fitted using phyloglm. For each model, we report sample size (N), regression coefficient (Estimate), phylogenetic signal parameter ($\alpha$), and associated P-value. (a)-(e) are traits related to predation satiation hypothesis; (f), (g) are traits related to pollination coupling hypothesis; (h), (i) are traits related to resource matching hypothesis. Legends are shared across panels.}
+\end{figure}
+
+\newpage
+% ------------------------------------------
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/rawDataWithStatsCon.pdf}
+\caption{Relationships between plant traits (a) Seed weight; (b) Fruit size; (c) Oil content; (d) Dispersal mode; (e) Seed dormancy; (f) Pollination mode; (g) Reproductive mode; (h) Drought tolerance; (i) Leaf longevity and masting based on phylogenetic logistic regression for gymnosperm species. Raw data are shown for each trait: continuous traits are displayed as violin plots, and categorical traits as histograms. Overlaid model summaries are derived from phylogenetic logistic regression models fitted using phyloglm. For each model, we report sample size (N), regression coefficient (Estimate), phylogenetic signal parameter ($\alpha$), and associated P-value. (a)-(e) are traits related to predation satiation hypothesis; (f), (g) are traits related to pollination coupling hypothesis; (h), (i) are traits related to resource matching hypothesis. Legends are shared across panels.}
+\end{figure}
+
+\newpage
+% ------------------------------------------
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/nmdsFinal.pdf}
+\caption{Non-metric multidimensional scaling (NMDS) of trait composition for angiosperm and conifer species. Each point represents a species, with position determined by NMDS axes. Points are colored by drought tolerance, filled by masting or not, shaped by reproductive type, sized by seed weight. Panels are arranged as (a) angiosperm NMDS1–NMDS2, (b) angiosperm NMDS2–NMDS3, (c) conifer NMDS1–NMDS2, and (d) conifer NMDS2–NMDS3.}
+\end{figure}
+\end{document}

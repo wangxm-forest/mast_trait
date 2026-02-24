@@ -322,15 +322,22 @@ For the continuous response variable, I used the mean mast cycle obtained from S
     \includegraphics[width=1\textwidth]{../output/pglsAngio.pdf}
     \label{tab:pglsangiotable}
 \end{table}
+
 \newpage
 % ------------------------------------------
-Just to be consistant with the binary trait response variable, I also ran lm using conifer and angiosperm as a fixed effect in the model. Nothing is significant except for conifer vs angiosperm:
-\begin{table}[h]
-    \caption{lm results, SE: standard error; P: p-value; N: number of effective sample size}
-    \includegraphics[width=1\textwidth]{../output/lmResults.pdf}
-    \label{tab:lmtable}
-\end{table}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/rawDataWithStatsAngio.pdf}
+\caption{Effect sizes (log-odds) of continuous traits (fruit size, leaf longevity, oil content, seed size, and seed weight) on the probability of being a strong masting species. Points represent estimated coefficients, with error bars showing standard errors. Significance levels are indicated as follows: ns = not significant; * = p < 0.05.}
+\end{figure}
 
+\newpage
+% ------------------------------------------
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/rawDataWithStatsCon.pdf}
+\caption{Effect sizes (log-odds) of continuous traits (fruit size, leaf longevity, oil content, seed size, and seed weight) on the probability of being a strong masting species. Points represent estimated coefficients, with error bars showing standard errors. Significance levels are indicated as follows: ns = not significant; * = p < 0.05.}
+\end{figure}
 
 
 \end{document}
