@@ -104,12 +104,6 @@ angio_gower_noM <- daisy(matrixAngioNoM, metric = "gower")
 
 ### NMDS ----
 set.seed(11223)
-nmds_con <- metaMDS(
-  con_gower,
-  k = 3,
-  trymax = 200,
-  autotransform = FALSE
-)
 
 nmds_con_noM <- metaMDS(
   con_gower_noM,
@@ -118,17 +112,6 @@ nmds_con_noM <- metaMDS(
   autotransform = FALSE
 )
 
-nmds_con$stress
-nmds_con_noM$stress
-#nmds_con_vectors <- envfit(nmds_con, matrixCon, choices = c(1,2,3),permutations = 999, na.rm = TRUE)
-
-
-conScores <- as.data.frame(scores(nmds_con))
-conScores$"Drought" <- matrixCon$"Drought Tolerance"
-conScores$"Reproductive" <- matrixCon$"Reproductive Type"
-conScores$"Dispersal" <- matrixCon$"Dispersal Mode"
-conScores$"Dormancy" <- matrixCon$"Dormancy"
-conScores$"Mast" <- matrixCon$"Mast"
 
 conScoresN <- as.data.frame(scores(nmds_con_noM))
 conScoresN$"Drought" <- matrixConNoM$"Drought Tolerance"
@@ -140,11 +123,7 @@ conScoresN$"Weight" <- matrixCon$"Seed Weight"
 
 
 set.seed(11223)
-nmds_angio <- metaMDS(
-  angio_gower,
-  k = 3,
-  trymax = 100
-)
+
 
 nmds_angio_N <- metaMDS(
   angio_gower_noM,
@@ -153,17 +132,7 @@ nmds_angio_N <- metaMDS(
 )
 
 #stressplot(nmds_angio)
-nmds_angio$stress
 
-angioScores <- as.data.frame(scores(nmds_angio))
-
-
-angioScores$"Drought" <- matrixAngio$"Drought Tolerance"
-angioScores$"Reproductive" <- matrixAngio$"Reproductive Type"
-angioScores$"Dispersal" <- matrixAngio$"Dispersal Mode"
-angioScores$"Dormancy" <- matrixAngio$"Dormancy"
-angioScores$"Pollination" <- matrixAngio$"Pollination"
-angioScores$"Mast" <- matrixAngio$"Mast"
 
 angioScoresN <- as.data.frame(scores(nmds_angio_N))
 angioScoresN$"Drought" <- matrixAngio$"Drought Tolerance"
@@ -312,7 +281,7 @@ angioN12 <- ggplot(angioScoresN, aes(NMDS1, NMDS2)) +
     shape  = "Reproductive Type",
     size   = "Seed Weight",
     alpha  = "Mast"
-  )  +
+  ) +
   theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
         panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
         axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
@@ -368,6 +337,26 @@ angioN23 <- ggplot(angioScoresN, aes(NMDS2, NMDS3)) +
         legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
         legend.text = element_text(size = 9, colour = "grey30"))
 
+conN12 <- conN12 + theme(legend.position = "none")
+conN23 <- conN23 + theme(legend.position = "none")
+angioN12 <- angioN12 + theme(legend.position = "none") 
+angio <- angioN12 + angioN23
+conifer <- conN12 + conN23
+
+final <- angio / conifer +
+  plot_layout(heights = c(1, 1), guides = "collect") +
+  plot_annotation(tag_levels = "a") &
+  theme(
+    legend.position = "right",
+    plot.tag = element_text(face = "bold", size = 8)
+  )
+
+ggsave(
+  filename = "output/figures/nmdsFinal.pdf",
+  plot = final,
+  width = 12,
+  height = 10
+)
 
 phylomorphospace(
   phyconifer,
