@@ -1238,18 +1238,45 @@ ggsave(
 ###Plot the raw data with the phyloglm results ----
 ## Angiosperm
 getAnnotation <- function(trait_name, model_results) {
+  
   df <- model_results[model_results$Trait == trait_name, ]
-  n_text <- paste0("N=", unique(df$N))
-  alpha_text <- paste0("Phylo α=", unique(df$'Phylo α'))
-  p_text <- paste0(df$Predictor,  " :Estimate=", round(df$Estimate, 3), "±", round(df$SE, 3)," P=", round(df$P[1],3))
-  # Check if there are multiple predictors (categorical trait)
+  
+  # Always keep alpha
+  alpha_text <- paste0("Phylo α = ", unique(df$`Phylo α`))
+  
+  # Keep only predictors with P < 0.5
+  df_sig <- df[df$P < 0.05, ]
+  
+  # If none meet threshold → return only alpha
+  if(nrow(df_sig) == 0){
+    return(alpha_text)
+  }
+  
+  # If multiple predictors (categorical trait)
   if(length(unique(df$Predictor)) > 1){
-    # Collapse each predictor with its P-value
-    pred_p <- paste(df$Predictor,  ": Estimate=", round(df$Estimate, 3), "±", round(df$SE, 3), " P=", round(df$P, 3), sep="", collapse="\n ")
-    label <- paste(n_text, alpha_text, pred_p, sep="\n")
+    
+    pred_text <- paste(
+      df_sig$Predictor,
+      ": Estimate=", round(df_sig$Estimate, 2),
+      " ± ", round(df_sig$SE, 2),
+      " P=", round(df_sig$P, 2),
+      sep = "",
+      collapse = "\n"
+    )
+    
+    label <- paste(alpha_text, pred_text, sep = "\n")
+    
   } else {
-    # Numeric trait: just show P
-    label <- paste(n_text, alpha_text, p_text, sep="\n")
+    
+    # Single predictor
+    pred_text <- paste0(
+      df_sig$Predictor,
+      ": Estimate=", round(df_sig$Estimate, 2),
+      " ± ", round(df_sig$SE, 2),
+      " P=", round(df_sig$P, 2)
+    )
+    
+    label <- paste(alpha_text, pred_text, sep = "\n")
   }
   
   return(label)
@@ -1264,9 +1291,8 @@ dispData$seedDispersal <- as.factor(dispData$seedDispersal)
 # Create ggplot object
 disp <- ggplot(dispData, aes(x = seedDispersal, fill = mastEvent)) +
   geom_bar(position = "dodge", colour = "black") +
-  annotate("text", x = 2.5, y = 28, 
-           label = getAnnotation("Dispersal mode", angio_results),
-           size = 2) +
+  annotate("text", x = 2.5, y = c(27,28), 
+           label = c( "Nmast = 51, Nnon = 47", getAnnotation("Dispersal mode", angio_results)), size = 2) +
   labs(y = "Count", x = NULL) +
   theme_classic(base_size = 12) + scale_x_discrete(labels = c("abiotic" = "Abiotic", "biotic" = "Biotic", "both"="Both")) + scale_fill_manual(
     name = "Masting", 
