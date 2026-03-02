@@ -1270,7 +1270,6 @@ getAnnotation <- function(trait_name, model_results) {
     
     # Single predictor
     pred_text <- paste0(
-      df_sig$Predictor,
       ": Estimate=", round(df_sig$Estimate, 2),
       " ± ", round(df_sig$SE, 2),
       " P=", round(df_sig$P, 2)
@@ -1306,9 +1305,11 @@ dormData$seedDormancy <- as.factor(dormData$seedDormancy)
 # Create ggplot object
 dorm <- ggplot(dormData, aes(x = seedDormancy, fill = mastEvent)) +
   geom_bar(position = "dodge", colour = "black") +
-  annotate("text", x = 2, y = 42, 
-           label = getAnnotation("Seed dormancy", angio_results),
-           size = 2) +
+  annotate("text",
+           x = 2,
+           y = c(37, 38),
+           label = c("Nmast = 51, Nnon = 47",
+                     getAnnotation("Seed dormancy", angio_results)),size = 2) +
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#387E46", "1"="#C43142"), 
@@ -1323,8 +1324,8 @@ weightData$mastEvent <- as.factor(weightData$mastEvent)
 weight <- ggplot(weightData, aes(x = mastEvent, y = logSeedWeight, fill = mastEvent)) +
   geom_violin(trim = FALSE, alpha = 0.5, colour = "black") +
   geom_point(position = position_jitter(width = 0.08), size = 1.5, alpha = 0.7)  +
-  annotate("text", x = 1.5, y = 16, 
-           label = getAnnotation("Seed weight (log)", angio_results),
+  annotate("text", x = 1.5, y = c(15,16), 
+           label = c("Nmast = 51, Nnon = 47",getAnnotation("Seed weight (log)", angio_results)),
            size = 2) +
   scale_fill_manual(
     name = "Masting", 
@@ -1338,9 +1339,9 @@ fruitData$mastEvent <- as.factor(fruitData$mastEvent)
 
 fruit <- ggplot(fruitData, aes(x = mastEvent, y = logFruit, fill = mastEvent)) +
   geom_violin(trim = FALSE, alpha = 0.5, colour = "black") +
-  annotate("text", x = 1.5, y = 5.5, 
-           label = getAnnotation("Fruit size (log)", angio_results),
-           size = 2) +
+  annotate("text", x = 1.5, y = c(5.5,6.5), 
+                             label = c("Nmast = 48, Nnon = 40",getAnnotation("Fruit size (log)", angio_results)),
+                             size = 2) +
   geom_point(position = position_jitter(width = 0.08), size = 1.5, alpha = 0.7) +
   scale_fill_manual(
     name = "Masting", 
@@ -1355,9 +1356,9 @@ oilData$mastEvent <- as.factor(oilData$mastEvent)
 
 oil <- ggplot(oilData, aes(x = mastEvent, y = oilContent, fill = mastEvent)) +
   geom_violin(trim = FALSE, alpha = 0.5, colour = "black") +
-  annotate("text", x = 1.5, y = 110, 
-           label = getAnnotation("Oil content (%)", angio_results),
-           size = 2) +
+annotate("text", x = 1.5, y = c(105,110), 
+         label = c("Nmast = 5, Nnon = 14",getAnnotation("Oil content (%)", angio_results)),
+         size = 2)+
   geom_point(position = position_jitter(width = 0.08), size = 1.5, alpha = 0.7) +
   scale_fill_manual(
     name = "Masting", 
