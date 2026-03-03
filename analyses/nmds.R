@@ -13,7 +13,7 @@ library(gridExtra)
 rm(list = ls())
 options(stringsAsFactors = FALSE)
 
-setwd("C:/PhD/Project/PhD_thesis/mast_trait")
+# setwd("C:/PhD/Project/PhD_thesis/mast_trait")
 
 # Extract legend from p_all
 get_legend <- function(myplot) {
@@ -142,6 +142,13 @@ angioScoresN$"Dormancy" <- matrixAngio$"Dormancy"
 angioScoresN$"Mast" <- matrixAngio$"Mast"
 angioScoresN$"Weight" <- matrixAngio$"Seed Weight"
 
+conScoresN$Drought <- addNA(conScoresN$Drought)
+levels(conScoresN$Drought)[is.na(levels(conScoresN$Drought))] <- 'Unknown'
+conScoresN$Drought <- factor(conScoresN$Drought, levels = c("High", "Moderate", "Low", "Unknown"))
+
+angioScoresN$Drought <- addNA(angioScoresN$Drought)
+levels(angioScoresN$Drought)[is.na(levels(angioScoresN$Drought))] <- 'Unknown'
+angioScoresN$Drought <- factor(angioScoresN$Drought, levels = c("High", "Moderate", "Low", "Unknown"))
 
 conN12 <- ggplot(conScoresN, aes(NMDS1, NMDS2)) +
   geom_point(aes(
@@ -149,24 +156,27 @@ conN12 <- ggplot(conScoresN, aes(NMDS1, NMDS2)) +
     fill   = interaction(Drought, Mast),
     shape  = Reproductive,
     size   = Weight,
-    alpha  = factor(Mast)
-  ),
-  stroke = 1.2
+    alpha  = factor(Mast),
+    stroke = 1-as.numeric(Mast)/2+0.1
+  )
+  # stroke = 1.2
   ) +
   scale_shape_manual(values = c(21, 22), guide = "none") +   # fillable shapes only
-  scale_colour_manual(values = c("#95B958","#F4D166","#6194BF"),guide = "none") +
+  scale_colour_manual(values = c("#95B958","#6194BF","#F4D166", "grey"), guide = 'none') +
   scale_fill_manual(
     values = c(
       "Low.0"    = "white",
       "Moderate.0" = "white",
       "High.0"   = "white",
+      "Unknown.0"    = "white",
       "Low.1"   = "#F4D166",
       "Moderate.1"= "#6194BF",
-      "High.1"  = "#95B958"
-    ), guide = "none"
-  ) + scale_alpha_manual(
+      "High.1"  = "#95B958",
+      "Unknown.1"    = "grey"
+    )
+  )  + scale_alpha_manual(
     name = "Mast",
-    values = c("0" = 1, "1" = 1),   # keep plot fully opaque
+    values = c("0" = 1, "1" = 0.8),   # keep plot fully opaque
     guide = guide_legend(
       override.aes = list(
         shape = 21,
@@ -176,7 +186,14 @@ conN12 <- ggplot(conScoresN, aes(NMDS1, NMDS2)) +
       )
     )
   ) +
-  scale_size_continuous(range = c(1, 10), guide = "none") +
+  # scale_size_continuous(range = c(1, 10), guide = "none") +
+  scale_size_area(breaks = c(1,5,9), max_size = 4, limits = c(1,10)) +
+  labs(
+    colour = "Drought Tolerance",
+    shape  = "Reproductive Type",
+    size   = "Seed Weight",
+    alpha  = "Mast"
+  ) +
   theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
         panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
         axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
@@ -191,24 +208,27 @@ conN23 <- ggplot(conScoresN, aes(NMDS2, NMDS3)) +
     fill   = interaction(Drought, Mast),
     shape  = Reproductive,
     size   = Weight,
-    alpha  = factor(Mast)
-  ),
-  stroke = 1.2
+    alpha  = factor(Mast),
+    stroke = 1-as.numeric(Mast)/2+0.1
+  )
+  # stroke = 1.2
   ) +
   scale_shape_manual(values = c(21, 22), guide = "none") +   # fillable shapes only
-  scale_colour_manual(values = c("#95B958","#F4D166","#6194BF"),guide = "none") +
+  scale_colour_manual(values = c("#95B958","#6194BF","#F4D166", "grey"), guide = 'none') +
   scale_fill_manual(
     values = c(
       "Low.0"    = "white",
       "Moderate.0" = "white",
       "High.0"   = "white",
+      "Unknown.0"    = "white",
       "Low.1"   = "#F4D166",
       "Moderate.1"= "#6194BF",
-      "High.1"  = "#95B958"
-    ), guide = "none"
+      "High.1"  = "#95B958",
+      "Unknown.1"    = "grey"
+    )
   ) + scale_alpha_manual(
     name = "Mast",
-    values = c("0" = 1, "1" = 1),   # keep plot fully opaque
+    values = c("0" = 1, "1" = 0.8),   # keep plot fully opaque
     guide = guide_legend(
       override.aes = list(
         shape = 21,
@@ -218,7 +238,14 @@ conN23 <- ggplot(conScoresN, aes(NMDS2, NMDS3)) +
       )
     )
   ) +
-  scale_size_continuous(range = c(1, 10), guide = "none") +
+  # scale_size_continuous(range = c(1, 10), guide = "none") +
+  scale_size_area(breaks = c(1,5,9), max_size = 4, limits = c(1,10)) +
+  labs(
+    colour = "Drought Tolerance",
+    shape  = "Reproductive Type",
+    size   = "Seed Weight",
+    alpha  = "Mast"
+  ) +
   theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
         panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
         axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
@@ -227,31 +254,34 @@ conN23 <- ggplot(conScoresN, aes(NMDS2, NMDS3)) +
 
 # Angiosperm masting yes and masting no
 
-
 angioN12 <- ggplot(angioScoresN, aes(NMDS1, NMDS2)) +
   geom_point(aes(
     colour = Drought,
     fill   = interaction(Drought, Mast),
     shape  = Reproductive,
     size   = Weight,
-    alpha  = factor(Mast)
-  ),
-  stroke = 1.2
+    alpha  = factor(Mast),
+    stroke = 1-as.numeric(Mast)/2+0.1
+  )
+  #stroke = 1.2
   ) +
-  scale_shape_manual(values = c(21, 22, 23), na.value = 24) +   # fillable shapes only
-  scale_colour_manual(values = c("#95B958","#F4D166","#6194BF")) +
+  scale_shape_manual(values = c(21, 22, 23), na.value = 24,
+                     guide = guide_legend(override.aes = list(size = 3))) +   # fillable shapes only
+  scale_colour_manual(values = c("#95B958","#6194BF","#F4D166", "grey")) +
   scale_fill_manual(
     values = c(
       "Low.0"    = "white",
       "Moderate.0" = "white",
       "High.0"   = "white",
+      "Unknown.0"    = "white",
       "Low.1"   = "#F4D166",
       "Moderate.1"= "#6194BF",
-      "High.1"  = "#95B958"
+      "High.1"  = "#95B958",
+      "Unknown.1"    = "grey"
     )
   ) + scale_alpha_manual(
     name = "Mast",
-    values = c("0" = 1, "1" = 1),   # keep plot fully opaque
+    values = c("0" = 1, "1" = 0.8),   # keep plot fully opaque
     guide = guide_legend(
       override.aes = list(
         shape = 21,
@@ -261,7 +291,8 @@ angioN12 <- ggplot(angioScoresN, aes(NMDS1, NMDS2)) +
       )
     )
   ) +
-  scale_size_continuous(range = c(1, 10)) +
+  # scale_size_continuous(range = c(1, 10)) +
+  scale_size_area(breaks = c(1,5,9), max_size = 4, limits = c(1,10)) +
   guides(fill = "none") + 
   labs(
     colour = "Drought Tolerance",
@@ -283,24 +314,28 @@ angioN23 <- ggplot(angioScoresN, aes(NMDS2, NMDS3)) +
     fill   = interaction(Drought, Mast),
     shape  = Reproductive,
     size   = Weight,
-    alpha  = factor(Mast)
-  ),
-  stroke = 1.2
+    alpha  = factor(Mast),
+    stroke = 1-as.numeric(Mast)/2+0.1
+  )
+  # stroke = 1.2
   ) +
-  scale_shape_manual(values = c(21, 22, 23), na.value = 24) +   # fillable shapes only
-  scale_colour_manual(values = c("#95B958","#F4D166","#6194BF")) +
+  scale_shape_manual(values = c(21, 22, 23), na.value = 24,
+                     guide = guide_legend(override.aes = list(size = 3))) +   # fillable shapes only
+  scale_colour_manual(values = c("#95B958","#6194BF","#F4D166", "grey")) +
   scale_fill_manual(
     values = c(
       "Low.0"    = "white",
       "Moderate.0" = "white",
       "High.0"   = "white",
+      "Unknown.0"    = "white",
       "Low.1"   = "#F4D166",
       "Moderate.1"= "#6194BF",
-      "High.1"  = "#95B958"
+      "High.1"  = "#95B958",
+      "Unknown.1"    = "grey"
     )
-  ) + scale_alpha_manual(
+  )  + scale_alpha_manual(
     name = "Mast",
-    values = c("0" = 1, "1" = 1),   # keep plot fully opaque
+    values = c("0" = 1, "1" = 0.8),   # keep plot fully opaque
     guide = guide_legend(
       override.aes = list(
         shape = 21,
@@ -310,7 +345,8 @@ angioN23 <- ggplot(angioScoresN, aes(NMDS2, NMDS3)) +
       )
     )
   ) +
-  scale_size_continuous(range = c(1, 10)) +
+  # scale_size_continuous(range = c(1, 10)) +
+  scale_size_area(breaks = c(1,5,9), max_size = 4, limits = c(1,10)) +
   guides(fill = "none") + 
   labs(
     colour = "Drought Tolerance",
@@ -336,7 +372,7 @@ final <- angio / conifer +
   )
 
 ggsave(
-  filename = "output/figures/nmdsFinal.pdf",
+  filename = "output/figures/nmdsFinal_scalearea.pdf",
   plot = final,
   width = 12,
   height = 10
