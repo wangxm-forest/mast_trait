@@ -11,7 +11,8 @@ rm(list=ls())
 options(stringsAsFactors = FALSE)
 
 setwd("C:/PhD/Project/PhD_thesis/mast_trait/")
-source("analyses/dataCleaning.R")
+d <- read.csv("data/cleanSilvics.csv")
+d$latbi <- gsub(" ", "_", d$latbi)
 
 maketree <- FALSE
 if(maketree){
@@ -230,9 +231,25 @@ write.tree(silvicsSpliced,"output/silvicsPhylogenyFull.tre")
 }
 
 silvicsTree <- read.tree("output/silvicsPhylogenyFull.tre")
-
 masting <- d[!duplicated(d$latbi), c("latbi","mastEvent")]
 masting$mastEvent[is.na(masting$mastEvent)] <- "No information"
+
+conifer <- d[d$familyName %in% c("Pinaceae", "Taxodiaceae"), ]
+angio   <- d[!(d$familyName %in% c("Pinaceae", "Taxodiaceae")), ]
+phyconifer <- drop.tip(silvicsTree, setdiff(silvicsTree$tip.label, conifer$latbi))
+phyangio   <- drop.tip(silvicsTree, setdiff(silvicsTree$tip.label, angio$latbi))
+d$logSeedWeight <- log(d$seedWeights)
+conifer$logSeedWeight <- log(conifer$seedWeights)
+angio$logSeedWeight   <- log(angio$seedWeights)
+
+d$logFruit <- log(d$fruitSizeAve)
+conifer$logFruit <- log(conifer$fruitSizeAve)
+angio$logFruit <- log(angio$fruitSizeAve)
+
+d$logSeedSize <- log(d$seedSizeAve)
+conifer$logSeedSize <- log(conifer$seedSizeAve)
+angio$logSeedSize   <- log(angio$seedSizeAve)
+
 
 allspp <- silvicsTree$tip.label
 
@@ -445,7 +462,12 @@ legend(
 dev.off()
 
 # Quercus tree
-phy.plants<-read.tree("C:/PhD/Project/egret/analyses/input/ALLMB.tre")
+phy.plants<-read.tree("data/quercusFullTree.tre")
+phy.plants$tip.label <- sapply(phy.plants$tip.label, function(x) {
+  parts <- strsplit(x, "[_|]")[[1]] 
+  paste(parts[1], parts[2], sep = "_")
+})
+phy.plants$tip.label
 quercus <- grep("^Quercus", phy.plants$tip.label, value = TRUE)
 quercusTree <- keep.tip(phy.plants, quercus)
 
@@ -453,46 +475,142 @@ silvicsQuercus <- d[grep("^Quercus", d$latbi), ]
 quercusY <- silvicsQuercus$latbi[silvicsQuercus$mastEvent == "Y"]
 quercusN  <- silvicsQuercus$latbi[silvicsQuercus$mastEvent == "N"]
 tipColors <- rep("black", length(quercusTree$tip.label))
-tipColors[quercusTree$tip.label %in% quercusY] <- "#C43142"
-tipColors[quercusTree$tip.label %in% quercusN] <- "#387E46"
+tipColors[quercusTree$tip.label %in% quercusY] <- "#ED562C"
+tipColors[quercusTree$tip.label %in% quercusN] <- "#A9D5B1"
 
 pdf("output/figures/quercusTree.pdf", width = 50, height = 50)
 
 plot(
-  quercusTree, type = 'fan', label.offset = 0.2,
-  cex = 0.6, no.margin = TRUE, tip.color = tipColors
+  quercusTree, ,type = "fan",label.offset = 0.001,
+  cex = 1.2, no.margin = TRUE, tip.color = tipColors
 )
 
 legend("bottomright",
-       legend = c("Mast", "Non-mast"),
-       col = c("#C43142", "#387E46"),
+       legend = c("Masting", "Non-masting"),
+       col = c("#ED562C", "#A9D5B1"),
        pch = 19,
        bty = "n",
        cex = 5)
 
 dev.off()
 
+# Calculating phylogenetic signal -- angiosperm
+# Continuous
+weight <- angio$logSeedWeight
+names(weight) <- angio$latbi
+weightLambda <- phylosig(phyangio, weight, method = "lambda", test = TRUE)
+print(weightLambda)
+# lambda is almost 1
+fruit <- angio$logFruit
+names(fruit) <- angio$latbi
+fruitLambda <- phylosig(phyangio, fruit, method = "lambda", test = TRUE)
+print(fruitLambda)
+# lambda is almost 1
+seed <- angio$logSeedSize
+names(seed) <- angio$latbi
+seedLambda <- phylosig(phyangio, seed, method = "lambda", test = TRUE)
+print(seedLambda)
+
+oil <- angio$oilContent
+names(oil) <- angio$latbi
+oilLambda <- phylosig(phyangio, oil, method = "lambda", test = TRUE)
+print(oilLambda)
+
+leaf <- angio$leafLongevity
+names(leaf) <- angio$latbi
+leafLambda <- phylosig(phyangio, leaf, method = "lambda", test = TRUE)
+print(leafLambda)
+# lambda is almost 1
+
+# categorical
+phyangio <- multi2di(phyangio)
+disp <- angio$seedDispersal
+names(disp) <- angio$latbi
+dispLambda <- fitDiscrete(phyangio, disp, model="ER",transform="lambda")
+print(dispLambda$opt$lambda)
+# lambda is 1
+dorm <- angio$seedDormancy
+names(dorm) <- angio$latbi
+dormLambda <- fitDiscrete(phyangio, dorm, model="ER",transform="lambda")
+# lambda is close to 0
+poll <- angio$pollination
+names(poll) <- angio$latbi
+pollLambda <- fitDiscrete(phyangio, poll, model="ER",transform="lambda")
+# lambda is close to 1
+rep <- angio$typeMonoOrDio
+names(rep) <- angio$latbi
+repLambda <- fitDiscrete(phyangio, rep, model="ER",transform="lambda")
+# lambda is close to 0
+drought <- angio$droughtTolerance
+names(drought) <- angio$latbi
+droughtLambda <- fitDiscrete(phyangio, drought, model="ER",transform="lambda")
+# lambda is close to 0
+
+# Calculating phylogenetic signal -- gymnosperm
+weight <- conifer$logSeedWeight
+names(weight) <- conifer$latbi
+weightLambda <- phylosig(phyconifer, weight, method = "lambda", test = TRUE)
+print(weightLambda)
+# lambda is almost 1
+fruit <- conifer$logFruit
+names(fruit) <- conifer$latbi
+fruitLambda <- phylosig(phyconifer, fruit, method = "lambda", test = TRUE)
+print(fruitLambda)
+# lambda is almost 1
+seed <- conifer$logSeedSize
+names(seed) <- conifer$latbi
+seedLambda <- phylosig(phyconifer, seed, method = "lambda", test = TRUE)
+print(seedLambda)
+
+oil <- conifer$oilContent
+names(oil) <- conifer$latbi
+oilLambda <- phylosig(phyconifer, oil, method = "lambda", test = TRUE)
+print(oilLambda)
+# lambda is close to 0
+leaf <- conifer$leafLongevity
+names(leaf) <- conifer$latbi
+leafLambda <- phylosig(phyconifer, leaf, method = "lambda", test = TRUE)
+print(leafLambda)
+# lambda is 0.896
+
+phyconifer <- multi2di(phyconifer)
+disp <- conifer$seedDispersal
+names(disp) <- conifer$latbi
+dispLambda <- fitDiscrete(phyconifer, disp, model="ER",transform="lambda")
+print(dispLambda$opt$lambda)
+# lambda is 0
+dorm <- conifer$seedDormancy
+names(dorm) <- conifer$latbi
+dormLambda <- fitDiscrete(phyconifer, dorm, model="ER",transform="lambda")
+print(dormLambda$opt$lambda)
+# lambda is close to 0
+rep <- conifer$typeMonoOrDio
+names(rep) <- conifer$latbi
+repLambda <- fitDiscrete(phyconifer, rep, model="ER",transform="lambda")
+print(repLambda$opt$lambda)
+# lambda is close to 1
+drought <- conifer$droughtTolerance
+names(drought) <- conifer$latbi
+droughtLambda <- fitDiscrete(phyconifer, drought, model="ER",transform="lambda")
+print(droughtLambda$opt$lambda)
+# lambda is close to 1
+
+
 # Seed Weight
-weight <- log(d$seedWeights)
-names(weight) <- d$latbi
-commonSp <- intersect(silvicsTree$tip.label, names(weight))
+
+commonSp <- intersect(phyangio$tip.label, names(weight))
 
 
 weight <- weight[commonSp]
 weight <- weight[!is.na(weight)]
-weightTree <- drop.tip(silvicsTree,
-                        setdiff(silvicsTree$tip.label,
+weightTree <- drop.tip(phyangio,
+                        setdiff(phyangio$tip.label,
                                 names(weight)))
 name.check(weightTree, weight)
 
-weightK <- phylosig(weightTree,
-                    weight,
-                     method = "K",
-                     test = TRUE)
-
 weightMap <- contMap(weightTree,
-                     weight,
-                     plot = FALSE)
+                     weight,fsize=c(1,0.8),
+                     plot = TRUE)
 
 weightMap <- setMap(weightMap,
                     colors = colorRampPalette(c("navy", "white", "darkred"))(100))
@@ -500,33 +618,30 @@ weightMap <- setMap(weightMap,
 weightDf <- d[!is.na(d$seedWeights), ]
 spY <- weightDf$latbi[weightDf$mastEvent == "Y"]
 spN  <- weightDf$latbi[weightDf$mastEvent == "N"]
-tipColors <- rep("black", length(weightMap$tree$tip.label))
-tipColors[weightMap$tree$tip.label %in% spY] <- "#C43142"
-tipColors[weightMap$tree$tip.label %in% spN] <- "#387E46"
+tipLabels <- weightMap$tree$tip.label
 
-pdf("output/figures/weightTree.pdf", width = 10, height = 10)
-plot(weightMap,
-     type = "fan", fsize = 0.6,
-     lwd = 1)
+tipColors <- rep("black", length(tipLabels))
+names(tipColors) <- tipLabels
 
-tiplabels(pch = 19, 
-          col = tipColors,
-          cex = 0.6)
+tipColors[tipLabels %in% spY] <- "#C43142"
+tipColors[tipLabels %in% spN] <- "#387E46"
 
-mtext(paste0("Blomberg's K = ",
-             round(weightK$K, 3),
-             "\nP = ",
-             round(weightK$P, 4)),
-      side = 3,
-      line = -3,
-      adj = 0.02,
-      cex = 0.8)
+pdf("output/figures/weightTree.pdf", width = 20, height = 25)
+plot(weightMap, ftype="off", fsize=0.8, lwd=1, leg.txt="Seed weight (log)")
 
-legend("topright",
-       legend = c("Mast", "Non-mast", "No Information"),
-       col = c("#C43142", "#387E46", "Black"),
-       pch = 19,
-       bty = "n",
-       cex = 0.8)
+# 2. Add tip labels manually at correct positions
+tiplabels(text = weightMap$tree$tip.label, col = tipColors, adj = -0.1, frame = "none", cex = 0.5)
+
+# 3. Add legend separately
+legend("bottomright", legend=c("Mast","Non-mast","No Info"),
+       col=c("#C43142","#387E46","black"),
+       pch=19, bty="n", cex=0.8)
+#mtext(paste0("Blomberg's K = ",
+#             round(weightK$K, 3),
+#      side = 3,
+#      line = -3,
+#      adj = 0.02,
+#      cex = 0.8)
+
 dev.off()
 

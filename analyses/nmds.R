@@ -153,8 +153,8 @@ conN12 <- ggplot(conScoresN, aes(NMDS1, NMDS2)) +
   ),
   stroke = 1.2
   ) +
-  scale_shape_manual(values = c(21, 22)) +   # fillable shapes only
-  scale_colour_manual(values = c("#95B958","#F4D166","#6194BF")) +
+  scale_shape_manual(values = c(21, 22), guide = "none") +   # fillable shapes only
+  scale_colour_manual(values = c("#95B958","#F4D166","#6194BF"),guide = "none") +
   scale_fill_manual(
     values = c(
       "Low.0"    = "white",
@@ -163,7 +163,7 @@ conN12 <- ggplot(conScoresN, aes(NMDS1, NMDS2)) +
       "Low.1"   = "#F4D166",
       "Moderate.1"= "#6194BF",
       "High.1"  = "#95B958"
-    )
+    ), guide = "none"
   ) + scale_alpha_manual(
     name = "Mast",
     values = c("0" = 1, "1" = 1),   # keep plot fully opaque
@@ -176,14 +176,7 @@ conN12 <- ggplot(conScoresN, aes(NMDS1, NMDS2)) +
       )
     )
   ) +
-  scale_size_continuous(range = c(1, 10)) +
-  guides(fill = "none") + 
-  labs(
-    colour = "Drought Tolerance",
-    shape  = "Reproductive Type",
-    size   = "Seed Weight",
-    alpha  = "Mast"
-  )  +
+  scale_size_continuous(range = c(1, 10), guide = "none") +
   theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
         panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
         axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
@@ -202,8 +195,8 @@ conN23 <- ggplot(conScoresN, aes(NMDS2, NMDS3)) +
   ),
   stroke = 1.2
   ) +
-  scale_shape_manual(values = c(21, 22)) +   # fillable shapes only
-  scale_colour_manual(values = c("#95B958","#F4D166","#6194BF")) +
+  scale_shape_manual(values = c(21, 22), guide = "none") +   # fillable shapes only
+  scale_colour_manual(values = c("#95B958","#F4D166","#6194BF"),guide = "none") +
   scale_fill_manual(
     values = c(
       "Low.0"    = "white",
@@ -212,7 +205,7 @@ conN23 <- ggplot(conScoresN, aes(NMDS2, NMDS3)) +
       "Low.1"   = "#F4D166",
       "Moderate.1"= "#6194BF",
       "High.1"  = "#95B958"
-    )
+    ), guide = "none"
   ) + scale_alpha_manual(
     name = "Mast",
     values = c("0" = 1, "1" = 1),   # keep plot fully opaque
@@ -225,19 +218,13 @@ conN23 <- ggplot(conScoresN, aes(NMDS2, NMDS3)) +
       )
     )
   ) +
-  scale_size_continuous(range = c(1, 10)) +
-  guides(fill = "none") + 
-  labs(
-    colour = "Drought Tolerance",
-    shape  = "Reproductive Type",
-    size   = "Seed Weight",
-    alpha  = "Mast"
-  )  +
+  scale_size_continuous(range = c(1, 10), guide = "none") +
   theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
         panel.background = element_blank(), panel.border = element_rect(fill = NA, colour = "grey30"), 
         axis.ticks = element_blank(), axis.text = element_blank(), legend.key = element_blank(), 
         legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
         legend.text = element_text(size = 9, colour = "grey30"))
+
 # Angiosperm masting yes and masting no
 
 
@@ -251,7 +238,7 @@ angioN12 <- ggplot(angioScoresN, aes(NMDS1, NMDS2)) +
   ),
   stroke = 1.2
   ) +
-  scale_shape_manual(values = c(21, 22, 23)) +   # fillable shapes only
+  scale_shape_manual(values = c(21, 22, 23), na.value = 24) +   # fillable shapes only
   scale_colour_manual(values = c("#95B958","#F4D166","#6194BF")) +
   scale_fill_manual(
     values = c(
@@ -300,7 +287,7 @@ angioN23 <- ggplot(angioScoresN, aes(NMDS2, NMDS3)) +
   ),
   stroke = 1.2
   ) +
-  scale_shape_manual(values = c(21, 22,23)) +   # fillable shapes only
+  scale_shape_manual(values = c(21, 22, 23), na.value = 24) +   # fillable shapes only
   scale_colour_manual(values = c("#95B958","#F4D166","#6194BF")) +
   scale_fill_manual(
     values = c(
@@ -337,9 +324,6 @@ angioN23 <- ggplot(angioScoresN, aes(NMDS2, NMDS3)) +
         legend.title = element_text(size = 10, face = "bold", colour = "grey30"), 
         legend.text = element_text(size = 9, colour = "grey30"))
 
-conN12 <- conN12 + theme(legend.position = "none")
-conN23 <- conN23 + theme(legend.position = "none")
-angioN12 <- angioN12 + theme(legend.position = "none") 
 angio <- angioN12 + angioN23
 conifer <- conN12 + conN23
 
