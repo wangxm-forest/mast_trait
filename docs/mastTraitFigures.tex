@@ -53,4 +53,26 @@
 \caption{Phylogenetic tree for all Quercus species, Quercus species included in this study is color coded.}
 \end{figure}
 
+\begin{table}[ht]
+\centering
+\begin{tabular}{llrrrrr}
+  \hline
+Trait & Predictor & Estimate & SE & P & Phylo a & N \\ 
+  \hline
+Seed dispersal & Biotic vs abiotic & -0.83 & 0.81 & 0.30 & 0.01 &  60 \\ 
+  Seed dispersal & Both vs abiotic & -1.11 & 0.67 & 0.10 & 0.01 &  60 \\ 
+  Seed dormancy & Dormant vs non-dormant & 0.71 & 0.70 & 0.32 & 0.41 &  59 \\ 
+  Reproductive type & Monoecious vs dioecious & -1.14 & 1.02 & 0.26 & 0.01 &  61 \\ 
+  Seed weight (log) & logSeedWeight & -0.03 & 0.25 & 0.91 & 0.43 &  59 \\ 
+  Fruit size (log) & logFruit & 0.03 & 0.36 & 0.94 & 0.43 &  60 \\ 
+  Seed size (log) & logSeedSize & -0.29 & 0.93 & 0.76 & 0.41 &  51 \\ 
+  Leaf longevity (years) & Leaf longevity (years) & 0.15 & 0.35 & 0.67 & 0.42 &  38 \\ 
+  Drought tolerance & Low vs high drought tolerance & 0.91 & 1.64 & 0.58 & 0.43 &  52 \\ 
+  Drought tolerance & Moderate vs high drought tolerance & -1.56 & 1.06 & 0.14 & 0.43 &  52 \\ 
+   \hline
+\end{tabular}
+\caption{Phylogenetic Generalized Linear Model Results} 
+\label{tab:regression}
+\end{table}
+
 \end{document}
