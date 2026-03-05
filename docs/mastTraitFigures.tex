@@ -4,6 +4,7 @@
 \usepackage{graphicx}
 \usepackage{natbib}
 \usepackage{amsmath}
+\usepackage{pdflscape}
 \usepackage{hyperref}
 \usepackage{indentfirst}
 \usepackage[top=1.0in, bottom=1.0in, left=1.1in, right=1.1in]{geometry}
@@ -13,6 +14,7 @@
 
 \begin{document}
 \input{mastTraitFigures-concordance}
+
 
 
 \begin{figure}[H]
@@ -33,7 +35,7 @@
 % ------------------------------------------
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{../output/figures/nmdsFinal.pdf}
+\includegraphics[width=\textwidth]{../output/figures/nmdsFinal_scalearea.pdf}
 \caption{Non-metric multidimensional scaling (NMDS) of trait composition for angiosperm and conifer species. Each point represents a species, with position determined by NMDS axes. Points are colored by drought tolerance, filled by masting or not, shaped by reproductive type, sized by seed weight. Panels are arranged as (a) angiosperm NMDS1–NMDS2, (b) angiosperm NMDS2–NMDS3, (c) conifer NMDS1–NMDS2, and (d) conifer NMDS2–NMDS3.}
 \end{figure}
 
@@ -47,32 +49,79 @@
 
 \newpage
 % ------------------------------------------
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{../output/figures/quercusTree.pdf}
 \caption{Phylogenetic tree for all Quercus species, Quercus species included in this study is color coded.}
 \end{figure}
-
+\newpage
+% ------------------------------------------
+\begin{landscape}
 \begin{table}[ht]
 \centering
-\begin{tabular}{llrrrrr}
+\begin{tabular}{lllrrrrr}
   \hline
-Trait & Predictor & Estimate & SE & P & Phylo a & N \\ 
+Group & Trait & Predictor & Estimate & SE & P & Phylo ${\alpha}$ & N \\ 
   \hline
-Seed dispersal & Biotic vs abiotic & -0.83 & 0.81 & 0.30 & 0.01 &  60 \\ 
-  Seed dispersal & Both vs abiotic & -1.11 & 0.67 & 0.10 & 0.01 &  60 \\ 
-  Seed dormancy & Dormant vs non-dormant & 0.71 & 0.70 & 0.32 & 0.41 &  59 \\ 
-  Reproductive type & Monoecious vs dioecious & -1.14 & 1.02 & 0.26 & 0.01 &  61 \\ 
-  Seed weight (log) & logSeedWeight & -0.03 & 0.25 & 0.91 & 0.43 &  59 \\ 
-  Fruit size (log) & logFruit & 0.03 & 0.36 & 0.94 & 0.43 &  60 \\ 
-  Seed size (log) & logSeedSize & -0.29 & 0.93 & 0.76 & 0.41 &  51 \\ 
-  Leaf longevity (years) & Leaf longevity (years) & 0.15 & 0.35 & 0.67 & 0.42 &  38 \\ 
-  Drought tolerance & Low vs high drought tolerance & 0.91 & 1.64 & 0.58 & 0.43 &  52 \\ 
-  Drought tolerance & Moderate vs high drought tolerance & -1.56 & 1.06 & 0.14 & 0.43 &  52 \\ 
+Gymnosperm & Seed dispersal & Biotic vs abiotic & -0.83 & 0.81 & 0.30 & 0.01 &  60 \\ 
+  Gymnosperm & Seed dispersal & Both vs abiotic & -1.11 & 0.67 & 0.10 & 0.01 &  60 \\ 
+  Gymnosperm & Seed dormancy & Dormant vs non-dormant & 0.71 & 0.70 & 0.32 & 0.41 &  59 \\ 
+  Gymnosperm & Reproductive type & Monoecious vs dioecious & -1.14 & 1.02 & 0.26 & 0.01 &  61 \\ 
+  Gymnosperm & Seed weight (log) & logSeedWeight & -0.03 & 0.25 & 0.91 & 0.43 &  59 \\ 
+  Gymnosperm & Fruit size (log) & logFruit & 0.03 & 0.36 & 0.94 & 0.43 &  60 \\ 
+  Gymnosperm & Seed size (log) & logSeedSize & -0.37 & 0.93 & 0.69 & 0.41 &  51 \\ 
+  Gymnosperm & Leaf longevity (years) & Leaf longevity (years) & 0.15 & 0.34 & 0.67 & 0.43 &  38 \\ 
+  Gymnosperm & Drought tolerance & Low vs high drought tolerance & 0.91 & 1.64 & 0.58 & 0.43 &  52 \\ 
+  Gymnosperm & Drought tolerance & Moderate vs high drought tolerance & -1.56 & 1.06 & 0.14 & 0.43 &  52 \\ 
+  Angiosperm & Dispersal mode & Biotic vs abiotic & 0.55 & 0.53 & 0.30 & 0.06 &  93 \\ 
+  Angiosperm & Dispersal mode & Both vs abiotic & 0.55 & 0.57 & 0.33 & 0.06 &  93 \\ 
+  Angiosperm & Pollination mode & Wind vs animal pollination & 1.72 & 0.72 & 0.02 & 0.35 &  52 \\ 
+  Angiosperm & Pollination mode & Wind vs animal pollination and animals & 1.23 & 1.15 & 0.29 & 0.35 &  52 \\ 
+  Angiosperm & Seed dormancy & Dormant vs non-dormant & 0.03 & 0.50 & 0.95 & 0.10 &  85 \\ 
+  Angiosperm & Reproductive type & Monoecious vs dioecious & 0.90 & 0.68 & 0.18 & 0.11 &  89 \\ 
+  Angiosperm & Reproductive type & Monoecious vs polygamous & -0.13 & 0.96 & 0.89 & 0.11 &  89 \\ 
+  Angiosperm & Seed weight (log) & logSeedWeight & 0.21 & 0.09 & 0.02 & 0.06 &  91 \\ 
+  Angiosperm & Fruit size (log) & logFruit & 0.08 & 0.30 & 0.80 & 0.17 &  88 \\ 
+  Angiosperm & Seed size (log) & logSeedSize & 0.24 & 0.30 & 0.43 & 0.08 &  69 \\ 
+  Angiosperm & Oil content (\%) & Oil content (\%) & 0.04 & 0.03 & 0.20 & 0.14 &  19 \\ 
+  Angiosperm & Leaf longevity (years) & Leaf longevity (years) & 0.26 & 0.95 & 0.78 & 0.01 &  16 \\ 
+  Angiosperm & Drought tolerance & Low vs high drought tolerance & 0.04 & 0.48 & 0.92 & 0.11 &  79 \\ 
+  Angiosperm & Drought tolerance & Moderate vs high drought tolerance & -0.13 & 0.46 & 0.79 & 0.11 &  79 \\ 
    \hline
 \end{tabular}
 \caption{Phylogenetic Generalized Linear Model Results} 
 \label{tab:regression}
 \end{table}
-
+\begin{table}[ht]
+\centering
+\begin{tabular}{llr}
+  \hline
+Group & Trait & ${\lambda}$ \\ 
+  \hline
+Angiosperm & Seed weight (Log) & 0.95 \\ 
+  Angiosperm & Fruit size (Log) & 0.93 \\ 
+  Angiosperm & Seed size (Log) & 0.96 \\ 
+  Angiosperm & Oil content & 0.25 \\ 
+  Angiosperm & Leaf longevity & 1.02 \\ 
+  Angiosperm & Dispersal mode & 1.00 \\ 
+  Angiosperm & Seed dormancy & 1.00 \\ 
+  Angiosperm & Pollination mode & 1.00 \\ 
+  Angiosperm & Reproductive type & 0.00 \\ 
+  Angiosperm & Drought tolerance & 1.00 \\ 
+  Gymnosperm & Seed weight (Log) & 0.97 \\ 
+  Gymnosperm & Fruit size (Log) & 0.90 \\ 
+  Gymnosperm & Seed size (Log) & 0.26 \\ 
+  Gymnosperm & Oil content & 0.00 \\ 
+  Gymnosperm & Leaf longevity & 0.90 \\ 
+  Gymnosperm & Dispersal mode & 1.00 \\ 
+  Gymnosperm & Seed dormancy & 1.00 \\ 
+  Gymnosperm & Reproductive type & 1.00 \\ 
+  Gymnosperm & Drought tolerance & 1.00 \\ 
+   \hline
+\end{tabular}
+\caption{Phylogenetic Signal (Pagel's ${\lambda}$) for All Traits} 
+\label{tab:lambda}
+\end{table}
+\end{landscape}
 \end{document}
