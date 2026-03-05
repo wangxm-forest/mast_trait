@@ -478,7 +478,7 @@ tipColors <- rep("black", length(quercusTree$tip.label))
 tipColors[quercusTree$tip.label %in% quercusY] <- "#ED562C"
 tipColors[quercusTree$tip.label %in% quercusN] <- "#A9D5B1"
 
-pdf("output/figures/quercusTree.pdf", width = 50, height = 50)
+pdf("output/figures/quercusTree.pdf", width = 100, height = 100)
 
 plot(
   quercusTree, ,type = "fan",label.offset = 0.001,
@@ -546,6 +546,29 @@ names(drought) <- angio$latbi
 droughtLambda <- fitDiscrete(phyangio, drought, model="ER",transform="lambda")
 # lambda is close to 0
 
+lambda_angio <- data.frame(
+  Group = 
+    rep("Angiosperm", 10)
+  ,
+  Trait = c("Seed weight (Log)", "Fruit size (Log)", "Seed size (Log)",
+    "Oil content", "Leaf longevity",
+    "Dispersal mode", "Seed dormancy",
+    "Pollination mode", "Reproductive type", "Drought tolerance"),
+  Lambda = c(
+    round(weightLambda$lambda,3),
+    round(fruitLambda$lambda,3),
+    round(seedLambda$lambda,3),
+    round(oilLambda$lambda,3),
+    round(leafLambda$lambda,3),
+    round(dispLambda$opt$lambda,3),
+    round(dormLambda$opt$lambda,3),
+    round(pollLambda$opt$lambda,3),
+    round(repLambda$opt$lambda,3),
+    round(droughtLambda$opt$lambda,3)
+  ),
+  stringsAsFactors = FALSE
+)
+
 # Calculating phylogenetic signal -- gymnosperm
 weight <- conifer$logSeedWeight
 names(weight) <- conifer$latbi
@@ -595,7 +618,35 @@ droughtLambda <- fitDiscrete(phyconifer, drought, model="ER",transform="lambda")
 print(droughtLambda$opt$lambda)
 # lambda is close to 1
 
+lambda_conifer <- data.frame(
+  Group = 
+    rep("Gymnosperm", 9)
+  ,
+  Trait = c("Seed weight (Log)", "Fruit size (Log)", "Seed size (Log)",
+            "Oil content", "Leaf longevity",
+            "Dispersal mode", "Seed dormancy",
+            "Reproductive type", "Drought tolerance"),
+  Lambda = c(
+    round(weightLambda$lambda,3),
+    round(fruitLambda$lambda,3),
+    round(seedLambda$lambda,3),
+    round(oilLambda$lambda,3),
+    round(leafLambda$lambda,3),
+    round(dispLambda$opt$lambda,3),
+    round(dormLambda$opt$lambda,3),
+    round(repLambda$opt$lambda,3),
+    round(droughtLambda$opt$lambda,3)
+  ),
+  stringsAsFactors = FALSE
+)
 
+
+lambda <- rbind(lambda_angio,lambda_conifer)
+
+labmdaTable <- xtable(lambda, 
+                 caption = "Phylogenetic Signal (Pagel's ${/lambda}$) for All Traits", 
+                 label = "tab:lambda")
+print(labmdaTable, type = "latex", include.rownames = FALSE)
 # Seed Weight
 
 commonSp <- intersect(phyangio$tip.label, names(weight))

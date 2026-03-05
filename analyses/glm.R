@@ -267,38 +267,17 @@ clean_results <- function(results) {
 }
 
 conifer_results <- clean_results(conifer_results)
-
-table_grob <- tableGrob(
-  conifer_results,
-  rows = NULL,
-  theme = ttheme_minimal(
-    core = list(fg_params = list(fontsize = 9)),
-    colhead = list(fg_params = list(fontsize = 10, fontface = "bold"))
-  )
-)
-ggsave(
-  filename = "output/phyloglmConifer.pdf",
-  plot = table_grob,
-  width = 8,
-  height = 4
-)
+conifer_results <- cbind(Group = "Gymnosperm", conifer_results)
 
 angio_results <- clean_results(angio_results)
+angio_results <- cbind(Group = "Angiosperm", angio_results)
 
-table_grob <- tableGrob(
-  angio_results,
-  rows = NULL,
-  theme = ttheme_minimal(
-    core = list(fg_params = list(fontsize = 9)),
-    colhead = list(fg_params = list(fontsize = 10, fontface = "bold"))
-  )
-)
-ggsave(
-  filename = "output/phyloglmAngio.pdf",
-  plot = table_grob,
-  width = 8,
-  height = 4
-)
+d_results <- rbind(conifer_results, angio_results)
+
+dTable <- xtable(d_results, 
+               caption = "Phylogenetic Generalized Linear Model Results", 
+               label = "tab:regression")
+print(dTable, type = "latex", include.rownames = FALSE)
 
 
 ### Use conifer and angiosperm as a fixed effect ----
