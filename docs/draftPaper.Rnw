@@ -1,0 +1,25 @@
+\documentclass{article}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\section{Results}
+\subsection{Gathered data}
+\begin{itemize}
+\item How many species do we have for angiosperm and gymnosperm (we found masting is more common for gymnosperm than angiosperm)
+\item How many traits do we selected for different hypotheses
+\end{itemize}
+\subsection{Results for each hypothesis}
+\begin{itemize}
+\item Predation satiation: seed weight (yes), comparision (show log-odds, it is significant but not a bit slope)
+\item Pollination satiation: wind pollination (yes)
+\item Resource matching: neither is significant
+\end{itemize}
+\subsection{Multidimension-NMDS}
+\subsection{Phylogenetic patterns}
+\begin{itemize}
+\item First show the phylogenetic signal for masting
+\item Show which traits have the strongest phylogenetic pattern, it is hard to tease out these traits from masting because of the phylogenetic signal, limit the inference
+\item Data is strongly nested in phylogeny, sparsity
+\end{itemize}
+\end{document}
