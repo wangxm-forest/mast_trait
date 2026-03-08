@@ -659,40 +659,57 @@ weightTree <- drop.tip(phyangio,
                                 names(weight)))
 name.check(weightTree, weight)
 
+
 weightMap <- contMap(weightTree,
-                     weight,fsize=c(1,0.8),
+                     weight,fsize=c(1.,0.8),
                      plot = TRUE)
+lastPP<-get("last_plot.phylo",envir=.PlotPhyloEnv)
+## for fun, let's change our contMap gradient
+object <- setMap(weightMap, colors = colorRampPalette(c("navy", "white", "darkred"))(100))
+pdf("output/figures/weightTree.pdf", width = 10, height = 20)
 
-weightMap <- setMap(weightMap,
-                    colors = colorRampPalette(c("navy", "white", "darkred"))(100))
-
+plot(object,ftype="off",xlim=lastPP$x.lim,fsize=c(1,1),
+     leg.txt="Seed weight (Log)",legend=100,sig=1)
+## make sure our discrete character is in the order of our tree
 weightDf <- d[!is.na(d$seedWeights), ]
-spY <- weightDf$latbi[weightDf$mastEvent == "Y"]
-spN  <- weightDf$latbi[weightDf$mastEvent == "N"]
-tipLabels <- weightMap$tree$tip.label
+weightMast <- weightDf$mastEvent
+names(weightMast) <- weightDf$latbi
+weightMast  <- weightMast[weightTree$tip.label]
+cols <- setNames(
+  c("#387E46", "#C43142"),
+  levels(factor(weightMast))
+)
+weightDisp <- weightDf$seedDispersal
+names(weightDisp) <- weightDf$latbi
+weightDisp  <- weightDisp[weightTree$tip.label]
 
-tipColors <- rep("black", length(tipLabels))
-names(tipColors) <- tipLabels
+weightMast <- weightMast[weightMap$tree$tip.label]
 
-tipColors[tipLabels %in% spY] <- "#C43142"
-tipColors[tipLabels %in% spN] <- "#387E46"
+for(i in 1:length(weightMast)){
+  text(lastPP$xx[i],
+       lastPP$yy[i],
+       weightMap$tree$tip.label[i],
+       pos=4,
+       col=cols[weightMast[i]],
+       cex=0.7)
+}
 
-pdf("output/figures/weightTree.pdf", width = 20, height = 25)
-plot(weightMap, ftype="off", fsize=0.8, lwd=1, leg.txt="Seed weight (log)")
+for(i in 1:length(weightMast)){
+points(lastPP$xx[1:length(obj$tree$tip.label)] + 0.02,
+       lastPP$yy[1:length(obj$tree$tip.label)],
+       pch=21,
+       bg=cols_trait2[trait2],
+       col="black",
+       cex=1.2)
+}
 
-# 2. Add tip labels manually at correct positions
-tiplabels(text = weightMap$tree$tip.label, col = tipColors, adj = -0.1, frame = "none", cex = 0.5)
+add.simmap.legend(colors=cols,
+                  prompt=FALSE,
+                  x=130,
+                  y=-8)
+text(x = 130, y = -7, "Masting", pos = 3)
 
-# 3. Add legend separately
-legend("bottomright", legend=c("Mast","Non-mast","No Info"),
-       col=c("#C43142","#387E46","black"),
-       pch=19, bty="n", cex=0.8)
-#mtext(paste0("Blomberg's K = ",
-#             round(weightK$K, 3),
-#      side = 3,
-#      line = -3,
-#      adj = 0.02,
-#      cex = 0.8)
+
 
 dev.off()
 
