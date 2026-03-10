@@ -6,6 +6,7 @@ library(ape)
 library(phytools)
 library(viridisLite)
 library(geiger)
+library(xtable)
 # housekeeping
 rm(list=ls()) 
 options(stringsAsFactors = FALSE)
@@ -545,15 +546,19 @@ drought <- angio$droughtTolerance
 names(drought) <- angio$latbi
 droughtLambda <- fitDiscrete(phyangio, drought, model="ER",transform="lambda")
 # lambda is close to 0
+mast <- angio$mastEvent
+names(mast) <- angio$latbi
+mastLambda <- fitDiscrete(phyangio, mast, model="ER",transform="lambda")
+print(mastLambda$opt$lambda)
 
 lambda_angio <- data.frame(
   Group = 
-    rep("Angiosperm", 10)
+    rep("Angiosperm", 11)
   ,
   Trait = c("Seed weight (Log)", "Fruit size (Log)", "Seed size (Log)",
     "Oil content", "Leaf longevity",
     "Dispersal mode", "Seed dormancy",
-    "Pollination mode", "Reproductive type", "Drought tolerance"),
+    "Pollination mode", "Reproductive type", "Drought tolerance", "Masting"),
   Lambda = c(
     round(weightLambda$lambda,3),
     round(fruitLambda$lambda,3),
@@ -564,7 +569,8 @@ lambda_angio <- data.frame(
     round(dormLambda$opt$lambda,3),
     round(pollLambda$opt$lambda,3),
     round(repLambda$opt$lambda,3),
-    round(droughtLambda$opt$lambda,3)
+    round(droughtLambda$opt$lambda,3),
+    round(mastLambda$opt$lambda,3)
   ),
   stringsAsFactors = FALSE
 )
@@ -617,15 +623,19 @@ names(drought) <- conifer$latbi
 droughtLambda <- fitDiscrete(phyconifer, drought, model="ER",transform="lambda")
 print(droughtLambda$opt$lambda)
 # lambda is close to 1
+mast <- conifer$mastEvent
+names(mast) <- conifer$latbi
+mastLambda <- fitDiscrete(phyconifer, mast, model="ER",transform="lambda")
+print(droughtLambda$opt$lambda)
 
 lambda_conifer <- data.frame(
   Group = 
-    rep("Gymnosperm", 9)
+    rep("Gymnosperm", 10)
   ,
   Trait = c("Seed weight (Log)", "Fruit size (Log)", "Seed size (Log)",
             "Oil content", "Leaf longevity",
             "Dispersal mode", "Seed dormancy",
-            "Reproductive type", "Drought tolerance"),
+            "Reproductive type", "Drought tolerance","Masting"),
   Lambda = c(
     round(weightLambda$lambda,3),
     round(fruitLambda$lambda,3),
@@ -635,7 +645,8 @@ lambda_conifer <- data.frame(
     round(dispLambda$opt$lambda,3),
     round(dormLambda$opt$lambda,3),
     round(repLambda$opt$lambda,3),
-    round(droughtLambda$opt$lambda,3)
+    round(droughtLambda$opt$lambda,3),
+    round(mastLambda$opt$lambda,3)
   ),
   stringsAsFactors = FALSE
 )
@@ -647,7 +658,7 @@ labmdaTable <- xtable(lambda,
                  caption = "Phylogenetic Signal (Pagel's ${/lambda}$) for All Traits", 
                  label = "tab:lambda")
 print(labmdaTable, type = "latex", include.rownames = FALSE)
-# Seed Weight
+# Predation satiation for angiosperm, using seed weight for the branch color
 
 commonSp <- intersect(phyangio$tip.label, names(weight))
 
@@ -682,9 +693,28 @@ cols <- setNames(
 weightDisp <- weightDf$seedDispersal
 names(weightDisp) <- weightDf$latbi
 weightDisp  <- weightDisp[weightTree$tip.label]
+colsDisp <- setNames(
+  c("#F4D166", "#6194BF", "#95B958",na.value = "white"),
+  levels(factor(weightDisp))
+)
+weightOil <- weightDf$oilContent
+names(weightOil) <- weightDf$latbi
+weightOil  <- weightOil[weightTree$tip.label]
+colsOil <- "lightblue"
+weightDorm <- weightDf$seedDormancy
+names(weightDorm) <- weightDf$latbi
+weightDorm  <- weightDorm[weightTree$tip.label]
+colsDorm <- setNames(
+  c("#AC7299", "#CFDAA8",na.value = "white"),
+  levels(factor(weightDorm))
+)
 
-weightMast <- weightMast[weightMap$tree$tip.label]
-
+weightMast <- weightMast[object$tree$tip.label]
+weightDisp <- weightDisp[object$tree$tip.label]
+weightOil <- weightOil[object$tree$tip.label]
+weightDorm <- weightDorm[object$tree$tip.label]
+Ntip <- length(object$tree$tip.label)
+tree_width <- diff(range(lastPP$xx))
 for(i in 1:length(weightMast)){
   text(lastPP$xx[i],
        lastPP$yy[i],
@@ -694,22 +724,126 @@ for(i in 1:length(weightMast)){
        cex=0.7)
 }
 
-for(i in 1:length(weightMast)){
-points(lastPP$xx[1:length(obj$tree$tip.label)] + 0.02,
-       lastPP$yy[1:length(obj$tree$tip.label)],
+
+for(i in 1:length(weightDisp)){
+points(lastPP$xx[1:Ntip] + tree_width *0.32,
+       lastPP$yy[1:Ntip],
        pch=21,
-       bg=cols_trait2[trait2],
-       col="black",
+       bg=colsDisp[weightDisp],
+       col="white",
        cex=1.2)
+}
+
+sizeMin <- 0.6
+sizeMax <- 1.2
+
+oilSize <- (weightOil - min(weightOil, na.rm=TRUE)) /
+  (max(weightOil, na.rm=TRUE) - min(weightOil, na.rm=TRUE))
+
+oilSize <- sizeMin + oilSize * (sizeMax - sizeMin)
+  for(i in 1:length(weightOil)){
+  points(lastPP$xx[1:Ntip] + tree_width *0.35,
+         lastPP$yy[1:Ntip],
+         pch=21,
+         bg="lightblue",
+         col="white",
+         cex=oilSize)
+}
+
+for(i in 1:length(weightDorm)){
+  points(lastPP$xx[1:Ntip] + tree_width *0.38,
+         lastPP$yy[1:Ntip],
+         pch=21,
+         bg=colsDorm[weightDorm],
+         col="white",
+         cex=1.2)
 }
 
 add.simmap.legend(colors=cols,
                   prompt=FALSE,
-                  x=130,
+                  x=120,
                   y=-8)
-text(x = 130, y = -7, "Masting", pos = 3)
+text(x = 125, y = -7, "Masting", pos = 3)
+add.simmap.legend(colors = c("Oil content" = "lightblue"),
+                  prompt=FALSE,
+                  x=120,
+                  y=-15)
 
+add.simmap.legend(colors = c("Abiotic" = "#F4D166","Biotic" = "#6194BF", "Both" = "#95B958"), sep = "\n",
+                  prompt=FALSE,
+                  x=145,
+                  y=-8)
+text(x = 155, y = -7, "Dispersal mode", pos = 3)
+add.simmap.legend(colors = c("Dormant" = "#CFDAA8","Non-dormant" = "#AC7299"), sep = "\n",
+                  prompt=FALSE,
+                  x=175,
+                  y=-8)
+text(x = 185, y = -7, "Seed dormancy", pos = 3)
 
+text(x = 50, y = -18,
+     labels = paste(c("Lambda:",
+                      "Seed weight (Log): 0.95",
+                      "Dispersal mode: 1",
+                      "Seed dormancy: 1",
+                      "Oil content: 0.25"),
+                    collapse = "\n"),
+     pos = 3)
 
 dev.off()
 
+# Resource matching for angiosperm, using leaf longevity for the branch color
+#commonSp <- intersect(phyangio$tip.label, names(leaf))
+
+
+#leaf <- leaf[commonSp]
+#leaf <- leaf[!is.na(leaf)]
+#leafTree <- drop.tip(phyangio,setdiff(phyangio$tip.label,names(leaf)))
+#name.check(leafTree, leaf)
+
+
+leafMap <- contMap(phyangio,
+                     leaf,fsize=c(1,0.8),
+                     plot = TRUE)
+lastPP<-get("last_plot.phylo",envir=.PlotPhyloEnv)
+## for fun, let's change our contMap gradient
+object <- setMap(leafMap, colors = colorRampPalette(c("navy", "white", "darkred"))(100))
+pdf("output/figures/leafTree.pdf", width = 10, height = 10)
+
+plot(object,ftype="off",xlim=lastPP$x.lim,fsize=c(1,1),
+     leg.txt="Seed longevity (year)",legend=100,sig=1)
+## make sure our discrete character is in the order of our tree
+leafDf <- d[!is.na(d$leafLongevity), ]
+leafMast <- leafDf$mastEvent
+names(leafMast) <- leafDf$latbi
+leafMast  <- leafMast[leafTree$tip.label]
+cols <- setNames(
+  c("#387E46", "#C43142"),
+  levels(factor(leafMast))
+)
+
+
+
+leafMast <- leafMast[object$tree$tip.label]
+
+Ntip <- length(object$tree$tip.label)
+tree_width <- diff(range(lastPP$xx))
+for(i in 1:length(leafMast)){
+  text(lastPP$xx[i],
+       lastPP$yy[i],
+       leafMap$tree$tip.label[i],
+       pos=4,
+       col=cols[leafMast[i]],
+       cex=0.7)
+}
+
+
+
+add.simmap.legend(colors=cols,
+                  prompt=FALSE,
+                  x=140,
+                  y=-0.5)
+text(x = 142, y = 0, "Masting", pos = 3)
+
+text(x = 170, y = 0, "Lambda = 1.02", pos = 3)
+
+dev.off()
