@@ -102,7 +102,7 @@ Gymnosperm & Seed dispersal & Biotic vs abiotic & -0.83 & 0.81 & 0.30 & 0.01 &  
 \centering
 \begin{tabular}{llr}
   \hline
-Group & Trait & ${\lambda}$ \\ 
+Group & Trait & Lambda \\ 
   \hline
 Angiosperm & Seed weight (Log) & 0.95 \\ 
   Angiosperm & Fruit size (Log) & 0.93 \\ 
@@ -112,8 +112,9 @@ Angiosperm & Seed weight (Log) & 0.95 \\
   Angiosperm & Dispersal mode & 1.00 \\ 
   Angiosperm & Seed dormancy & 1.00 \\ 
   Angiosperm & Pollination mode & 1.00 \\ 
-  Angiosperm & Reproductive type & 0.00 \\ 
-  Angiosperm & Drought tolerance & 1.00 \\ 
+  Angiosperm & Reproductive type & 1.00 \\ 
+  Angiosperm & Drought tolerance & 0.00 \\ 
+  Angiosperm & Masting & 0.00 \\ 
   Gymnosperm & Seed weight (Log) & 0.97 \\ 
   Gymnosperm & Fruit size (Log) & 0.90 \\ 
   Gymnosperm & Seed size (Log) & 0.26 \\ 
@@ -123,9 +124,10 @@ Angiosperm & Seed weight (Log) & 0.95 \\
   Gymnosperm & Seed dormancy & 1.00 \\ 
   Gymnosperm & Reproductive type & 1.00 \\ 
   Gymnosperm & Drought tolerance & 1.00 \\ 
+  Gymnosperm & Masting & 1.00 \\ 
    \hline
 \end{tabular}
-\caption{Phylogenetic Signal (Pagel's ${\lambda}$) for All Traits} 
+\caption{Phylogenetic Signal (Pagel's ${/lambda}$) for All Traits} 
 \label{tab:lambda}
 \end{table}
 \end{landscape}

@@ -7,20 +7,24 @@
 \section{Results}
 \subsection{Gathered data}
 \begin{itemize}
-\item How many species do we have for angiosperm and gymnosperm (we found masting is more common for gymnosperm than angiosperm)
-\item How many traits do we selected for different hypotheses
+\item There are 124 angiosperm and 64 gymnosperm species from Silvics, and 98 angiosperm species have masting event data, 61 gymnosperm has masting event data. Among all the angiosperm species with masting event data, 47 species are identified as have no strong masting pattern, and 51 species are identified as with strong masting pattern. For gymnosperm, these numbers are 57 and 7. From the data we have, we found strong masting pattern is more common for gymnosperm than angiosperm.
+\item For angiosperm, we have data for five traits (seed weight, fruit size, oil content, seed dispersal mode, seed dormancy) related to predation satiation hypothesis; two traits (pollination mode, reproductive type) related to pollination coupling; two traits (drought tolerance, leaf longevity) related to resource matching hypothesis. For gymnosperm, we only have oil content for masting species and all the gymnosperm species are wind pollinated.
 \end{itemize}
 \subsection{Results for each hypothesis}
 \begin{itemize}
-\item Predation satiation: seed weight (yes), comparision (show log-odds, it is significant but not a bit slope)
-\item Pollination satiation: wind pollination (yes)
-\item Resource matching: neither is significant
+\item Predation satiation: we found only seed weight is related to masting with having bigger seeds will increase the chance of being a strong masting species, however, the log-odds is only 0.2. We also only found this in angiosperm group.
+\item Pollination satiation: we found wind pollination is related to masting for angiosperm species, the log-odds for wind compare to animal or both are 1.72 and 1.23 respectively. Gymnosperm are all wind pollinated, and gymnosperm has a greater portion of masting species.
+\item Resource matching: We don't find any traits related to resource matching hypothesis have relationship with the masting pattern.
 \end{itemize}
 \subsection{Multidimension-NMDS}
+\begin{itemize}
+\item We don't see masting aligned well along any axis in the NMDS analysis.
+\end{itemize}
 \subsection{Phylogenetic patterns}
 \begin{itemize}
-\item First show the phylogenetic signal for masting
-\item Show which traits have the strongest phylogenetic pattern, it is hard to tease out these traits from masting because of the phylogenetic signal, limit the inference
-\item Data is strongly nested in phylogeny, sparsity
+\item First show the phylogenetic signal for masting. Masting has a strong phylogenetic signal for gymnosperm, and no phylogenetic signal for angiosperm
+\item Show which traits have the strongest phylogenetic pattern, (it may not be fully comparable though, not only because the way lambda is calculated for continuous traits and categorical traits are different, but also because lambda might depend on the data structure when sampling is uneven, take leaf longevity as an example). 
+\item seed weight and pollination mode both have strong phylogenetic signal, (it is hard to tease out these traits from masting because of the phylogenetic signal, limit the inference)
+\item Data is strongly nested in phylogeny, and data is sparse. We have to assume the sampling is even.
 \end{itemize}
 \end{document}
