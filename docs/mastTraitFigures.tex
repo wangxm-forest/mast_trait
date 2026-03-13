@@ -15,12 +15,26 @@
 \begin{document}
 \input{mastTraitFigures-concordance}
 
-
+\section{Results}
+\subsection{Gathered data}
+\begin{itemize}
+\item Number of data available for angiosperm and gymnosperm originally from book, with masting data, and the structure of data
+\begin{itemize}
+\item Angiosperm (124, 98, Y/N: (51/47); Gymnosperm (64, 61, Y/N: (57/7))
+\item Strong masting more common for gymnosperm
+\end{itemize}
+\item Number of traits we have for different hypotheses for angiosperm and gymnosperm
+\begin{itemize}
+\item For angiosperm, we have data for five traits (seed weight, fruit size, oil content, seed dispersal mode, seed dormancy) related to predation satiation hypothesis; two traits (pollination mode, reproductive type) related to pollination coupling; two traits (drought tolerance, leaf longevity) related to resource matching hypothesis. 
+\item For gymnosperm, we only have oil content for masting species and all the gymnosperm species are wind pollinated.
+\end{itemize}
+\end{itemize}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{../output/figures/rawDataWithStatsAngio.pdf}
-\caption{Relationships between plant traits (a) Seed weight; (b) Fruit size; (c) Oil content; (d) Dispersal mode; (e) Seed dormancy; (f) Pollination mode; (g) Reproductive mode; (h) Drought tolerance; (i) Leaf longevity and masting based on phylogenetic logistic regression for angiosperm species. Raw data are shown for each trait: continuous traits are displayed as violin plots, and categorical traits as histograms. Overlaid model summaries are derived from phylogenetic logistic regression models fitted using phyloglm. For each model, we report sample size (N), regression coefficient (Estimate), phylogenetic signal parameter ($\alpha$), and associated P-value. (a)-(e) are traits related to predation satiation hypothesis; (f), (g) are traits related to pollination coupling hypothesis; (h), (i) are traits related to resource matching hypothesis. Legends are shared across panels.}
+\caption{Relationships between plant traits (a) Seed weight; (b) Fruit size; (c) Oil content; (d) Dispersal mode; (e) Seed dormancy; (f) Pollination mode; (g) Reproductive mode; (h) Drought tolerance; (i) Leaf longevity and masting based on phylogenetic logistic regression for angiosperm species. Raw data are shown for each trait: continuous traits are displayed as violin plots, and categorical traits as histograms. Overlaid model summaries are derived from phylogenetic logistic regression models fitted using phyloglm. For each model, we report sample size (N), regression coefficient (Estimate), phylogenetic signal parameter $\alpha$, and associated P-value. (a)-(e) are traits related to predation satiation hypothesis; (f), (g) are traits related to pollination coupling hypothesis; (h), (i) are traits related to resource matching hypothesis. Legends are shared across panels.}
+\label{fig:rawangio}
 \end{figure}
 
 \newpage
@@ -28,41 +42,16 @@
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{../output/figures/rawDataWithStatsCon.pdf}
-\caption{Relationships between plant traits (a) Seed weight; (b) Fruit size; (c) Oil content; (d) Dispersal mode; (e) Seed dormancy; (f) Pollination mode; (g) Reproductive mode; (h) Drought tolerance; (i) Leaf longevity and masting based on phylogenetic logistic regression for gymnosperm species. Raw data are shown for each trait: continuous traits are displayed as violin plots, and categorical traits as histograms. Overlaid model summaries are derived from phylogenetic logistic regression models fitted using phyloglm. For each model, we report sample size (N), regression coefficient (Estimate), phylogenetic signal parameter ($\alpha$), and associated P-value. (a)-(e) are traits related to predation satiation hypothesis; (f), (g) are traits related to pollination coupling hypothesis; (h), (i) are traits related to resource matching hypothesis. Legends are shared across panels.}
-\end{figure}
-
-\newpage
-% ------------------------------------------
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{../output/figures/nmdsFinal_scalearea.pdf}
-\caption{Non-metric multidimensional scaling (NMDS) of trait composition for angiosperm and conifer species. Each point represents a species, with position determined by NMDS axes. Points are colored by drought tolerance, filled by masting or not, shaped by reproductive type, sized by seed weight. Panels are arranged as (a) angiosperm NMDS1–NMDS2, (b) angiosperm NMDS2–NMDS3, (c) conifer NMDS1–NMDS2, and (d) conifer NMDS2–NMDS3.}
-\end{figure}
-
-\newpage
-% ------------------------------------------
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{../output/figures/weightTree.pdf}
-\caption{Phylogenetic tree for all species included in the analysis. The color scheme of the branch is the trait value for seed weight (log). The color tip is colored by masting or not. We calculated the Blomberg's K for seed weight.}
-\end{figure}
-
-\newpage
-% ------------------------------------------
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{../output/figures/quercusTree.pdf}
-\caption{Phylogenetic tree for all Quercus species, Quercus species included in this study is color coded.}
+\caption{Relationships between plant traits (a) Seed weight; (b) Fruit size; (c) Oil content; (d) Dispersal mode; (e) Seed dormancy; (f) Pollination mode; (g) Reproductive mode; (h) Drought tolerance; (i) Leaf longevity and masting based on phylogenetic logistic regression for gymnosperm species. Raw data are shown for each trait: continuous traits are displayed as violin plots, and categorical traits as histograms. Overlaid model summaries are derived from phylogenetic logistic regression models fitted using phyloglm. For each model, we report sample size (N), regression coefficient (Estimate), phylogenetic signal parameter $\alpha$, and associated P-value. (a)-(e) are traits related to predation satiation hypothesis; (f), (g) are traits related to pollination coupling hypothesis; (h), (i) are traits related to resource matching hypothesis. Legends are shared across panels.}
+\label{fig:rawcon}
 \end{figure}
 \newpage
-% ------------------------------------------
 \begin{landscape}
 \begin{table}[ht]
 \centering
 \begin{tabular}{lllrrrrr}
   \hline
-Group & Trait & Predictor & Estimate & SE & P & Phylo ${\alpha}$ & N \\ 
+Group & Trait & Predictor & Estimate & SE & P & Phylo ($\alpha$) & N \\ 
   \hline
 Gymnosperm & Seed dispersal & Biotic vs abiotic & -0.83 & 0.81 & 0.30 & 0.01 &  60 \\ 
   Gymnosperm & Seed dispersal & Both vs abiotic & -1.11 & 0.67 & 0.10 & 0.01 &  60 \\ 
@@ -93,37 +82,111 @@ Gymnosperm & Seed dispersal & Biotic vs abiotic & -0.83 & 0.81 & 0.30 & 0.01 &  
 \caption{Phylogenetic Generalized Linear Model Results} 
 \label{tab:regression}
 \end{table}
+\end{landscape}
+\newpage
+\subsection{Results for each hypothesis}
+\begin{itemize}
+\item Predation satiation: seed weight only with a small log-odds and only for angiosperm
+\begin{itemize}
+\item We found only seed weight is related to masting with having bigger seeds will increase the chance of being a strong masting species Figure (\ref{fig:rawangio}), however, the log-odds is only 0.2 Table (\ref{tab:regression}). We also only found this in angiosperm group.
+\end{itemize}
+\item Pollination satiation: wind pollination for angiosperm
+\begin{itemize}
+\item we found wind pollination is related to masting for angiosperm species, the log-odds for wind compare to animal or both are 1.72 and 1.23 respectively. Gymnosperm are all wind pollinated, and gymnosperm has a greater portion of masting species.
+\end{itemize}
+\item Resource matching: nothing significant
+
+\end{itemize}
+\newpage
+% ------------------------------------------
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/nmdsFinal_scalearea.pdf}
+\caption{Non-metric multidimensional scaling (NMDS) of trait composition for angiosperm and conifer species. Each point represents a species, with position determined by NMDS axes. Points are colored by drought tolerance, filled by masting or not, shaped by reproductive type, sized by seed weight. Panels are arranged as (a) angiosperm NMDS1–NMDS2, (b) angiosperm NMDS2–NMDS3, (c) conifer NMDS1–NMDS2, and (d) conifer NMDS2–NMDS3.}
+\label{fig:nmds}
+\end{figure}
+
+\subsection{Multidimension-NMDS}
+\begin{itemize}
+\item We don't see masting aligned well along any axis in the NMDS analysis.
+\end{itemize}
+% ------------------------------------------
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{../output/figures/weightTree.pdf}
+\caption{Phylogenetic tree for all species included in the analysis. The color scheme of the branch is the trait value for seed weight (log). The color tip is colored by masting or not. We calculated the Pagel's $\lambda$ for continuous traits as well as multilevel categorical traits, and calculated D-statistic for binary traits}
+\label{fig:predationangio}
+\end{figure}
+\newpage
+% ------------------------------------------
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/quercusTree.pdf}
+\caption{Phylogenetic tree for all Quercus species, Quercus species included in this study is color coded.}
+\label{fig:quercus}
+\end{figure}
+\newpage
+% ------------------------------------------
 \begin{table}[ht]
 \centering
 \begin{tabular}{llr}
   \hline
-Group & Trait & Lambda \\ 
+Group & Trait & ($\lambda$) \\ 
   \hline
 Angiosperm & Seed weight (Log) & 0.95 \\ 
   Angiosperm & Fruit size (Log) & 0.93 \\ 
-  Angiosperm & Seed size (Log) & 0.96 \\ 
   Angiosperm & Oil content & 0.25 \\ 
   Angiosperm & Leaf longevity & 1.02 \\ 
   Angiosperm & Dispersal mode & 1.00 \\ 
-  Angiosperm & Seed dormancy & 1.00 \\ 
   Angiosperm & Pollination mode & 1.00 \\ 
   Angiosperm & Reproductive type & 1.00 \\ 
   Angiosperm & Drought tolerance & 0.00 \\ 
-  Angiosperm & Masting & 0.00 \\ 
   Gymnosperm & Seed weight (Log) & 0.97 \\ 
   Gymnosperm & Fruit size (Log) & 0.90 \\ 
-  Gymnosperm & Seed size (Log) & 0.26 \\ 
   Gymnosperm & Oil content & 0.00 \\ 
   Gymnosperm & Leaf longevity & 0.90 \\ 
   Gymnosperm & Dispersal mode & 1.00 \\ 
-  Gymnosperm & Seed dormancy & 1.00 \\ 
-  Gymnosperm & Reproductive type & 1.00 \\ 
   Gymnosperm & Drought tolerance & 1.00 \\ 
-  Gymnosperm & Masting & 1.00 \\ 
    \hline
 \end{tabular}
-\caption{Phylogenetic Signal (Pagel's ${/lambda}$) for All Traits} 
+\caption{Phylogenetic Signal (Pagel's $\lambda$) for continous traits and multi-level categorical traits} 
 \label{tab:lambda}
 \end{table}
-\end{landscape}
+\begin{table}[ht]
+\centering
+\begin{tabular}{lllll}
+  \hline
+Group & Trait & Estimated D & P(random) & P(Brownian) \\ 
+  \hline
+Angiosperm & Seed dormancy & 0.25 & 0 & 0.16 \\ 
+  Angiosperm & Masting & 0.58 & 0 & 0.01 \\ 
+  Gymnosperm & Masting & 0.51 & 0.02 & 0.10 \\ 
+  Gymnosperm & Seed dormancy & 0.98 & 0.41 & 0 \\ 
+  Gymnosperm & Reproductive type & -0.52 & 0 & 0.89 \\ 
+   \hline
+\end{tabular}
+\caption{Phylogenetic Signal (D-statistic with probability from random phylogenetic structure and probability from Brownian phylogenetic structure for binary traits} 
+\label{tab:d}
+\end{table}
+\newpage
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/leafTree.pdf}
+\caption{Phylogenetic tree for species with leaf longevity data, tip label color-coded by masting pattern}
+\label{fig:leafangio}
+\end{figure}
+\newpage
+\subsection{Phylogenetic patterns}
+\begin{itemize}
+\item Pagel's $\lambda$ for continuous traits and multilevel categorical traits in Table \ref{tab:lambda}, D-statistic for binary traits in Table \ref{tab:d}.
+\begin{itemize}
+\item Masting has a stronger phylogenetic signal in gymnosperm compared to angiosperm
+\item Seed weight has strong phylogenetic signal and we can see the similarity in certain group in Figure \ref{fig:predationangio} it's relatively reliable estimate
+\item Be cautious that $\lambda$ might not be comparable among traits, not only because the way $\lambda$ is calculated for continuous traits and categorical traits are different, but also because $\lambda$ might depend on the data structure when sampling is uneven, take leaf longevity as an example in Figure \ref{fig:leafangio}. 
+\end{itemize}
+\item When we know the phylogenetic results, we need to be cautious interpretating relationships between traits, it is hard to tease out traits from masting, limit the inference)
+\item Data is strongly nested in phylogeny, and data is sparse. We have to assume the sampling is even.
+\end{itemize}
 \end{document}
