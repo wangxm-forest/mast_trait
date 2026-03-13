@@ -7,6 +7,7 @@ library(phytools)
 library(viridisLite)
 library(geiger)
 library(xtable)
+library(caper)
 # housekeeping
 rm(list=ls()) 
 options(stringsAsFactors = FALSE)
@@ -254,6 +255,8 @@ angio$logSeedSize   <- log(angio$seedSizeAve)
 
 allspp <- silvicsTree$tip.label
 
+preliminaryPhylo <- FALSE
+if(preliminaryPhylo){
 # Assign colors to each dormancy class
 mastingYN <- unique(masting$mastEvent)
 mast_colors <- c("Y" = "#CD5555", "N" = "#698B22", "No information" = "Grey")
@@ -461,8 +464,9 @@ legend(
 )
 
 dev.off()
-
-# Quercus tree
+}
+quercus <- FALSE
+if(quercus){# Quercus tree
 phy.plants<-read.tree("data/quercusFullTree.tre")
 phy.plants$tip.label <- sapply(phy.plants$tip.label, function(x) {
   parts <- strsplit(x, "[_|]")[[1]] 
@@ -494,7 +498,7 @@ legend("bottomright",
        cex = 5)
 
 dev.off()
-
+}
 # Calculating phylogenetic signal -- angiosperm
 # Continuous
 weight <- angio$logSeedWeight
@@ -529,10 +533,13 @@ disp <- angio$seedDispersal
 names(disp) <- angio$latbi
 dispLambda <- fitDiscrete(phyangio, disp, model="ER",transform="lambda")
 print(dispLambda$opt$lambda)
+
 # lambda is 1
 dorm <- angio$seedDormancy
 names(dorm) <- angio$latbi
 dormLambda <- fitDiscrete(phyangio, dorm, model="ER",transform="lambda")
+
+
 # lambda is close to 0
 poll <- angio$pollination
 names(poll) <- angio$latbi
@@ -550,31 +557,56 @@ mast <- angio$mastEvent
 names(mast) <- angio$latbi
 mastLambda <- fitDiscrete(phyangio, mast, model="ER",transform="lambda")
 print(mastLambda$opt$lambda)
+# D statistics
+set.seed(135)
+phyangio   <- drop.tip(silvicsTree, setdiff(silvicsTree$tip.label, angio$latbi))
+phyangio$node.label <- NULL
+dMast <- angio[, c("mastEvent", "latbi")]
+comp <- comparative.data(phyangio, dMast, names.col="latbi", vcv=TRUE)
+phylo.d(comp, binvar=mastEvent)
+#Estimated D :  0.5779433
+#Probability of E(D) resulting from no (random) phylogenetic structure :  0
+#Probability of E(D) resulting from Brownian phylogenetic structure    :  0.01
+
+dDorm <- angio[, c("seedDormancy", "latbi")]
+comp <- comparative.data(phyangio, dDorm, names.col="latbi", vcv=TRUE)
+
+phylo.d(comp, binvar=seedDormancy)
+#Estimated D :  0.2540649
+#Probability of E(D) resulting from no (random) phylogenetic structure :  0
+#Probability of E(D) resulting from Brownian phylogenetic structure    :  0.161
 
 lambda_angio <- data.frame(
   Group = 
-    rep("Angiosperm", 11)
+    rep("Angiosperm", 8)
   ,
-  Trait = c("Seed weight (Log)", "Fruit size (Log)", "Seed size (Log)",
+  Trait = c("Seed weight (Log)", "Fruit size (Log)",
     "Oil content", "Leaf longevity",
-    "Dispersal mode", "Seed dormancy",
-    "Pollination mode", "Reproductive type", "Drought tolerance", "Masting"),
+    "Dispersal mode", 
+    "Pollination mode", "Reproductive type", "Drought tolerance"),
   Lambda = c(
     round(weightLambda$lambda,3),
     round(fruitLambda$lambda,3),
-    round(seedLambda$lambda,3),
     round(oilLambda$lambda,3),
     round(leafLambda$lambda,3),
     round(dispLambda$opt$lambda,3),
-    round(dormLambda$opt$lambda,3),
     round(pollLambda$opt$lambda,3),
     round(repLambda$opt$lambda,3),
-    round(droughtLambda$opt$lambda,3),
-    round(mastLambda$opt$lambda,3)
+    round(droughtLambda$opt$lambda,3)
   ),
   stringsAsFactors = FALSE
 )
 
+d_angio <- data.frame(
+  Group = 
+    rep("Angiosperm", 2)
+  ,
+  Trait = c("Seed dormancy", "Masting"),
+  "Estimated D" = c("0.25","0.58"
+  ),"P(random)" = c("0","0"),"P(Brownian)" = c("0.16","0.01"),
+  
+  stringsAsFactors = FALSE,check.names = FALSE
+)
 # Calculating phylogenetic signal -- gymnosperm
 weight <- conifer$logSeedWeight
 names(weight) <- conifer$latbi
@@ -613,6 +645,7 @@ names(dorm) <- conifer$latbi
 dormLambda <- fitDiscrete(phyconifer, dorm, model="ER",transform="lambda")
 print(dormLambda$opt$lambda)
 # lambda is close to 0
+
 rep <- conifer$typeMonoOrDio
 names(rep) <- conifer$latbi
 repLambda <- fitDiscrete(phyconifer, rep, model="ER",transform="lambda")
@@ -628,41 +661,73 @@ names(mast) <- conifer$latbi
 mastLambda <- fitDiscrete(phyconifer, mast, model="ER",transform="lambda")
 print(droughtLambda$opt$lambda)
 
+# D statistics
+phyconifer <- drop.tip(silvicsTree, setdiff(silvicsTree$tip.label, conifer$latbi))
+phyconifer$node.label<-NULL
+dDorm <- conifer[, c("seedDormancy", "latbi")]
+comp <- comparative.data(phyconifer, dDorm, names.col="latbi", vcv=TRUE)
+phylo.d(comp, binvar=seedDormancy)
+# Estimated D :  0.9764245
+# Probability of E(D) resulting from no (random) phylogenetic structure :  0.412
+# Probability of E(D) resulting from Brownian phylogenetic structure    :  0
+dRep <- conifer[, c("typeMonoOrDio", "latbi")]
+comp <- comparative.data(phyconifer, dRep, names.col="latbi", vcv=TRUE)
+phylo.d(comp, binvar=typeMonoOrDio)
+# Estimated D :  -0.5188342
+# Probability of E(D) resulting from no (random) phylogenetic structure :  0
+# Probability of E(D) resulting from Brownian phylogenetic structure    :  0.885
+dMast <- conifer[, c("mastEvent", "latbi")]
+comp <- comparative.data(phyconifer, dMast, names.col="latbi", vcv=TRUE)
+phylo.d(comp, binvar=mastEvent)
+#Estimated D :  0.5059193
+#Probability of E(D) resulting from no (random) phylogenetic structure :  0.02
+#Probability of E(D) resulting from Brownian phylogenetic structure    :  0.097
 lambda_conifer <- data.frame(
   Group = 
-    rep("Gymnosperm", 10)
+    rep("Gymnosperm", 6)
   ,
-  Trait = c("Seed weight (Log)", "Fruit size (Log)", "Seed size (Log)",
+  Trait = c("Seed weight (Log)", "Fruit size (Log)",
             "Oil content", "Leaf longevity",
-            "Dispersal mode", "Seed dormancy",
-            "Reproductive type", "Drought tolerance","Masting"),
+            "Dispersal mode", 
+            "Drought tolerance"),
   Lambda = c(
     round(weightLambda$lambda,3),
     round(fruitLambda$lambda,3),
-    round(seedLambda$lambda,3),
     round(oilLambda$lambda,3),
     round(leafLambda$lambda,3),
     round(dispLambda$opt$lambda,3),
-    round(dormLambda$opt$lambda,3),
-    round(repLambda$opt$lambda,3),
-    round(droughtLambda$opt$lambda,3),
-    round(mastLambda$opt$lambda,3)
+    round(droughtLambda$opt$lambda,3)
   ),
   stringsAsFactors = FALSE
 )
-
+d_conifer <- data.frame(
+  Group = 
+    rep("Gymnosperm", 3)
+  ,
+  Trait = c("Masting", "Seed dormancy", "Reproductive type"),
+  "Estimated D" = c("0.51","0.98", "-0.52"
+  ),"P(random)" = c("0.02","0.41", "0"),"P(Brownian)" = c("0.10","0", "0.89"),
+  
+  stringsAsFactors = FALSE,check.names = FALSE
+)
 
 lambda <- rbind(lambda_angio,lambda_conifer)
-
+dStat <- rbind(d_angio,d_conifer)
 labmdaTable <- xtable(lambda, 
-                 caption = "Phylogenetic Signal (Pagel's ${/lambda}$) for All Traits", 
+                 caption = "Phylogenetic Signal (Pagel's ${lambda}$) for continous traits and multi-level categorical traits", 
                  label = "tab:lambda")
 print(labmdaTable, type = "latex", include.rownames = FALSE)
+dTable <- xtable(dStat, 
+                 caption = "Phylogenetic Signal (D-statistic with probability from random phylogenetic structure and probability from Brownian phylogenetic structure for binary traits", 
+                 label = "tab:d")
+print(dTable, type = "latex", include.rownames = FALSE)
 # Predation satiation for angiosperm, using seed weight for the branch color
 
 commonSp <- intersect(phyangio$tip.label, names(weight))
-
-
+mast <- angio$mastEvent
+names(mast) <- angio$latbi
+mast <- mast[!is.na(mast)]
+commonSp <- intersect(commonSp,names(mast))
 weight <- weight[commonSp]
 weight <- weight[!is.na(weight)]
 weightTree <- drop.tip(phyangio,
@@ -672,7 +737,7 @@ name.check(weightTree, weight)
 
 
 weightMap <- contMap(weightTree,
-                     weight,fsize=c(1.,0.8),
+                     weight,fsize=c(1,0.8),
                      plot = TRUE)
 lastPP<-get("last_plot.phylo",envir=.PlotPhyloEnv)
 ## for fun, let's change our contMap gradient
@@ -726,7 +791,7 @@ for(i in 1:length(weightMast)){
 
 
 for(i in 1:length(weightDisp)){
-points(lastPP$xx[1:Ntip] + tree_width *0.32,
+points(lastPP$xx[1:Ntip] + tree_width *0.42,
        lastPP$yy[1:Ntip],
        pch=21,
        bg=colsDisp[weightDisp],
@@ -742,7 +807,7 @@ oilSize <- (weightOil - min(weightOil, na.rm=TRUE)) /
 
 oilSize <- sizeMin + oilSize * (sizeMax - sizeMin)
   for(i in 1:length(weightOil)){
-  points(lastPP$xx[1:Ntip] + tree_width *0.35,
+  points(lastPP$xx[1:Ntip] + tree_width *0.44,
          lastPP$yy[1:Ntip],
          pch=21,
          bg="lightblue",
@@ -751,7 +816,7 @@ oilSize <- sizeMin + oilSize * (sizeMax - sizeMin)
 }
 
 for(i in 1:length(weightDorm)){
-  points(lastPP$xx[1:Ntip] + tree_width *0.38,
+  points(lastPP$xx[1:Ntip] + tree_width *0.46,
          lastPP$yy[1:Ntip],
          pch=21,
          bg=colsDorm[weightDorm],
@@ -776,18 +841,20 @@ add.simmap.legend(colors = c("Abiotic" = "#F4D166","Biotic" = "#6194BF", "Both" 
 text(x = 155, y = -7, "Dispersal mode", pos = 3)
 add.simmap.legend(colors = c("Dormant" = "#CFDAA8","Non-dormant" = "#AC7299"), sep = "\n",
                   prompt=FALSE,
-                  x=175,
+                  x=185,
                   y=-8)
-text(x = 185, y = -7, "Seed dormancy", pos = 3)
+text(x = 195, y = -7, "Seed dormancy", pos = 3)
 
-text(x = 50, y = -18,
+text(x = 50, y = -14,
      labels = paste(c("Lambda:",
                       "Seed weight (Log): 0.95",
                       "Dispersal mode: 1",
-                      "Seed dormancy: 1",
-                      "Oil content: 0.25"),
+                      "Oil content: 0.25",
+                      "D-statistic", 
+                      "Seed dormancy: 0.25; P(random) = 0; P(Brownian) = 0.16",
+                      "Masting: 0.57; P(random) = 0; P(Brownian) = 0.01"),
                     collapse = "\n"),
-     pos = 3)
+     pos = 3, cex =0.8)
 
 dev.off()
 
