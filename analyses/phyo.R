@@ -752,7 +752,7 @@ weightMast <- weightDf$mastEvent
 names(weightMast) <- weightDf$latbi
 weightMast  <- weightMast[weightTree$tip.label]
 cols <- setNames(
-  c("#387E46", "#C43142"),
+  c("#A9D5B1", "#ED562C"),
   levels(factor(weightMast))
 )
 weightDisp <- weightDf$seedDispersal
@@ -791,7 +791,7 @@ for(i in 1:length(weightMast)){
 
 
 for(i in 1:length(weightDisp)){
-points(lastPP$xx[1:Ntip] + tree_width *0.42,
+points(lastPP$xx[1:Ntip] + tree_width *0.32,
        lastPP$yy[1:Ntip],
        pch=21,
        bg=colsDisp[weightDisp],
@@ -807,7 +807,7 @@ oilSize <- (weightOil - min(weightOil, na.rm=TRUE)) /
 
 oilSize <- sizeMin + oilSize * (sizeMax - sizeMin)
   for(i in 1:length(weightOil)){
-  points(lastPP$xx[1:Ntip] + tree_width *0.44,
+  points(lastPP$xx[1:Ntip] + tree_width *0.34,
          lastPP$yy[1:Ntip],
          pch=21,
          bg="lightblue",
@@ -816,7 +816,7 @@ oilSize <- sizeMin + oilSize * (sizeMax - sizeMin)
 }
 
 for(i in 1:length(weightDorm)){
-  points(lastPP$xx[1:Ntip] + tree_width *0.46,
+  points(lastPP$xx[1:Ntip] + tree_width *0.36,
          lastPP$yy[1:Ntip],
          pch=21,
          bg=colsDorm[weightDorm],
@@ -832,18 +832,18 @@ text(x = 125, y = -7, "Masting", pos = 3)
 add.simmap.legend(colors = c("Oil content" = "lightblue"),
                   prompt=FALSE,
                   x=120,
-                  y=-15)
+                  y=-12)
 
 add.simmap.legend(colors = c("Abiotic" = "#F4D166","Biotic" = "#6194BF", "Both" = "#95B958"), sep = "\n",
                   prompt=FALSE,
-                  x=145,
+                  x=140,
                   y=-8)
-text(x = 155, y = -7, "Dispersal mode", pos = 3)
+text(x = 150, y = -7, "Dispersal mode", pos = 3)
 add.simmap.legend(colors = c("Dormant" = "#CFDAA8","Non-dormant" = "#AC7299"), sep = "\n",
                   prompt=FALSE,
-                  x=185,
+                  x=170,
                   y=-8)
-text(x = 195, y = -7, "Seed dormancy", pos = 3)
+text(x = 180, y = -7, "Seed dormancy", pos = 3)
 
 text(x = 50, y = -14,
      labels = paste(c("Lambda:",
@@ -859,16 +859,16 @@ text(x = 50, y = -14,
 dev.off()
 
 # Resource matching for angiosperm, using leaf longevity for the branch color
-#commonSp <- intersect(phyangio$tip.label, names(leaf))
+commonSp <- intersect(phyangio$tip.label, names(leaf))
 
 
-#leaf <- leaf[commonSp]
-#leaf <- leaf[!is.na(leaf)]
-#leafTree <- drop.tip(phyangio,setdiff(phyangio$tip.label,names(leaf)))
-#name.check(leafTree, leaf)
+leaf <- leaf[commonSp]
+leaf <- leaf[!is.na(leaf)]
+leafTree <- drop.tip(phyangio,setdiff(phyangio$tip.label,names(leaf)))
+name.check(leafTree, leaf)
 
 
-leafMap <- contMap(phyangio,
+leafMap <- contMap(leafTree,
                      leaf,fsize=c(1,0.8),
                      plot = TRUE)
 lastPP<-get("last_plot.phylo",envir=.PlotPhyloEnv)
@@ -884,11 +884,9 @@ leafMast <- leafDf$mastEvent
 names(leafMast) <- leafDf$latbi
 leafMast  <- leafMast[leafTree$tip.label]
 cols <- setNames(
-  c("#387E46", "#C43142"),
+  c("#A9D5B1", "#ED562C"),
   levels(factor(leafMast))
 )
-
-
 
 leafMast <- leafMast[object$tree$tip.label]
 
