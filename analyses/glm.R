@@ -227,19 +227,22 @@ clean_results <- function(results) {
 }
 
 conifer_results <- clean_results(conifer_results)
-conifer_results <- cbind(Group = "Gymnosperm", conifer_results)
+#conifer_results <- cbind(Group = "Gymnosperm", conifer_results)
 
 angio_results <- clean_results(angio_results)
-angio_results <- cbind(Group = "Angiosperm", angio_results)
+#angio_results <- cbind(Group = "Angiosperm", angio_results)
 
-d_results <- rbind(conifer_results, angio_results)
+#d_results <- rbind(conifer_results, angio_results)
 
-dTable <- xtable(d_results, 
-               caption = "Phylogenetic Generalized Linear Model Results", 
-               label = "tab:regression")
+dTable <- xtable(conifer_results, 
+               caption = "Phylogenetic Generalized Linear Model Results for Gymnosperm", 
+               label = "tab:regressiongym")
 print(dTable, type = "latex", include.rownames = FALSE)
 
-
+dTable <- xtable(angio_results, 
+                 caption = "Phylogenetic Generalized Linear Model Results for Angiosperm", 
+                 label = "tab:regressionangio")
+print(dTable, type = "latex", include.rownames = FALSE)
 
 
 ###Plot the raw data with the phyloglm results ----
@@ -291,53 +294,84 @@ getAnnotation <- function(trait_name, model_results, subData) {
   return(label)
 }
 
-getAnnotation("Dispersal mode", angio_results, dispData)
-# "n=50, P=0.03,0.12"
 
 dispData <- angio[, c("mastEvent", "seedDispersal")]
 dispData$mastEvent <- as.factor(dispData$mastEvent)
 dispData$seedDispersal <- as.factor(dispData$seedDispersal)
-# Create ggplot object
-disp <- ggplot(dispData, aes(x = seedDispersal, fill = mastEvent)) +
-  geom_bar(position = "dodge", colour = "black") +
-annotate("text", x = 2.5, y = 29, 
-         label = getAnnotation("Dispersal mode", angio_results, dispData),
-         size = 2)+
-  labs(y = "Count", x = NULL) +
-  theme_classic(base_size = 12) + scale_x_discrete(labels = c("abiotic" = "Abiotic", "biotic" = "Biotic", "both"="Both")) + scale_fill_manual(
-    name = "Masting", 
-    values = c("0"="#A9D5B1", "1"="#ED562C"), 
-    labels = c("0"="No", "1"="Yes") 
-  ) + scale_y_continuous(limits = c(0, 30))
-legend <- get_legend(disp)
-disp <- ggplot(dispData, aes(x = seedDispersal, fill = mastEvent)) +
-  geom_bar(position = "dodge", colour = "black") +
-  annotate("text", x = 2.5, y = 29, 
-           label = getAnnotation("Dispersal mode", angio_results, dispData),
-           size = 2)+
-  labs(y = "Count (Seed dispersal)", x = NULL) +
-  theme_classic(base_size = 12) + scale_x_discrete(labels = c("abiotic" = "Abiotic", "biotic" = "Biotic", "both"="Both")) + scale_fill_manual(
-    name = "Masting", 
-    values = c("0"="#A9D5B1", "1"="#ED562C"), 
-    labels = c("0"="No", "1"="Yes") 
-  ) + scale_y_continuous(limits = c(0, 30)) + theme(legend.position = "none")
-
-dormData <- angio[, c("mastEvent", "seedDormancy")]
-dormData$mastEvent <- as.factor(dormData$mastEvent)
-dormData$seedDormancy <- as.factor(dormData$seedDormancy)
-# Create ggplot object
-dorm <- ggplot(dormData, aes(x = seedDormancy, fill = mastEvent)) +
-  geom_bar(position = "dodge", colour = "black") +
-  annotate("text", x = 2, y = 43, 
-           label = getAnnotation("Seed dormancy", angio_results, dormData),
-           size = 2) +
+dispData <- dispData[!is.na(dispData$seedDispersal), ]
+tab <- table(dispData$seedDispersal, dispData$mastEvent)
+disp_prop <- as.data.frame(tab)
+colnames(disp_prop) <- c("seedDispersal", "mastEvent", "n")
+disp_prop$prop <- disp_prop$n / ave(disp_prop$n, disp_prop$mastEvent, FUN = sum)
+disp <- ggplot(disp_prop, aes(x = seedDispersal, y = prop, fill = mastEvent)) +
+  geom_col(position = position_dodge(width = 0.9), colour = "black") +
+  geom_text(aes(label = n),
+            position = position_dodge(width = 0.9),
+            vjust = -0.3, size = 3) +
+  labs(y = "Proportion (Dispersal mode)", x = NULL) +
+  theme_classic(base_size = 12) +
+  scale_x_discrete(labels = c("abiotic" = "Abiotic", 
+                              "biotic" = "Biotic", 
+                              "both"="Both")) +
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
     labels = c("0"="No", "1"="Yes") 
-  ) + scale_x_discrete(labels = c("N" = "No dormancy", "Y" = "Dormancy")) +
-  labs(y = "Count (Seed dormancy)", x = NULL) +
-  theme_classic(base_size = 12) + scale_y_continuous(limits = c(0, 45)) + theme(legend.position = "none")
+  ) +
+  scale_y_continuous(limits = c(0, 1.05)) +
+  annotate("text", x = 2, y = 0.85, 
+           label = getAnnotation("Dispersal mode", angio_results, dispData),
+           size = 3)
+
+legend <- get_legend(disp)
+disp <- ggplot(disp_prop, aes(x = seedDispersal, y = prop, fill = mastEvent)) +
+  geom_col(position = position_dodge(width = 0.9), colour = "black") +
+  geom_text(aes(label = n),
+            position = position_dodge(width = 0.9),
+            vjust = -0.3, size = 3) +
+  labs(y = "Proportion (Dispersal mode)", x = NULL) +
+  theme_classic(base_size = 12) +
+  scale_x_discrete(labels = c("abiotic" = "Abiotic", 
+                              "biotic" = "Biotic", 
+                              "both"="Both")) +
+  scale_fill_manual(
+    name = "Masting", 
+    values = c("0"="#A9D5B1", "1"="#ED562C"), 
+    labels = c("0"="No", "1"="Yes") 
+  ) +
+  scale_y_continuous(limits = c(0, 1.05)) +
+  annotate("text", x = 2, y = 0.85, 
+           label = getAnnotation("Dispersal mode", angio_results, dispData),
+           size = 3) + theme(legend.position = "none")
+
+dormData <- angio[, c("mastEvent", "seedDormancy")]
+dormData$mastEvent <- as.factor(dormData$mastEvent)
+dormData$seedDormancy <- as.factor(dormData$seedDormancy)
+dormData <- dormData[!is.na(dormData$seedDormancy), ]
+tab <- table(dormData$seedDormancy, dormData$mastEvent)
+dorm_prop <- as.data.frame(tab)
+colnames(dorm_prop) <- c("seedDormancy", "mastEvent", "n")
+dorm_prop$prop <- dorm_prop$n / ave(dorm_prop$n, dorm_prop$mastEvent, FUN = sum)
+
+# Create ggplot object
+dorm <- ggplot(dorm_prop, aes(x = seedDormancy, y = prop, fill = mastEvent)) +
+  geom_col(position = position_dodge(width = 0.9), colour = "black") +
+  geom_text(aes(label = n),
+            position = position_dodge(width = 0.9),
+            vjust = -0.3, size = 3) +
+  labs(y = "Proportion (Seed dormancy)", x = NULL) +
+  theme_classic(base_size = 12) +
+  scale_x_discrete(labels = c("N" = "No dormancy", 
+                              "Y" = "Dormancy")) +
+  scale_fill_manual(
+    name = "Masting", 
+    values = c("0"="#A9D5B1", "1"="#ED562C"), 
+    labels = c("0"="No", "1"="Yes") 
+  ) +
+  scale_y_continuous(limits = c(0, 1.05)) +
+  annotate("text", x = 1.5, y = 0.85, 
+           label = getAnnotation("Seed dormancy", angio_results, dormData),
+           size = 3) + theme(legend.position = "none")
 
 weightData <- angio[, c("mastEvent", "logSeedWeight")]
 weightData$mastEvent <- as.factor(weightData$mastEvent)
@@ -347,7 +381,7 @@ weight <- ggplot(weightData, aes(x = mastEvent, y = logSeedWeight, fill = mastEv
   geom_point(position = position_jitter(width = 0.08), size = 1.5, alpha = 0.7)  +
 annotate("text", x = 1.5, y = 17, 
          label = getAnnotation("Seed weight (log)", angio_results, weightData),
-         size = 2)+
+         size = 3)+
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
@@ -362,7 +396,7 @@ fruit <- ggplot(fruitData, aes(x = mastEvent, y = logFruit, fill = mastEvent)) +
   geom_violin(trim = FALSE, alpha = 0.5, colour = "black") +
 annotate("text", x = 1.5, y = 5.7, 
          label = getAnnotation("Fruit size (log)", angio_results, fruitData),
-         size = 2) +
+         size = 3) +
   geom_point(position = position_jitter(width = 0.08), size = 1.5, alpha = 0.7) +
   scale_fill_manual(
     name = "Masting", 
@@ -379,7 +413,7 @@ oil <- ggplot(oilData, aes(x = mastEvent, y = oilContent, fill = mastEvent)) +
   geom_violin(trim = FALSE, alpha = 0.5, colour = "black") +
 annotate("text", x = 1.5, y = 115, 
          label = getAnnotation("Oil content (%)", angio_results, oilData),
-         size = 2) +
+         size = 3) +
   geom_point(position = position_jitter(width = 0.08), size = 1.5, alpha = 0.7) +
   scale_fill_manual(
     name = "Masting", 
@@ -392,50 +426,87 @@ annotate("text", x = 1.5, y = 115,
 pollData <- angio[, c("mastEvent", "pollination")]
 pollData$mastEvent <- as.factor(pollData$mastEvent)
 pollData$pollination <- as.factor(pollData$pollination)
+pollData <- pollData[!is.na(pollData$pollination), ]
+tab <- table(pollData$pollination, pollData$mastEvent)
+poll_prop <- as.data.frame(tab)
+colnames(poll_prop) <- c("pollination", "mastEvent", "n")
+poll_prop$prop <- poll_prop$n / ave(poll_prop$n, poll_prop$mastEvent, FUN = sum)
+
 # Create ggplot object
-poll <- ggplot(pollData, aes(x = pollination, fill = mastEvent)) +
-  geom_bar(position = "dodge", colour = "black")  +
-annotate("text", x = 2.5, y = 33, 
-         label = getAnnotation("Pollination mode", angio_results, pollData),
-         size = 2) +
+poll <- ggplot(poll_prop, aes(x = pollination, y = prop, fill = mastEvent)) +
+  geom_col(position = position_dodge(width = 0.9), colour = "black") +
+  geom_text(aes(label = n),
+            position = position_dodge(width = 0.9),
+            vjust = -0.3, size = 3) +
+  labs(y = "Proportion (Pollination mode)", x = NULL) +
+  theme_classic(base_size = 12) +
+  scale_x_discrete(labels = c("animals" = "Animals", 
+                              "wind" = "Wind", 
+                              "wind and animals"="Both")) +
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
     labels = c("0"="No", "1"="Yes") 
-  ) + scale_x_discrete(labels = c("animals" = "Animal", "wind" = "Wind", "wind and animals"="Both")) +
-  labs(y = "Count (Pollination mode)", x = NULL) +
-  theme_classic(base_size = 12) + scale_y_continuous(limits = c(0, 35))+ theme(legend.position = "none")
+  ) +
+  scale_y_continuous(limits = c(0, 1.05)) +
+  annotate("text", x = 2, y = 0.95, 
+           label = getAnnotation("Pollination mode", angio_results, dispData),
+           size = 3) + theme(legend.position = "none")
 
 repData <- angio[, c("mastEvent", "typeMonoOrDio")]
 repData$mastEvent <- as.factor(repData$mastEvent)
 repData$typeMonoOrDio <- as.factor(repData$typeMonoOrDio)
+repData <- repData[!is.na(repData$typeMonoOrDio), ]
+tab <- table(repData$typeMonoOrDio, repData$mastEvent)
+rep_prop <- as.data.frame(tab)
+colnames(rep_prop) <- c("typeMonoOrDio", "mastEvent", "n")
+rep_prop$prop <- rep_prop$n / ave(rep_prop$n, rep_prop$mastEvent, FUN = sum)
+
 # Create ggplot object
-rep <- ggplot(repData, aes(x = typeMonoOrDio, fill = mastEvent)) +
-  geom_bar(position = "dodge", colour = "black") + annotate("text", x = 2.5, y = 48, 
-         label = getAnnotation("Reproductive type", angio_results, repData),
-         size = 2)+
+rep <- ggplot(rep_prop, aes(x = typeMonoOrDio, y = prop, fill = mastEvent)) +
+  geom_col(position = position_dodge(width = 0.9), colour = "black") +
+  geom_text(aes(label = n),
+            position = position_dodge(width = 0.9),
+            vjust = -0.3, size = 3) +
+  labs(y = "Proportion (Reproductive type)", x = NULL) +
+  theme_classic(base_size = 12)  +
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
     labels = c("0"="No", "1"="Yes") 
   ) +
-  labs(y = "Count (Reproductive type)", x = NULL) +
-  theme_classic(base_size = 12) + scale_y_continuous(limits = c(0, 50))+ theme(legend.position = "none")
+  scale_y_continuous(limits = c(0, 1.05)) +
+  annotate("text", x = 2, y = 0.95, 
+           label = getAnnotation("Reproductive type", angio_results, dispData),
+           size = 3) + theme(legend.position = "none")
 
 droughtData <- angio[, c("mastEvent", "droughtTolerance")]
 droughtData$mastEvent <- as.factor(droughtData$mastEvent)
 droughtData$droughtTolerance <- as.factor(droughtData$droughtTolerance)
+droughtData <- droughtData[!is.na(droughtData$droughtTolerance), ]
+tab <- table(droughtData$droughtTolerance, droughtData$mastEvent)
+drought_prop <- as.data.frame(tab)
+colnames(drought_prop) <- c("droughtTolerance", "mastEvent", "n")
+drought_prop$prop <- drought_prop$n / ave(drought_prop$n, drought_prop$mastEvent, FUN = sum)
+
 # Create ggplot object
-drought <- ggplot(droughtData, aes(x = droughtTolerance, fill = mastEvent)) +
-  geom_bar(position = "dodge", colour = "black") + annotate("text", x = 2.5, y = 24.5, label = getAnnotation("Drought tolerance", angio_results, droughtData),
-         size = 2) +
+
+drought <- ggplot(drought_prop, aes(x = droughtTolerance, y = prop, fill = mastEvent)) +
+  geom_col(position = position_dodge(width = 0.9), colour = "black") +
+  geom_text(aes(label = n),
+            position = position_dodge(width = 0.9),
+            vjust = -0.3, size = 3) +
+  labs(y = "Proportion (Drought tolerance)", x = NULL) +
+  theme_classic(base_size = 12)  +
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
     labels = c("0"="No", "1"="Yes") 
   ) +
-  labs(y = "Count (Drought tolerance)", x = NULL) +
-  theme_classic(base_size = 12) + scale_y_continuous(limits = c(0, 25))+ theme(legend.position = "none")
+  scale_y_continuous(limits = c(0, 1.05)) +
+  annotate("text", x = 2, y = 0.9, 
+           label = getAnnotation("Drought tolerance", angio_results, dispData),
+           size = 3) + theme(legend.position = "none")
 
 leafData <- angio[, c("mastEvent", "leafLongevity")]
 leafData$mastEvent <- as.factor(leafData$mastEvent)
@@ -443,7 +514,7 @@ leafData$mastEvent <- as.factor(leafData$mastEvent)
 leaf <- ggplot(leafData, aes(x = mastEvent, y = leafLongevity, fill = mastEvent)) +
   geom_violin(trim = FALSE, alpha = 0.5, colour = "black") +
   geom_point(position = position_jitter(width = 0.08), size = 1.5, alpha = 0.7) + annotate("text", x = 1.5, y = 3.85, label = getAnnotation("Leaf longevity (years)", angio_results, leafData),
-         size = 2) +
+         size = 3) +
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
@@ -466,40 +537,88 @@ ggsave(
   filename = "output/figures/rawDataWithStatsAngio.pdf",
   plot = final,
   width = 12,
-  height = 12
+  height = 18
 )
 
 ## Gymnosperm
 dispData <- conifer[, c("mastEvent", "seedDispersal")]
 dispData$mastEvent <- as.factor(dispData$mastEvent)
 dispData$seedDispersal <- as.factor(dispData$seedDispersal)
-# Create ggplot object
-disp <- ggplot(dispData, aes(x = seedDispersal, fill = mastEvent)) +
-  geom_bar(position = "dodge", colour = "black") +
-annotate("text", x = 2.5, y = 38, label = getAnnotation("Seed dispersal", conifer_results, dispData),
-         size = 2) +
-  labs(y = "Count (Seed dispersal)", x = NULL) +
-  theme_classic(base_size = 12) + scale_x_discrete(labels = c("abiotic" = "Abiotic", "biotic" = "Biotic", "both"="Both")) + scale_fill_manual(
-    name = "Masting", 
-    values = c("0"="#A9D5B1", "1"="#ED562C"), 
-    labels = c("0"="No", "1"="Yes") 
-  ) + scale_y_continuous(limits = c(0, 40))
-
-dormData <- conifer[, c("mastEvent", "seedDormancy")]
-dormData$mastEvent <- as.factor(dormData$mastEvent)
-dormData$seedDormancy <- as.factor(dormData$seedDormancy)
-# Create ggplot object
-dorm <- ggplot(dormData, aes(x = seedDormancy, fill = mastEvent)) +
-  geom_bar(position = "dodge", colour = "black") +
-  annotate("text", x = 2, y = 47, label = getAnnotation("Seed dormancy", conifer_results, dormData),
-           size = 2) +
+dispData <- dispData[!is.na(dispData$seedDispersal), ]
+tab <- table(dispData$seedDispersal, dispData$mastEvent)
+disp_prop <- as.data.frame(tab)
+colnames(disp_prop) <- c("seedDispersal", "mastEvent", "n")
+disp_prop$prop <- disp_prop$n / ave(disp_prop$n, disp_prop$mastEvent, FUN = sum)
+disp <- ggplot(disp_prop, aes(x = seedDispersal, y = prop, fill = mastEvent)) +
+  geom_col(position = position_dodge(width = 0.9), colour = "black") +
+  geom_text(aes(label = n),
+            position = position_dodge(width = 0.9),
+            vjust = -0.3, size = 3) +
+  labs(y = "Proportion (Dispersal mode)", x = NULL) +
+  theme_classic(base_size = 12) +
+  scale_x_discrete(labels = c("abiotic" = "Abiotic", 
+                              "biotic" = "Biotic", 
+                              "both"="Both")) +
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
     labels = c("0"="No", "1"="Yes") 
-  ) + scale_x_discrete(labels = c("N" = "No dormancy", "Y" = "Dormancy")) +
-  labs(y = "Count (Seed dormancy)", x = NULL) +
-  theme_classic(base_size = 12) + scale_y_continuous(limits = c(0, 50))
+  ) +
+  scale_y_continuous(limits = c(0, 1.05)) +
+  annotate("text", x = 2, y = 0.85, 
+           label = getAnnotation("Dispersal mode", conifer_results, dispData),
+           size = 3)
+
+legend <- get_legend(disp)
+disp <- ggplot(disp_prop, aes(x = seedDispersal, y = prop, fill = mastEvent)) +
+  geom_col(position = position_dodge(width = 0.9), colour = "black") +
+  geom_text(aes(label = n),
+            position = position_dodge(width = 0.9),
+            vjust = -0.3, size = 3) +
+  labs(y = "Proportion (Dispersal mode)", x = NULL) +
+  theme_classic(base_size = 12) +
+  scale_x_discrete(labels = c("abiotic" = "Abiotic", 
+                              "biotic" = "Biotic", 
+                              "both"="Both")) +
+  scale_fill_manual(
+    name = "Masting", 
+    values = c("0"="#A9D5B1", "1"="#ED562C"), 
+    labels = c("0"="No", "1"="Yes") 
+  ) +
+  scale_y_continuous(limits = c(0, 1.05)) +
+  annotate("text", x = 2, y = 0.85, 
+           label = getAnnotation("Dispersal mode", conifer_results, dispData),
+           size = 3) + theme(legend.position = "none")
+
+dormData <- conifer[, c("mastEvent", "seedDormancy")]
+dormData$mastEvent <- as.factor(dormData$mastEvent)
+dormData$seedDormancy <- as.factor(dormData$seedDormancy)
+dormData <- dormData[!is.na(dormData$seedDormancy), ]
+tab <- table(dormData$seedDormancy, dormData$mastEvent)
+dorm_prop <- as.data.frame(tab)
+colnames(dorm_prop) <- c("seedDormancy", "mastEvent", "n")
+dorm_prop$prop <- dorm_prop$n / ave(dorm_prop$n, dorm_prop$mastEvent, FUN = sum)
+
+# Create ggplot object
+dorm <- ggplot(dorm_prop, aes(x = seedDormancy, y = prop, fill = mastEvent)) +
+  geom_col(position = position_dodge(width = 0.9), colour = "black") +
+  geom_text(aes(label = n),
+            position = position_dodge(width = 0.9),
+            vjust = -0.3, size = 3) +
+  labs(y = "Proportion (Seed dormancy)", x = NULL) +
+  theme_classic(base_size = 12) +
+  scale_x_discrete(labels = c("N" = "No dormancy", 
+                              "Y" = "Dormancy")) +
+  scale_fill_manual(
+    name = "Masting", 
+    values = c("0"="#A9D5B1", "1"="#ED562C"), 
+    labels = c("0"="No", "1"="Yes") 
+  ) +
+  scale_y_continuous(limits = c(0, 1.05)) +
+  annotate("text", x = 1.5, y = 0.85, 
+           label = getAnnotation("Seed dormancy", conifer_results, dormData),
+           size = 3) + theme(legend.position = "none")
+
 
 weightData <- conifer[, c("mastEvent", "logSeedWeight")]
 weightData$mastEvent <- as.factor(weightData$mastEvent)
@@ -508,7 +627,7 @@ weight <- ggplot(weightData, aes(x = mastEvent, y = logSeedWeight, fill = mastEv
   geom_violin(trim = FALSE, alpha = 0.5, colour = "black") +
   geom_point(position = position_jitter(width = 0.08), size = 1.5, alpha = 0.7)  +
 annotate("text", x = 1.5, y = 11, label = getAnnotation("Seed weight (log)", conifer_results, weightData),
-         size = 2)+
+         size = 3)+
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
@@ -522,7 +641,7 @@ fruitData$mastEvent <- as.factor(fruitData$mastEvent)
 fruit <- ggplot(fruitData, aes(x = mastEvent, y = logFruit, fill = mastEvent)) +
   geom_violin(trim = FALSE, alpha = 0.5, colour = "black") + geom_point(position = position_jitter(width = 0.08), size = 1.5, alpha = 0.7) +
 annotate("text", x = 1.5, y = 5, label = getAnnotation("Fruit size (log)", conifer_results, fruitData),
-         size = 2)+
+         size = 3)+
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
@@ -536,8 +655,7 @@ oilData$mastEvent <- as.factor(oilData$mastEvent)
 
 oil <- ggplot(oilData, aes(x = mastEvent, y = oilContent, fill = mastEvent)) +
   geom_violin(trim = FALSE, alpha = 0.5, colour = "black") +
-  geom_point(position = position_jitter(width = 0.08), size = 1.5, alpha = 0.7) +
-  scale_fill_manual(
+  geom_point(position = position_jitter(width = 0.08), size = 1.5, alpha = 0.7) + annotate("text", x = 1.5, y = 90, label = getAnnotation("Oil content", conifer_results, oilData), size = 3) + scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
     labels = c("0"="No", "1"="Yes") , guide = "none"
@@ -562,32 +680,59 @@ oil <- ggplot(oilData, aes(x = mastEvent, y = oilContent, fill = mastEvent)) +
 repData <- conifer[, c("mastEvent", "typeMonoOrDio")]
 repData$mastEvent <- as.factor(repData$mastEvent)
 repData$typeMonoOrDio <- as.factor(repData$typeMonoOrDio)
+repData <- repData[!is.na(repData$typeMonoOrDio), ]
+tab <- table(repData$typeMonoOrDio, repData$mastEvent)
+rep_prop <- as.data.frame(tab)
+colnames(rep_prop) <- c("typeMonoOrDio", "mastEvent", "n")
+rep_prop$prop <- rep_prop$n / ave(rep_prop$n, rep_prop$mastEvent, FUN = sum)
+
 # Create ggplot object
-rep <- ggplot(repData, aes(x = typeMonoOrDio, fill = mastEvent)) +
-  geom_bar(position = "dodge", colour = "black") +
-annotate("text", x = 1.5, y = 55, label = getAnnotation("Reproductive type", conifer_results, repData),
-         size = 2)+
+rep <- ggplot(rep_prop, aes(x = typeMonoOrDio, y = prop, fill = mastEvent)) +
+  geom_col(position = position_dodge(width = 0.9), colour = "black") +
+  geom_text(aes(label = n),
+            position = position_dodge(width = 0.9),
+            vjust = -0.3, size = 3) +
+  labs(y = "Proportion (Reproductive type)", x = NULL) +
+  theme_classic(base_size = 12)  +
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
     labels = c("0"="No", "1"="Yes") 
   ) +
-  labs(y = "Count (Reproductive type)", x = NULL) +
-  theme_classic(base_size = 12) + scale_y_continuous(limits = c(0, 60))
+  scale_y_continuous(limits = c(0, 1.05)) +
+  annotate("text", x = 1.5, y = 0.95, 
+           label = getAnnotation("Reproductive type", conifer_results, dispData),
+           size = 3) + theme(legend.position = "none")
+
 
 droughtData <- conifer[, c("mastEvent", "droughtTolerance")]
 droughtData$mastEvent <- as.factor(droughtData$mastEvent)
 droughtData$droughtTolerance <- as.factor(droughtData$droughtTolerance)
+droughtData <- droughtData[!is.na(droughtData$droughtTolerance), ]
+tab <- table(droughtData$droughtTolerance, droughtData$mastEvent)
+drought_prop <- as.data.frame(tab)
+colnames(drought_prop) <- c("droughtTolerance", "mastEvent", "n")
+drought_prop$prop <- drought_prop$n / ave(drought_prop$n, drought_prop$mastEvent, FUN = sum)
+
 # Create ggplot object
-drought <- ggplot(droughtData, aes(x = droughtTolerance, fill = mastEvent)) +
-  geom_bar(position = "dodge", colour = "black")  +   annotate("text", x = 2.5, y = 23,label = getAnnotation("Drought tolerance", conifer_results, droughtData),  size = 2) +
+
+drought <- ggplot(drought_prop, aes(x = droughtTolerance, y = prop, fill = mastEvent)) +
+  geom_col(position = position_dodge(width = 0.9), colour = "black") +
+  geom_text(aes(label = n),
+            position = position_dodge(width = 0.9),
+            vjust = -0.3, size = 3) +
+  labs(y = "Proportion (Drought tolerance)", x = NULL) +
+  theme_classic(base_size = 12)  +
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
     labels = c("0"="No", "1"="Yes") 
   ) +
-  labs(y = "Count (Drought tolerance)", x = NULL) +
-  theme_classic(base_size = 12) + scale_y_continuous(limits = c(0, 25))
+  scale_y_continuous(limits = c(0, 1.05)) +
+  annotate("text", x = 2, y = 0.9, 
+           label = getAnnotation("Drought tolerance", conifer_results, dispData),
+           size = 3) + theme(legend.position = "none")
+
 
 leafData <- conifer[, c("mastEvent", "leafLongevity")]
 leafData$mastEvent <- as.factor(leafData$mastEvent)
@@ -595,9 +740,9 @@ leafData$mastEvent <- as.factor(leafData$mastEvent)
 leaf <- ggplot(leafData, aes(x = mastEvent, y = leafLongevity, fill = mastEvent)) +
   geom_violin(trim = FALSE, alpha = 0.5, colour = "black") +
   geom_point(position = position_jitter(width = 0.08), size = 1.5, alpha = 0.7)  +
-  annotate("text", x = 1.5, y = 11, 
+  annotate("text", x = 1.5, y = 10.3, 
            label = getAnnotation("Leaf longevity (years)", conifer_results, leafData),
-           size = 2) +
+           size = 3) +
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
@@ -620,5 +765,6 @@ ggsave(
   filename = "output/figures/rawDataWithStatsCon.pdf",
   plot = final,
   width = 12,
-  height = 12
+  height = 18
 )
+
