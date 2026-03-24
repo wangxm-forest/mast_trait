@@ -18,14 +18,19 @@
 \section{Results}
 \subsection{Gathered data}
 \begin{itemize}
-\item Number of data available for angiosperm and gymnosperm originally from book, with masting data, and the structure of data
+\item Number of data available for angiosperm and gymnosperm originally from Silvics book, with masting data, and the structure of data
 \begin{itemize}
-\item Angiosperm (124, 98, Y/N: (51/47); Gymnosperm (64, 61, Y/N: (57/7))
+\item Angiosperm (In the book: 124; with masting data: 98; Masting/Non-masting: (51/47); Gymnosperm (In the book: 64; with masting data: 61; Masting/Non-masting: (57/7))
 \item Strong masting more common for gymnosperm
 \end{itemize}
 \item Number of traits we have for different hypotheses for angiosperm and gymnosperm
 \begin{itemize}
-\item For angiosperm, we have data for five traits (seed weight, fruit size, oil content, seed dispersal mode, seed dormancy) related to predation satiation hypothesis; two traits (pollination mode, reproductive type) related to pollination coupling; two traits (drought tolerance, leaf longevity) related to resource matching hypothesis. 
+\item For angiosperm, we have data for:
+\begin{itemize}
+\item Predation satiation: seed weight, fruit size, oil content, seed dispersal mode, seed dormancy
+\item Pollination coupling: pollination mode, reproductive type
+\item Resource matching: drought tolerance, leaf longevity
+\end{itemize}
 \item For gymnosperm, we only have oil content for masting species and all the gymnosperm species are wind pollinated.
 \end{itemize}
 \end{itemize}
@@ -49,38 +54,49 @@
 \begin{landscape}
 \begin{table}[ht]
 \centering
-\begin{tabular}{lllrrrrr}
+\begin{tabular}{llrrrrr}
   \hline
-Group & Trait & Predictor & Estimate & SE & P & Phylo ($\alpha$) & N \\ 
+Trait & Predictor & Estimate & SE & P & Phylo $\alpha$ & N \\ 
   \hline
-Gymnosperm & Seed dispersal & Biotic vs abiotic & -0.83 & 0.81 & 0.30 & 0.01 &  60 \\ 
-  Gymnosperm & Seed dispersal & Both vs abiotic & -1.11 & 0.67 & 0.10 & 0.01 &  60 \\ 
-  Gymnosperm & Seed dormancy & Dormant vs non-dormant & 0.71 & 0.70 & 0.32 & 0.41 &  59 \\ 
-  Gymnosperm & Reproductive type & Monoecious vs dioecious & -1.14 & 1.02 & 0.26 & 0.01 &  61 \\ 
-  Gymnosperm & Seed weight (log) & logSeedWeight & -0.03 & 0.25 & 0.91 & 0.43 &  59 \\ 
-  Gymnosperm & Fruit size (log) & logFruit & 0.03 & 0.36 & 0.94 & 0.43 &  60 \\ 
-  Gymnosperm & Seed size (log) & logSeedSize & -0.37 & 0.93 & 0.69 & 0.41 &  51 \\ 
-  Gymnosperm & Leaf longevity (years) & Leaf longevity (years) & 0.15 & 0.34 & 0.67 & 0.43 &  38 \\ 
-  Gymnosperm & Drought tolerance & Low vs high drought tolerance & 0.91 & 1.64 & 0.58 & 0.43 &  52 \\ 
-  Gymnosperm & Drought tolerance & Moderate vs high drought tolerance & -1.56 & 1.06 & 0.14 & 0.43 &  52 \\ 
-  Angiosperm & Dispersal mode & Biotic vs abiotic & 0.55 & 0.53 & 0.30 & 0.06 &  93 \\ 
-  Angiosperm & Dispersal mode & Both vs abiotic & 0.55 & 0.57 & 0.33 & 0.06 &  93 \\ 
-  Angiosperm & Pollination mode & Wind vs animal pollination & 1.72 & 0.72 & 0.02 & 0.35 &  52 \\ 
-  Angiosperm & Pollination mode & Wind vs animal pollination and animals & 1.23 & 1.15 & 0.29 & 0.35 &  52 \\ 
-  Angiosperm & Seed dormancy & Dormant vs non-dormant & 0.03 & 0.50 & 0.95 & 0.10 &  85 \\ 
-  Angiosperm & Reproductive type & Monoecious vs dioecious & 0.90 & 0.68 & 0.18 & 0.11 &  89 \\ 
-  Angiosperm & Reproductive type & Monoecious vs polygamous & -0.13 & 0.96 & 0.89 & 0.11 &  89 \\ 
-  Angiosperm & Seed weight (log) & logSeedWeight & 0.21 & 0.09 & 0.02 & 0.06 &  91 \\ 
-  Angiosperm & Fruit size (log) & logFruit & 0.08 & 0.30 & 0.80 & 0.17 &  88 \\ 
-  Angiosperm & Seed size (log) & logSeedSize & 0.24 & 0.30 & 0.43 & 0.08 &  69 \\ 
-  Angiosperm & Oil content (\%) & Oil content (\%) & 0.04 & 0.03 & 0.20 & 0.14 &  19 \\ 
-  Angiosperm & Leaf longevity (years) & Leaf longevity (years) & 0.26 & 0.95 & 0.78 & 0.01 &  16 \\ 
-  Angiosperm & Drought tolerance & Low vs high drought tolerance & 0.04 & 0.48 & 0.92 & 0.11 &  79 \\ 
-  Angiosperm & Drought tolerance & Moderate vs high drought tolerance & -0.13 & 0.46 & 0.79 & 0.11 &  79 \\ 
+Seed dispersal & Biotic vs abiotic & -0.83 & 0.81 & 0.30 & 0.01 &  60 \\ 
+  Seed dispersal & Both vs abiotic & -1.11 & 0.67 & 0.10 & 0.01 &  60 \\ 
+  Seed dormancy & Dormant vs non-dormant & 0.71 & 0.70 & 0.32 & 0.41 &  59 \\ 
+  Reproductive type & Monoecious vs dioecious & -1.14 & 1.02 & 0.26 & 0.01 &  61 \\ 
+  Seed weight (log) & logSeedWeight & -0.03 & 0.25 & 0.91 & 0.43 &  59 \\ 
+  Fruit size (log) & logFruit & 0.03 & 0.36 & 0.94 & 0.43 &  60 \\ 
+  Seed size (log) & logSeedSize & -0.24 & 0.92 & 0.80 & 0.41 &  51 \\ 
+  Leaf longevity (years) & Leaf longevity (years) & 0.15 & 0.34 & 0.67 & 0.43 &  38 \\ 
+  Drought tolerance & Low vs high drought tolerance & 0.91 & 1.64 & 0.58 & 0.43 &  52 \\ 
+  Drought tolerance & Moderate vs high drought tolerance & -1.56 & 1.06 & 0.14 & 0.43 &  52 \\ 
    \hline
 \end{tabular}
-\caption{Phylogenetic Generalized Linear Model Results} 
-\label{tab:regression}
+\caption{Phylogenetic Generalized Linear Model Results for Gymnosperm} 
+\label{tab:regressiongym}
+\end{table}
+\begin{table}[ht]
+\centering
+\begin{tabular}{llrrrrr}
+  \hline
+Trait & Predictor & Estimate & SE & P & Phylo $\alpha$ & N \\ 
+  \hline
+Dispersal mode & Biotic vs abiotic & 0.55 & 0.53 & 0.30 & 0.06 &  93 \\ 
+  Dispersal mode & Both vs abiotic & 0.55 & 0.57 & 0.33 & 0.06 &  93 \\ 
+  Pollination mode & Wind vs animal pollination & 1.72 & 0.72 & 0.02 & 0.35 &  52 \\ 
+  Pollination mode & Wind vs animal pollination and animals & 1.23 & 1.15 & 0.29 & 0.35 &  52 \\ 
+  Seed dormancy & Dormant vs non-dormant & 0.03 & 0.50 & 0.95 & 0.10 &  85 \\ 
+  Reproductive type & Monoecious vs dioecious & 0.90 & 0.68 & 0.18 & 0.11 &  89 \\ 
+  Reproductive type & Monoecious vs polygamous & -0.13 & 0.96 & 0.89 & 0.11 &  89 \\ 
+  Seed weight (log) & logSeedWeight & 0.21 & 0.09 & 0.02 & 0.06 &  91 \\ 
+  Fruit size (log) & logFruit & 0.08 & 0.30 & 0.80 & 0.17 &  88 \\ 
+  Seed size (log) & logSeedSize & 0.24 & 0.30 & 0.43 & 0.08 &  69 \\ 
+  Oil content (\%) & Oil content (\%) & 0.04 & 0.03 & 0.20 & 0.14 &  19 \\ 
+  Leaf longevity (years) & Leaf longevity (years) & 0.26 & 0.95 & 0.78 & 0.01 &  16 \\ 
+  Drought tolerance & Low vs high drought tolerance & 0.04 & 0.48 & 0.92 & 0.11 &  79 \\ 
+  Drought tolerance & Moderate vs high drought tolerance & -0.13 & 0.46 & 0.79 & 0.11 &  79 \\ 
+   \hline
+\end{tabular}
+\caption{Phylogenetic Generalized Linear Model Results for Angiosperm} 
+\label{tab:regressionangio}
 \end{table}
 \end{landscape}
 \newpage
