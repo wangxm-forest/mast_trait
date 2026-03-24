@@ -905,10 +905,10 @@ for(i in 1:length(leafMast)){
 
 add.simmap.legend(colors=cols,
                   prompt=FALSE,
-                  x=140,
+                  x=120,
                   y=-0.5)
-text(x = 142, y = 0, "Masting", pos = 3)
+text(x = 125, y = 0, "Masting", pos = 3)
 
-text(x = 170, y = 0, "Lambda = 1.02", pos = 3)
+text(x = 150, y = 0, "Lambda = 1.02", pos = 3)
 
 dev.off()
