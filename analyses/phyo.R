@@ -774,6 +774,14 @@ colsDorm <- setNames(
   levels(factor(weightDorm))
 )
 
+weightRep <- weightDf$typeMonoOrDio
+names(weightDisp) <- weightDf$latbi
+weightDisp  <- weightDisp[weightTree$tip.label]
+colsDisp <- setNames(
+  c("#F4D166", "#6194BF", "#95B958",na.value = "white"),
+  levels(factor(weightDisp))
+)
+
 weightMast <- weightMast[object$tree$tip.label]
 weightDisp <- weightDisp[object$tree$tip.label]
 weightOil <- weightOil[object$tree$tip.label]
