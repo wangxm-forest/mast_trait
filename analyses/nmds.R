@@ -14,8 +14,8 @@ library(patchwork)
 rm(list = ls())
 options(stringsAsFactors = FALSE)
 
-# setwd("C:/PhD/Project/PhD_thesis/mast_trait")
-setwd('/home/victor/projects/mast_trait')
+setwd("C:/PhD/Project/PhD_thesis/mast_trait")
+# setwd('/home/victor/projects/mast_trait')
 
 # Extract legend from p_all
 get_legend <- function(myplot) {
@@ -164,16 +164,16 @@ conN12 <- ggplot(conScoresN, aes(NMDS1, NMDS2)) +
   # stroke = 1.2
   ) +
   scale_shape_manual(values = c(21, 22), guide = "none") +   # fillable shapes only
-  scale_colour_manual(values = c("#95B958","#6194BF","#F4D166", "grey"), guide = 'none') +
+  scale_colour_manual(values = c("#da691f","#e79259","#f0bb98", "grey"), guide = 'none') +
   scale_fill_manual(
     values = c(
       "Low.0"    = "white",
       "Moderate.0" = "white",
       "High.0"   = "white",
       "Unknown.0"    = "white",
-      "Low.1"   = "#F4D166",
-      "Moderate.1"= "#6194BF",
-      "High.1"  = "#95B958",
+      "Low.1"   = "#f0bb98",
+      "Moderate.1"= "#e79259",
+      "High.1"  = "#da691f",
       "Unknown.1"    = "grey"
     ),
     guide = 'none'
@@ -217,16 +217,16 @@ conN23 <- ggplot(conScoresN, aes(NMDS2, NMDS3)) +
   # stroke = 1.2
   ) +
   scale_shape_manual(values = c(21, 22), guide = "none") +   # fillable shapes only
-  scale_colour_manual(values = c("#95B958","#6194BF","#F4D166", "grey"), guide = 'none') +
+  scale_colour_manual(values = c("#da691f","#e79259","#f0bb98", "grey"), guide = 'none') +
   scale_fill_manual(
     values = c(
       "Low.0"    = "white",
       "Moderate.0" = "white",
       "High.0"   = "white",
       "Unknown.0"    = "white",
-      "Low.1"   = "#F4D166",
-      "Moderate.1"= "#6194BF",
-      "High.1"  = "#95B958",
+      "Low.1"   = "#f0bb98",
+      "Moderate.1"= "#e79259",
+      "High.1"  = "#da691f",
       "Unknown.1"    = "grey"
     ),
     guide = 'none'
@@ -271,16 +271,16 @@ angioN12 <- ggplot(angioScoresN, aes(NMDS1, NMDS2)) +
   ) +
   scale_shape_manual(values = c(21, 22, 23), na.value = 24,
                      guide = guide_legend(override.aes = list(size = 3))) +   # fillable shapes only
-  scale_colour_manual(values = c("#95B958","#6194BF","#F4D166", "grey")) +
+  scale_colour_manual(values = c("#da691f","#e79259","#f0bb98", "grey")) +
   scale_fill_manual(
     values = c(
       "Low.0"    = "white",
       "Moderate.0" = "white",
       "High.0"   = "white",
       "Unknown.0"    = "white",
-      "Low.1"   = "#F4D166",
-      "Moderate.1"= "#6194BF",
-      "High.1"  = "#95B958",
+      "Low.1"   = "#f0bb98",
+      "Moderate.1"= "#e79259",
+      "High.1"  = "#da691f",
       "Unknown.1"    = "grey"
     ),
     guide = 'none'
@@ -326,16 +326,16 @@ angioN23 <- ggplot(angioScoresN, aes(NMDS2, NMDS3)) +
   ) +
   scale_shape_manual(values = c(21, 22, 23), na.value = 24,
                      guide = guide_legend(override.aes = list(size = 3))) +   # fillable shapes only
-  scale_colour_manual(values = c("#95B958","#6194BF","#F4D166", "grey"), guide = 'none') +
+  scale_colour_manual(values = c("#da691f","#e79259","#f0bb98", "grey"), guide = 'none') +
   scale_fill_manual(
     values = c(
       "Low.0"    = "white",
       "Moderate.0" = "white",
       "High.0"   = "white",
       "Unknown.0"    = "white",
-      "Low.1"   = "#F4D166",
-      "Moderate.1"= "#6194BF",
-      "High.1"  = "#95B958",
+      "Low.1"   = "#f0bb98",
+      "Moderate.1"= "#e79259",
+      "High.1"  = "#da691f",
       "Unknown.1"    = "grey"
     ),
     guide = 'none'
