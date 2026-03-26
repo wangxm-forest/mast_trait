@@ -35,13 +35,13 @@
 \end{itemize}
 \end{itemize}
 \newgeometry{margin=1cm}
-\begin{figure}[H]
+\begin{figure}[p]
 \centering
 \includegraphics[width=\textwidth, height=0.9\textheight]{../output/figures/rawDataWithStatsAngio.pdf}
 \caption{Relationships between plant traits (a) Seed weight; (b) Fruit size; (c) Oil content; (d) Dispersal mode; (e) Seed dormancy; (f) Pollination mode; (g) Reproductive mode; (h) Drought tolerance; (i) Leaf longevity and masting based on phylogenetic logistic regression for angiosperm species. Raw data are shown for each trait: continuous traits are displayed as violin plots, and categorical traits as histograms. Overlaid model summaries are derived from phylogenetic logistic regression models fitted using phyloglm. For each model, we report sample size (N), regression coefficient (Estimate), phylogenetic signal parameter $\alpha$, and associated P-value. (a)-(e) are traits related to predation satiation hypothesis; (f), (g) are traits related to pollination coupling hypothesis; (h), (i) are traits related to resource matching hypothesis. Legends are shared across panels.}
 \label{fig:rawangio}
 \end{figure}
-\begin{figure}[H]
+\begin{figure}[p]
 \centering
 \includegraphics[width=\textwidth,height=0.9\textheight]{../output/figures/rawDataWithStatsCon.pdf}
 \caption{Relationships between plant traits (a) Seed weight; (b) Fruit size; (c) Oil content; (d) Dispersal mode; (e) Seed dormancy; (f) Pollination mode; (g) Reproductive mode; (h) Drought tolerance; (i) Leaf longevity and masting based on phylogenetic logistic regression for gymnosperm species. Raw data are shown for each trait: continuous traits are displayed as violin plots, and categorical traits as histograms. Overlaid model summaries are derived from phylogenetic logistic regression models fitted using phyloglm. For each model, we report sample size (N), regression coefficient (Estimate), phylogenetic signal parameter $\alpha$, and associated P-value. (a)-(e) are traits related to predation satiation hypothesis; (f), (g) are traits related to pollination coupling hypothesis; (h), (i) are traits related to resource matching hypothesis. Legends are shared across panels.}
@@ -178,7 +178,7 @@ Angiosperm & Seed dormancy & 0.25 & 0 & 0.16 \\
   Gymnosperm & Reproductive type & -0.52 & 0 & 0.89 \\ 
    \hline
 \end{tabular}
-\caption{Phylogenetic Signal (D-statistic with probability from random phylogenetic structure and probability from Brownian phylogenetic structure for binary traits. D = 1 indicates trait is randomly distributed across the phylogeny, D = 0 indicates trait follows Brownian motion, D < 0 means trait is even more clumped than Brownian, D > 1 indicates overdispersion. P random is the p-value for null hypothesis of randomly distributed across phylogeny (no phylogenetic signal), and P Brownian is the p-value for null hypothesis of Brownian motion model. Lower p-value rejects the null hypothesis.} 
+\caption{Phylogenetic Signal (D-statistic) for the phylogenetic signal of binary traits, with probabilities calculated under a random phylogenetic structure and under a Brownian motion phylogenetic structure. D = 1 indicates the trait is randomly distributed across the phylogeny, D = 0 indicates the trait follows a Brownian motion model, D < 0 indicates the trait is more clumped than expected under Brownian motion, and D > 1 indicates overdispersion. P random is the p-value for the null hypothesis that the trait is randomly distributed across the phylogeny (no phylogenetic signal), and P Brownian is the p-value for the null hypothesis that the trait follows a Brownian motion model (strong phylogenetic signal). A low p-value indicates rejection of the corresponding null hypothesis.} 
 \label{tab:d}
 \end{table}
 
@@ -187,7 +187,7 @@ Angiosperm & Seed dormancy & 0.25 & 0 & 0.16 \\
 \begin{itemize}
 \item Pagel's $\lambda$ for continuous traits and multilevel categorical traits in Table \ref{tab:lambda}, D-statistic for binary traits in Table \ref{tab:d}.
 \begin{itemize}
-\item Masting has a stronger phylogenetic signal (estimated D = 0.51) in gymnosperm compared to angiosperm (estimated D = 0.58), P Brownian for angiosperm is also 0.01, which indicates masting is not significantly following the Brownian motion model.
+\item Masting shows a stronger phylogenetic signal in gymnosperms (estimated D = 0.51) than in angiosperms (estimated D = 0.58). For angiosperms, the P-value under the Brownian motion model is 0.01, indicating that masting does not significantly follow a Brownian motion model.
 \item Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = 0.95) and gymnosperm ($\lambda$ = 0.97). We can see the similarity in certain group in Figure \ref{fig:coneptangio} it's relatively reliable estimate
 \item Be cautious that $\lambda$ might not be comparable among traits, not only because the way $\lambda$ is calculated for continuous traits and categorical traits are different, but also because $\lambda$ might depend on the data structure when sampling is uneven, take leaf longevity as an example in Figure \ref{fig:coneptangio}. 
 \end{itemize}
@@ -202,7 +202,8 @@ Angiosperm & Seed dormancy & 0.25 & 0 & 0.16 \\
 % ------------------------------------------
 \subsection{Data sparsity}
 \begin{itemize}
-\item Among all the \textit{Quercus} species with good phylogeny (268), our dataset only include 21 species, and only two of them are non-masting species \ref{fig:quercus}.
+\item Among all the \textit{Quercus} species with well-resolved phylogeny (268), our dataset includes only 21 species, and only two of them are non-masting species.
+\ref{fig:quercus}.
 \item Data is strongly nested in phylogeny, and data is sparse \ref{fig:coneptangio}. We have to assume the sampling is even.
 \end {itemize}
 \newpage
