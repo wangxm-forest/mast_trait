@@ -737,14 +737,13 @@ name.check(weightTree, weight)
 
 
 weightMap <- contMap(weightTree,
-                     weight,fsize=c(1,0.8),
+                     weight,fsize=c(3,1),
                      plot = TRUE)
 lastPP<-get("last_plot.phylo",envir=.PlotPhyloEnv)
 ## for fun, let's change our contMap gradient
 object <- setMap(weightMap, colors = colorRampPalette(c("navy", "white", "darkred"))(100))
 pdf("output/figures/weightTree.pdf", width = 10, height = 20)
-
-plot(object,ftype="off",xlim=lastPP$x.lim,fsize=c(1,1),
+plot(object,ftype="off",xlim=lastPP$x.lim,fsize=c(1,0.7),
      leg.txt="Seed weight (Log)",legend=100,sig=1)
 ## make sure our discrete character is in the order of our tree
 weightDf <- d[!is.na(d$seedWeights), ]
@@ -759,33 +758,60 @@ weightDisp <- weightDf$seedDispersal
 names(weightDisp) <- weightDf$latbi
 weightDisp  <- weightDisp[weightTree$tip.label]
 colsDisp <- setNames(
-  c("#F4D166", "#6194BF", "#95B958",na.value = "white"),
+  c("#009392", "#72AAA1", "#B1C7B3",na.value = "white"),
   levels(factor(weightDisp))
 )
 weightOil <- weightDf$oilContent
 names(weightOil) <- weightDf$latbi
 weightOil  <- weightOil[weightTree$tip.label]
-colsOil <- "lightblue"
+colsOil <- "#FCD116"
+
 weightDorm <- weightDf$seedDormancy
 names(weightDorm) <- weightDf$latbi
 weightDorm  <- weightDorm[weightTree$tip.label]
 colsDorm <- setNames(
-  c("#AC7299", "#CFDAA8",na.value = "white"),
+  c("#CFDAA8","#7F883B", na.value = "white"),
   levels(factor(weightDorm))
 )
 
 weightRep <- weightDf$typeMonoOrDio
-names(weightDisp) <- weightDf$latbi
-weightDisp  <- weightDisp[weightTree$tip.label]
-colsDisp <- setNames(
-  c("#F4D166", "#6194BF", "#95B958",na.value = "white"),
-  levels(factor(weightDisp))
+names(weightRep) <- weightDf$latbi
+weightRep  <- weightRep[weightTree$tip.label]
+colsRep <- setNames(
+  c("#D0587E", "#D98994", "#E5B9AD",na.value = "white"),
+  levels(factor(weightRep))
 )
+
+weightPoll <- weightDf$pollination
+names(weightPoll) <- weightDf$latbi
+weightPoll  <- weightPoll[weightTree$tip.label]
+colsPoll <- setNames(
+  c("Animal" = "#08519C","Both" = "#4292C6", "Wind" = "#92d4f5",na.value = "white"),
+  levels(factor(weightPoll))
+)
+
+weightDrought <- weightDf$droughtTolerance
+names(weightDrought) <- weightDf$latbi
+weightDrought <- weightDrought[weightTree$tip.label]
+colsDrought <- setNames(
+  c("High" = "#da691f","Moderate" = "#e79259", "Low" = "#f0bb98",na.value = "white"),
+  levels(factor(weightDrought))
+)
+
+weightLeaf <- weightDf$leafLongevity
+names(weightLeaf) <- weightDf$latbi
+weightLeaf  <- weightLeaf[weightTree$tip.label]
+colsLeaf <- "#5E3C99"
 
 weightMast <- weightMast[object$tree$tip.label]
 weightDisp <- weightDisp[object$tree$tip.label]
 weightOil <- weightOil[object$tree$tip.label]
 weightDorm <- weightDorm[object$tree$tip.label]
+weightRep <- weightRep[object$tree$tip.label]
+weightPoll <- weightPoll[object$tree$tip.label]
+weightDrought <- weightDrought[object$tree$tip.label]
+weightLeaf <- weightLeaf[object$tree$tip.label]
+
 Ntip <- length(object$tree$tip.label)
 tree_width <- diff(range(lastPP$xx))
 for(i in 1:length(weightMast)){
@@ -797,14 +823,13 @@ for(i in 1:length(weightMast)){
        cex=0.7)
 }
 
-
 for(i in 1:length(weightDisp)){
-points(lastPP$xx[1:Ntip] + tree_width *0.32,
+points(lastPP$xx[1:Ntip] + tree_width * 1,
        lastPP$yy[1:Ntip],
-       pch=21,
-       bg=colsDisp[weightDisp],
-       col="white",
-       cex=1.2)
+       pch = 21,
+       bg = colsDisp[weightDisp],
+       col = "white",
+       cex = 1.2)
 }
 
 sizeMin <- 0.6
@@ -815,16 +840,16 @@ oilSize <- (weightOil - min(weightOil, na.rm=TRUE)) /
 
 oilSize <- sizeMin + oilSize * (sizeMax - sizeMin)
   for(i in 1:length(weightOil)){
-  points(lastPP$xx[1:Ntip] + tree_width *0.34,
+  points(lastPP$xx[1:Ntip] + tree_width *1.1,
          lastPP$yy[1:Ntip],
          pch=21,
-         bg="lightblue",
+         bg="#FCD116",
          col="white",
          cex=oilSize)
 }
 
 for(i in 1:length(weightDorm)){
-  points(lastPP$xx[1:Ntip] + tree_width *0.36,
+  points(lastPP$xx[1:Ntip] + tree_width *1.2,
          lastPP$yy[1:Ntip],
          pch=21,
          bg=colsDorm[weightDorm],
@@ -832,91 +857,125 @@ for(i in 1:length(weightDorm)){
          cex=1.2)
 }
 
+for(i in 1:length(weightRep)){
+  points(lastPP$xx[1:Ntip] + tree_width *1.5,
+         lastPP$yy[1:Ntip],
+         pch=21,
+         bg=colsRep[weightRep],
+         col="white",
+         cex=1.2)
+}
+
+for(i in 1:length(weightPoll)){
+  points(lastPP$xx[1:Ntip] + tree_width *1.6,
+         lastPP$yy[1:Ntip],
+         pch=21,
+         bg=colsPoll[weightPoll],
+         col="white",
+         cex=1.2)
+}
+
+for(i in 1:length(weightDrought)){
+  points(lastPP$xx[1:Ntip] + tree_width *1.9,
+         lastPP$yy[1:Ntip],
+         pch=21,
+         bg=colsDrought[weightDrought],
+         col="white",
+         cex=1.2)
+}
+
+sizeMin <- 0.6
+sizeMax <- 1.2
+
+leafSize <- (weightLeaf - min(weightLeaf, na.rm=TRUE)) /
+  (max(weightLeaf, na.rm=TRUE) - min(weightLeaf, na.rm=TRUE))
+
+leafSize <- sizeMin + leafSize * (sizeMax - sizeMin)
+for(i in 1:length(weightLeaf)){
+  points(lastPP$xx[1:Ntip] + tree_width *2,
+         lastPP$yy[1:Ntip],
+         pch=21,
+         bg="#5E3C99",
+         col="white",
+         cex=leafSize)
+}
+
 add.simmap.legend(colors=cols,
                   prompt=FALSE,
-                  x=120,
-                  y=-8)
-text(x = 125, y = -7, "Masting", pos = 3)
-add.simmap.legend(colors = c("Oil content" = "lightblue"),
-                  prompt=FALSE,
-                  x=120,
-                  y=-12)
+                  x=550,
+                  y=42)
+text(x = 560, y = 43, "Masting", pos = 3)
 
-add.simmap.legend(colors = c("Abiotic" = "#F4D166","Biotic" = "#6194BF", "Both" = "#95B958"), sep = "\n",
+add.simmap.legend(colors = c("Abiotic" = "#009392","Biotic" = "#72AAA1", "Both" = "#B1C7B3"), sep = "\n",
                   prompt=FALSE,
-                  x=140,
-                  y=-8)
-text(x = 150, y = -7, "Dispersal mode", pos = 3)
-add.simmap.legend(colors = c("Dormant" = "#CFDAA8","Non-dormant" = "#AC7299"), sep = "\n",
-                  prompt=FALSE,
-                  x=170,
-                  y=-8)
-text(x = 180, y = -7, "Seed dormancy", pos = 3)
+                  x=450,
+                  y=36)
+text(x = 480, y = 37, "Dispersal mode", pos = 3)
 
-text(x = 50, y = -14,
+add.simmap.legend(colors = c("Dormant" = "#7F883B","Non-dormant" = "#CFDAA8"), sep = "\n",
+                  prompt=FALSE,
+                  x=550,
+                  y=36)
+text(x = 580, y = 37, "Seed dormancy", pos = 3)
+
+add.simmap.legend(colors = c("Oil content" = "#FCD116"),
+                  prompt=FALSE,
+                  x=450,
+                  y=32)
+
+add.simmap.legend(colors = c("Dioecious" = "#D0587E","Monoecious" = "#D98994", "Polygamous" = "#E5B9AD"), sep = "\n",
+                  prompt=FALSE,
+                  x=450,
+                  y=26)
+text(x = 480, y = 27, "Reproductive type", pos = 3)
+
+add.simmap.legend(colors = c("Animal" = "#08519C","Both" = "#4292C6", "Wind" = "#92d4f5"), sep = "\n",
+                  prompt=FALSE,
+                  x=550,
+                  y=26)
+text(x = 580, y = 27, "Pollination mode", pos = 3)
+
+add.simmap.legend(colors = c("High" = "#da691f","Moderate" = "#e79259", "Low" = "#f0bb98"), sep = "\n",
+                  prompt=FALSE,
+                  x=450,
+                  y=18)
+text(x = 480, y = 19, "Drought tolerance", pos = 3)
+
+add.simmap.legend(colors = c("Leaf longevity" = "#5E3C99"),
+                  prompt=FALSE,
+                  x=550,
+                  y=18)
+
+text(x = 540, y = 3,
      labels = paste(c("Lambda:",
                       "Seed weight (Log): 0.95",
+                      "Fruit size (Log): 0.93",
                       "Dispersal mode: 1",
                       "Oil content: 0.25",
+                      "Leaf longevity: 1.02",
+                      "Pollination mode: 1",
+                      "Reproductive type: 1",
+                      "Drought tolerance: 0",
                       "D-statistic", 
                       "Seed dormancy: 0.25; P(random) = 0; P(Brownian) = 0.16",
                       "Masting: 0.57; P(random) = 0; P(Brownian) = 0.01"),
                     collapse = "\n"),
-     pos = 3, cex =0.8)
+     pos = 3, cex =0.7)
+
+#text(x = 285, y = 92,
+#     labels = paste(c("Predation",
+#                      "satiation"),collapse = "\n"),
+#     pos = 3, cex =0.7)
+
+#text(x = 345, y = 92,
+#     labels = paste(c("Pollination",
+#                      "coupling"),collapse = "\n"),
+ #    pos = 3, cex =0.7)
+
+#text(x = 405, y = 92,
+#     labels = paste(c("Resource",
+#                      "matching"),collapse = "\n"),
+#     pos = 3, cex =0.7)
 
 dev.off()
 
-# Resource matching for angiosperm, using leaf longevity for the branch color
-commonSp <- intersect(phyangio$tip.label, names(leaf))
-
-
-leaf <- leaf[commonSp]
-leaf <- leaf[!is.na(leaf)]
-leafTree <- drop.tip(phyangio,setdiff(phyangio$tip.label,names(leaf)))
-name.check(leafTree, leaf)
-
-
-leafMap <- contMap(leafTree,
-                     leaf,fsize=c(1,0.8),
-                     plot = TRUE)
-lastPP<-get("last_plot.phylo",envir=.PlotPhyloEnv)
-## for fun, let's change our contMap gradient
-object <- setMap(leafMap, colors = colorRampPalette(c("navy", "white", "darkred"))(100))
-pdf("output/figures/leafTree.pdf", width = 10, height = 10)
-
-plot(object,ftype="off",xlim=lastPP$x.lim,fsize=c(1,1),
-     leg.txt="Seed longevity (year)",legend=100,sig=1)
-## make sure our discrete character is in the order of our tree
-leafDf <- d[!is.na(d$leafLongevity), ]
-leafMast <- leafDf$mastEvent
-names(leafMast) <- leafDf$latbi
-leafMast  <- leafMast[leafTree$tip.label]
-cols <- setNames(
-  c("#A9D5B1", "#ED562C"),
-  levels(factor(leafMast))
-)
-
-leafMast <- leafMast[object$tree$tip.label]
-
-Ntip <- length(object$tree$tip.label)
-tree_width <- diff(range(lastPP$xx))
-for(i in 1:length(leafMast)){
-  text(lastPP$xx[i],
-       lastPP$yy[i],
-       leafMap$tree$tip.label[i],
-       pos=4,
-       col=cols[leafMast[i]],
-       cex=0.7)
-}
-
-
-
-add.simmap.legend(colors=cols,
-                  prompt=FALSE,
-                  x=120,
-                  y=-0.5)
-text(x = 125, y = 0, "Masting", pos = 3)
-
-text(x = 150, y = 0, "Lambda = 1.02", pos = 3)
-
-dev.off()
