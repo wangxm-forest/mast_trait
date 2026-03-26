@@ -173,6 +173,7 @@ for (m in angio_list) {
   angio_results <- rbind(angio_results, tbl)
 }
 
+mean(as.numeric(angio$logSeedWeight), na.rm = TRUE)
 #Make a table to present the results:
 clean_results <- function(results) {
   
