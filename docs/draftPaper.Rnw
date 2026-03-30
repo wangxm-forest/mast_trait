@@ -3,6 +3,29 @@
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 
+\section{Introduction}
+\subsection{Definetly include}
+\begin{itemize}
+\item Masting has different hypotheses
+\item Different hypotheses concentrating at different stages
+\item Linking traits-hypotheses-masting can help us better understand what has been selected on for masting species
+\item How different traits are related to masting
+\end{itemize}
+\subsection{Maybe include}
+
+\section{Discussion}
+\subsection{Definetly include}
+\begin{itemize}
+\item Masting and seed weight (Previous discussion on whether big seeds or small seeds should be link to masting)
+\item Masting pattern in gymnosperm and angiosperm, gymnosperm are more likely to be masting species
+\item Better definition of masting
+\item Masting is a spectrum
+\item Masting is strongly related to environment as well, so traits alone might not be able to explain
+\item Flower masting and fruit masting
+\item Look for patterns within the clade can be more informative
+\end{itemize}
+\subsection{Maybe include}
+
 \section{Results}
 \subsection{Gathered data}
 \begin{itemize}
