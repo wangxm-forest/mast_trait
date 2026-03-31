@@ -21,11 +21,13 @@
 \item Better definition of masting
 \item Masting is a spectrum
 \item Masting is strongly related to environment as well, so traits alone might not be able to explain
-\item Flower masting and fruit masting
-\item Look for patterns within the clade can be more informative
+\item Flower masting and fruit masting, different hypotheses might act.
+\item Look for patterns within the clade can be more informative, oak.
 \end{itemize}
 \subsection{Maybe include}
-
+\begin{itemize}
+\item Masting is a spectrum, difficult to define masting.
+\end{itemize}
 \section{Results}
 \subsection{Gathered data}
 \begin{itemize}
