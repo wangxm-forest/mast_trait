@@ -9,64 +9,38 @@
 \item Define masting
 \item Introduce different hypotheses related to masting
 \item Introduce that different hypotheses act on different stages of the reproductive process (e.g., flowering, pollination, seed maturation, dispersal)
-\item Existing studies lack emphasis on the role of reproductive traits as mechanistic links between masting and hypotheses
+\item Existing studies regarding functional traits and masting found: 
+  \begin{itemize}
+  \item High CV is common in species with high stem tissue density
+  \item Short-lived leaves with low LMA is associate with low CV
+  \item Large seed is associate with high CV
+  \item floral transition is associate with year-to-year variability
+  \item wind pollination is associate with hight CV
+  \end{itemize}
+\item Existing studies lack emphasis on the role of reproductive traits as mechanistic links between masting and hypotheses.
+\item Especially on relationship between seed mass and masting focus on an ecological constraint perspective, where seed mass reflects the cost of reproduction. However, we try to capture the evolutionary mechanisms underlying masting benefits. For masting to be adaptive under the predator satiation hypothesis, seeds must be consumed by animals. Therefore, fruit size might be more relevant than seed mass alone.
 \item Our study propose a framework connecting:
 \begin{itemize}
 \item reproductive traits
 \item stages of reproduction
 \item specific masting hypotheses
 \end{itemize}
+
 \item This framework can clarify which traits are under selection in masting species
 
 
 \end{itemize}
-\subsection{Maybe include}
-\begin{itemize}
-\item Justify the selection of reproductive traits (or should be in method?)
-\item Previous studies on relationship between seed mass and masting focus on an ecological constraint perspective, where seed mass reflects the cost of reproduction. However, we try to capture the evolutionary mechanisms underlying masting benefits. For masting to be adaptive under the predator satiation hypothesis, seeds must be consumed by animals. Therefore, fruit size might be more relevant than seed mass alone.
-\end{itemize}
+
 \section{Discussion}
 \subsection{Definetly include}
 \begin{itemize}
-\item Seed mass and wind pollination are reproductive trait significantly associated with masting patterns. This might suggest that reproductive allocation plays a key role in shaping masting behavior. 
+\item Seed mass and wind pollination are reproductive traits significantly associated with masting patterns. This might suggest that reproductive allocation plays a key role in shaping masting behavior, supporting predation satiation hypothesis and pollination coupling hypothesis. 
 \item However, the fact that we didn't find relationships with other traits indicates that trait-based explanations alone are not sufficient to fully explain masting.
 \item \textbf{Gymnosperm are more likely to be masting species}, (is there a possibility that masting might be an ancestral strategy that becomes lost in some angiosperm lineages later?)
+\item We found moderate phylogenetic signal for masting in both gymnosperms and angiosperms, which align with other people's finding (e.g.,: Pearse et al., 2020, found a modest phylogenetic signal in CVp), then link to next point.
 \item \textbf{Masting is strongly related to environment as well}, some species might be exhibit masting or not depending on the environment they are in, broad trait-based analysis do not capture environmental drivers, and that's the reason why we can't use any masting metrics capturing other characteristics of masting.
-\item We call for a better definition of masting (flower masting, seed masting)
-\item Different hypotheses may act at different stages, playing the selection on different species.
-\item Existence of clear counterexamples. Focusing on within-clade variation (oaks) may be more informative.
-\end{itemize}
-\subsection{Maybe include}
-\begin{itemize}
-\item We don't have very good data on flowering traits
-\item Maybe some more about data scarcity?
+\item Different hypotheses may act at different stages (for flower masting and seed masting species), playing the selection on different species, need better data on flowering traits and finer resolution on masting definition.
+\item Existence of clear counterexamples especially within the clade. Focusing on within-clade variation (oaks) may be more informative. Need more detailed monitoring on masting pattern and reproductive traits for more species in oak family, potentially with data for same species in different environment.
 \end{itemize}
 
-\section{Results}
-\subsection{Gathered data}
-\begin{itemize}
-\item Number of data available for angiosperm and gymnosperm originally from book, with masting data, and the structure of data
-\item Angiosperm (124, 98, Y/N: (51/47); Gymnosperm (64, 61, Y/N: (57/7))
-\item Strong masting more common for gymnosperm
-\item Number of traits we have for different hypotheses for angiosperm and gymnosperm
-\item For angiosperm, we have data for five traits (seed weight, fruit size, oil content, seed dispersal mode, seed dormancy) related to predation satiation hypothesis; two traits (pollination mode, reproductive type) related to pollination coupling; two traits (drought tolerance, leaf longevity) related to resource matching hypothesis. For gymnosperm, we only have oil content for masting species and all the gymnosperm species are wind pollinated.
-\end{itemize}
-
-\subsection{Results for each hypothesis}
-\begin{itemize}
-\item Predation satiation: we found only seed weight is related to masting with having bigger seeds will increase the chance of being a strong masting species, however, the log-odds is only 0.2. We also only found this in angiosperm group.
-\item Pollination satiation: we found wind pollination is related to masting for angiosperm species, the log-odds for wind compare to animal or both are 1.72 and 1.23 respectively. Gymnosperm are all wind pollinated, and gymnosperm has a greater portion of masting species.
-\item Resource matching: We don't find any traits related to resource matching hypothesis have relationship with the masting pattern.
-\end{itemize}
-\subsection{Multidimension-NMDS}
-\begin{itemize}
-\item We don't see masting aligned well along any axis in the NMDS analysis.
-\end{itemize}
-\subsection{Phylogenetic patterns}
-\begin{itemize}
-\item First show the phylogenetic signal for masting. Masting has a strong phylogenetic signal for gymnosperm, and no phylogenetic signal for angiosperm
-\item Show which traits have the strongest phylogenetic pattern, (it may not be fully comparable though, not only because the way lambda is calculated for continuous traits and categorical traits are different, but also because lambda might depend on the data structure when sampling is uneven, take leaf longevity as an example). 
-\item seed weight and pollination mode both have strong phylogenetic signal, (it is hard to tease out these traits from masting because of the phylogenetic signal, limit the inference)
-\item Data is strongly nested in phylogeny, and data is sparse. We have to assume the sampling is even.
-\end{itemize}
 \end{document}
