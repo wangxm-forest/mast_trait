@@ -4,10 +4,62 @@
 \SweaveOpts{concordance=TRUE}
 
 \section{Introduction}
+\subsection{Observations for masting-seed predator/flowering}
 \begin{itemize}
-\item Observations for masting-seed predator/flowering
+\item Define masting
 \end{itemize}
-
+\subsection{Major hypotheses for masting}
+\subsection{Hypotheses operate at different reproductive stages}
+\begin{itemize}
+\item Predation satiation—seed dispersal
+\item Pollination coupling—pollination
+\item Resource matching—across stages
+\item Mechanisms are not mutually exclusive
+\end{itemize}
+\subsection{Trait-based perspective}
+\begin{itemize}
+\item Lit review on masting and traits
+\item Briefly connect traits to mechanisms
+\item Shift from seed and pollination to more resource matching oriented
+\end{itemize}
+\subsection{Introduce framework for hypothesis x traits x masting}
+\begin{itemize}
+\item Here we use North America tree data to test this framework
+\begin{itemize}
+\item Masting info available
+\item Have both masting and non-masting species
+\end{itemize}
+\end{itemize}
+\section{Discussion}
+\subsection{Summary of main findings}
+\begin{itemize}
+\item Seed weight supports predation satiation
+\item Pollination supports pollination coupling
+\item In the context with lit, discuss potential mechanism
+\item Transition to alternative hypotheses
+\end{itemize}
+\subsection{Masting is a population level phenomenom}
+\begin{itemize}
+\item Examples of species only mast in certain environment
+\item Traits need to be measured locally
+\end{itemize}
+\subsection{Different species selected under different hypotheses}
+\begin{itemize}
+\item Introduce flower masting, seed masting
+\item Different species, different mechanisms
+\item Finer definition of masting and more flowering traits needed
+\item Transition to phylogeny
+\end{itemize}
+\subsection{Evolutionary scale}
+\begin{itemize}
+\item Angiosperm and gymnosperm results
+\begin{itemize}
+\item More masting gymnosperm sp
+\item Leaf longevity longer for gymnosperm sp
+\item Wind pollination for all gymnosperm sp
+\end{itemize}
+\item Importance of testing within clades (Quercus)
+\end{itemize}
 \end{document}
 \subsection{Definetly include}
 \begin{itemize}
