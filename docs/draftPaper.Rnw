@@ -4,61 +4,86 @@
 \SweaveOpts{concordance=TRUE}
 
 \section{Introduction}
-\subsection{Observations for masting-seed predator/flowering}
+\subsection{Observations of masting in relation to seed predation and flowering}
 \begin{itemize}
-\item Define masting
+\item Definition of masting
 \end{itemize}
 \subsection{Major hypotheses for masting}
-\subsection{Hypotheses operate at different reproductive stages}
+\subsection{Hypotheses operating at different reproductive stages}
 \begin{itemize}
-\item Predation satiation—seed dispersal
-\item Pollination coupling—pollination
+\item Predation satiation—seed maturation/dispersal stages
+\item Pollination coupling—flowering/pollination stages
 \item Resource matching—across stages
 \item Mechanisms are not mutually exclusive
 \end{itemize}
 \subsection{Trait-based perspective}
 \begin{itemize}
-\item Lit review on masting and traits
+\item Literature review on masting and functionaltraits
 \item Briefly connect traits to mechanisms
-\item Shift from seed and pollination to more resource matching oriented
+\item Shift focus from seed and pollination-related hypotheses toward resource-matching oriented mechanisms
 \end{itemize}
-\subsection{Introduce framework for hypothesis x traits x masting}
+\subsection{Introduce framework linking hypothesis x traits x masting}
 \begin{itemize}
-\item Here we use North America tree data to test this framework
+\item Here we use North American tree data to test this framework
 \begin{itemize}
 \item Masting info available
-\item Have both masting and non-masting species
+\item Includes both masting and non-masting species
 \end{itemize}
 \end{itemize}
+\section{Methods}
+\subsection{Data collection}
+\begin{itemize}
+\item Data scraping
+  \begin{itemize}
+  \item Data sources: Silvics of North America, Kew Seed Dataset, TRY Dataset
+  \item Trait selection
+  \item Keywords used for data scraping
+  \begin{itemize}
+  \item Definition of strong masting vs. non-masting (referred to as masting vs. non-masting moving forward)
+  \item Criteria for other traits
+  \end{itemize}
+  \end{itemize}
+\item Data cleaning
+  \begin{itemize}
+  \item Cleaning of categorical traits
+  \item Decision for numeric traits with a range
+  \end{itemize}
+\end {itemize}
+\subsection{Statistical analysis}
+  \begin{itemize}
+  \item Main analysis for masting pattern and single trait: phyloglm
+  \item Masting pattern with a multivariate analysis: NMDS
+  \item Phylogenetic signal check for traits: Pagel's $\lambda$ and D-statistics
+  \end{itemize}
 \section{Discussion}
 \subsection{Summary of main findings}
 \begin{itemize}
-\item Seed weight supports predation satiation
-\item Pollination supports pollination coupling
-\item In the context with lit, discuss potential mechanism
+\item Seed weight supports the predation satiation hypothesis
+\item Pollination supports the pollination coupling hypothesis
+\item Discuss mechanisms in the context of existing literature
 \item Transition to alternative hypotheses
 \end{itemize}
-\subsection{Masting is a population level phenomenom}
+\subsection{Masting is a population-level phenomenon}
 \begin{itemize}
-\item Examples of species only mast in certain environment
+\item Examples of species that mast only under certain environmental conditions
 \item Traits need to be measured locally
 \end{itemize}
 \subsection{Different species selected under different hypotheses}
 \begin{itemize}
-\item Introduce flower masting, seed masting
-\item Different species, different mechanisms
-\item Finer definition of masting and more flowering traits needed
+\item Introduce flowering masting vs. seed masting
+\item Different species driven by different mechanisms
+\item Need a more refined definition of masting and additional flowering-related traits
 \item Transition to phylogeny
 \end{itemize}
 \subsection{Evolutionary scale}
 \begin{itemize}
-\item Angiosperm and gymnosperm results
+\item Angiosperm vs. gymnosperm results
 \begin{itemize}
 \item More masting gymnosperm sp
-\item Leaf longevity longer for gymnosperm sp
-\item Wind pollination for all gymnosperm sp
+\item Longer leaf longevity in gymnosperm sp
+\item Wind pollination is universal among gymnosperms
 \end{itemize}
-\item Importance of testing within clades (Quercus)
+\item Importance of testing within clades (\textit{Quercus.})
 \end{itemize}
 \end{document}
 \subsection{Definetly include}
