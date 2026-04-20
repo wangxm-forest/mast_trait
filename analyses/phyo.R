@@ -624,7 +624,7 @@ name.check(weightTree, weight)
 
 
 
-pdf("output/figures/weightTree.pdf", width = 10, height = 20)
+pdf("output/figures/weightTree1.pdf", width = 10, height = 20)
 weightMap <- contMap(weightTree,
                      weight,fsize=c(1,1),
                      plot = TRUE)
@@ -802,19 +802,19 @@ legend(x = usr[2] * 0.23,
        fill = cols,
        border = NA,
        bty = "n",
-       horiz = TRUE,
+       horiz = FALSE,
        xjust = 0,
        yjust = 0.5,cex = 0.7)
 
-#text(x = 450, y = 36, "Dispersal mode", pos = 2,cex = 0.7)
+text(x = usr[2] * 0.42, y = usr[4] * 0.995, "Dispersal mode", pos = 2,cex = 0.7)
 
-legend(x = usr[2] * 0.6,
-       y = usr[4] * 0.8,
+legend(x = usr[2] * 0.33,
+       y = usr[4] * 0.975,
        legend = c("Abiotic", "Biotic", "Both"),
        fill = c("#009392", "#72AAA1", "#B1C7B3"),
        border = NA,
        bty = "n",
-       horiz = TRUE,
+       horiz = FALSE,
        xjust = 0,
        yjust = 0.5,cex = 0.7)
 
@@ -826,7 +826,7 @@ legend(x = usr[2] * 0.6,
        fill = c("#7F883B", "#CFDAA8"),
        border = NA,
        bty = "n",
-       horiz = TRUE,
+       horiz = FALSE,
        xjust = 0,
        yjust = 0.5,cex = 0.7)
 
@@ -847,7 +847,7 @@ legend(x = usr[2] * 0.6,
        pt.bg = "#FCD116",
        col = "white",
        bty = "n",
-       horiz = TRUE,
+       horiz = FALSE,
        cex = 0.7)
 
 #text(x = 450, y = 27, "Reproductive type", pos = 2,cex = 0.7)
@@ -858,7 +858,7 @@ legend(x = usr[2] * 0.6,
        fill = c("#D0587E", "#D98994","#E5B9AD"),
        border = NA,
        bty = "n",
-       horiz = TRUE,
+       horiz = FALSE,
        xjust = 0,
        yjust = 0.5,cex = 0.7)
 
@@ -870,7 +870,7 @@ legend(x = usr[2] * 0.6,
        fill = c("#08519C", "#4292C6","#92d4f5"),
        border = NA,
        bty = "n",
-       horiz = TRUE,
+       horiz = FALSE,
        xjust = 0,
        yjust = 0.5,cex = 0.7)
 
@@ -882,7 +882,7 @@ legend(x = usr[2] * 0.6,
        fill = c("#da691f", "#e79259","#f0bb98"),
        border = NA,
        bty = "n",
-       horiz = TRUE,
+       horiz = FALSE,
        xjust = 0,
        yjust = 0.5,cex = 0.7)
 
@@ -903,7 +903,7 @@ legend(x = usr[2] * 0.6,
        pt.bg = "#5E3C99",
        col = "white",
        bty = "n",
-       horiz = TRUE,
+       horiz = FALSE,
        cex = 0.7)
 
 
