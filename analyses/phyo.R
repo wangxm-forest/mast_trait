@@ -730,7 +730,7 @@ oilSize <- (weightOil - min(weightOil, na.rm=TRUE)) /
 
 oilSize <- sizeMin + oilSize * (sizeMax - sizeMin)
   for(i in 1:length(weightOil)){
-  points(lastPP$xx[1:Ntip] + tree_width *1.4,
+  points(lastPP$xx[1:Ntip] + tree_width *1.6,
          lastPP$yy[1:Ntip],
          pch=21,
          bg="#FCD116",
@@ -739,7 +739,7 @@ oilSize <- sizeMin + oilSize * (sizeMax - sizeMin)
 }
 
 for(i in 1:length(weightDorm)){
-  points(lastPP$xx[1:Ntip] + tree_width *1.5,
+  points(lastPP$xx[1:Ntip] + tree_width *1.9,
          lastPP$yy[1:Ntip],
          pch=21,
          bg=colsDorm[weightDorm],
@@ -806,7 +806,7 @@ legend(x = usr[2] * 0.23,
        xjust = 0,
        yjust = 0.5,cex = 0.7)
 
-text(x = usr[2] * 0.42, y = usr[4] * 0.995, "Dispersal mode", pos = 2,cex = 0.7)
+text(x = usr[2] * 0.35, y = usr[4] * 0.99, labels = paste(c("Dispersal", "mode"), collapse = "\n"), adj = c(0.5,0.5), cex = 0.5)
 
 legend(x = usr[2] * 0.33,
        y = usr[4] * 0.975,
@@ -816,19 +816,7 @@ legend(x = usr[2] * 0.33,
        bty = "n",
        horiz = FALSE,
        xjust = 0,
-       yjust = 0.5,cex = 0.7)
-
-#text(x = 450, y = 38, "Seed dormancy", pos = 2,cex = 0.7)
-
-legend(x = usr[2] * 0.6,
-       y = usr[4] * 0.7,
-       legend = c("Dormant", "Non-dormant"),
-       fill = c("#7F883B", "#CFDAA8"),
-       border = NA,
-       bty = "n",
-       horiz = FALSE,
-       xjust = 0,
-       yjust = 0.5,cex = 0.7)
+       yjust = 0.5,cex = 0.5)
 
 legend_vals <- c(min(weightOil, na.rm=TRUE),
                  mean(weightOil, na.rm=TRUE),
@@ -838,9 +826,9 @@ legend_sizes <- (legend_vals - min(weightOil, na.rm=TRUE)) /
 
 legend_sizes <- sizeMin + legend_sizes * (sizeMax - sizeMin)
 
-#text(x = 450, y = 32, "Oil content", pos = 2, cex = 0.7)
-legend(x = usr[2] * 0.6,
-       y = usr[4] * 0.6,
+text(x = usr[2] * 0.4, y = usr[4] * 0.99, labels = paste(c("Oil", "content"), collapse = "\n"), adj = c(0.5,0.5), cex = 0.5)
+legend(x = usr[2] * 0.38,
+       y = usr[4] * 0.985,
        legend = round(legend_vals, 2),
        pt.cex = legend_sizes,
        pch = 21,
@@ -848,7 +836,21 @@ legend(x = usr[2] * 0.6,
        col = "white",
        bty = "n",
        horiz = FALSE,
-       cex = 0.7)
+       cex = 0.5)
+
+text(x = usr[2] * 0.45, y = usr[4] * 0.99, labels = paste(c("Seed", "dormancy"), collapse = "\n"), adj = c(0.5,0.5), cex = 0.5)
+
+legend(x = usr[2] * 0.43,
+       y = usr[4] * 0.975,
+       legend = c("Dormant", "Non-dormant"),
+       fill = c("#7F883B", "#CFDAA8"),
+       border = NA,
+       bty = "n",
+       horiz = FALSE,
+       xjust = 0,
+       yjust = 0.5,cex = 0.5)
+
+
 
 #text(x = 450, y = 27, "Reproductive type", pos = 2,cex = 0.7)
 
