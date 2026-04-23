@@ -748,7 +748,7 @@ for(i in 1:length(weightDorm)){
 }
 
 for(i in 1:length(weightRep)){
-  points(lastPP$xx[1:Ntip] + tree_width *1.8,
+  points(lastPP$xx[1:Ntip] + tree_width *2.3,
          lastPP$yy[1:Ntip],
          pch=21,
          bg=colsRep[weightRep],
@@ -757,7 +757,7 @@ for(i in 1:length(weightRep)){
 }
 
 for(i in 1:length(weightPoll)){
-  points(lastPP$xx[1:Ntip] + tree_width *1.9,
+  points(lastPP$xx[1:Ntip] + tree_width *2.6,
          lastPP$yy[1:Ntip],
          pch=21,
          bg=colsPoll[weightPoll],
@@ -766,7 +766,7 @@ for(i in 1:length(weightPoll)){
 }
 
 for(i in 1:length(weightDrought)){
-  points(lastPP$xx[1:Ntip] + tree_width *2.2,
+  points(lastPP$xx[1:Ntip] + tree_width *3,
          lastPP$yy[1:Ntip],
          pch=21,
          bg=colsDrought[weightDrought],
@@ -782,7 +782,7 @@ leafSize <- (weightLeaf - min(weightLeaf, na.rm=TRUE)) /
 
 leafSize <- sizeMin + leafSize * (sizeMax - sizeMin)
 for(i in 1:length(weightLeaf)){
-  points(lastPP$xx[1:Ntip] + tree_width *2.3,
+  points(lastPP$xx[1:Ntip] + tree_width *3.3,
          lastPP$yy[1:Ntip],
          pch=21,
          bg="#5E3C99",
@@ -806,9 +806,9 @@ legend(x = usr[2] * 0.23,
        xjust = 0,
        yjust = 0.5,cex = 0.7)
 
-text(x = usr[2] * 0.35, y = usr[4] * 0.99, labels = paste(c("Dispersal", "mode"), collapse = "\n"), adj = c(0.5,0.5), cex = 0.5)
+text(x = usr[2] * 0.37, y = usr[4] * 0.99, labels = paste(c("Dispersal", "mode"), collapse = "\n"), adj = c(0.5,0.5), cex = 0.3)
 
-legend(x = usr[2] * 0.33,
+legend(x = usr[2] * 0.35,
        y = usr[4] * 0.975,
        legend = c("Abiotic", "Biotic", "Both"),
        fill = c("#009392", "#72AAA1", "#B1C7B3"),
@@ -816,7 +816,7 @@ legend(x = usr[2] * 0.33,
        bty = "n",
        horiz = FALSE,
        xjust = 0,
-       yjust = 0.5,cex = 0.5)
+       yjust = 0.5,cex = 0.3)
 
 legend_vals <- c(min(weightOil, na.rm=TRUE),
                  mean(weightOil, na.rm=TRUE),
@@ -826,9 +826,9 @@ legend_sizes <- (legend_vals - min(weightOil, na.rm=TRUE)) /
 
 legend_sizes <- sizeMin + legend_sizes * (sizeMax - sizeMin)
 
-text(x = usr[2] * 0.4, y = usr[4] * 0.99, labels = paste(c("Oil", "content"), collapse = "\n"), adj = c(0.5,0.5), cex = 0.5)
-legend(x = usr[2] * 0.38,
-       y = usr[4] * 0.985,
+text(x = usr[2] * 0.42, y = usr[4] * 0.99, labels = paste(c("Oil", "content"), collapse = "\n"), adj = c(0.5,0.5), cex = 0.3)
+legend(x = usr[2] * 0.4,
+       y = usr[4] * 0.983,
        legend = round(legend_vals, 2),
        pt.cex = legend_sizes,
        pch = 21,
@@ -836,11 +836,11 @@ legend(x = usr[2] * 0.38,
        col = "white",
        bty = "n",
        horiz = FALSE,
-       cex = 0.5)
+       cex = 0.3)
 
-text(x = usr[2] * 0.45, y = usr[4] * 0.99, labels = paste(c("Seed", "dormancy"), collapse = "\n"), adj = c(0.5,0.5), cex = 0.5)
+text(x = usr[2] * 0.47, y = usr[4] * 0.99, labels = paste(c("Seed", "dormancy"), collapse = "\n"), adj = c(0.5,0.5), cex = 0.3)
 
-legend(x = usr[2] * 0.43,
+legend(x = usr[2] * 0.44,
        y = usr[4] * 0.975,
        legend = c("Dormant", "Non-dormant"),
        fill = c("#7F883B", "#CFDAA8"),
@@ -848,45 +848,46 @@ legend(x = usr[2] * 0.43,
        bty = "n",
        horiz = FALSE,
        xjust = 0,
-       yjust = 0.5,cex = 0.5)
+       yjust = 0.5,cex = 0.3)
 
 
 
-#text(x = 450, y = 27, "Reproductive type", pos = 2,cex = 0.7)
+text(x = usr[2] * 0.53, y = usr[4] * 0.99, labels = paste(c("Reproductive", "mode"), collapse = "\n"), adj = c(0.5,0.5), cex = 0.3)
 
-legend(x = usr[2] * 0.6,
-       y = usr[4] * 0.5,
+
+legend(x = usr[2] * 0.5,
+       y = usr[4] * 0.975,
        legend = c("Dioecious", "Monoecious", "Polygamous"),
        fill = c("#D0587E", "#D98994","#E5B9AD"),
        border = NA,
        bty = "n",
        horiz = FALSE,
        xjust = 0,
-       yjust = 0.5,cex = 0.7)
+       yjust = 0.5,cex = 0.3)
 
-#text(x = 450, y = 25, "Pollination mode", pos = 2,cex = 0.7)
+text(x = usr[2] * 0.58, y = usr[4] * 0.99, labels = paste(c("Pollination", "mode"), collapse = "\n"), adj = c(0.5,0.5), cex = 0.3)
 
-legend(x = usr[2] * 0.6,
-       y = usr[4] * 0.4,
+legend(x = usr[2] * 0.56,
+       y = usr[4] * 0.975,
        legend = c("Animal", "Both", "Wind"),
        fill = c("#08519C", "#4292C6","#92d4f5"),
        border = NA,
        bty = "n",
        horiz = FALSE,
        xjust = 0,
-       yjust = 0.5,cex = 0.7)
+       yjust = 0.5,cex = 0.3)
 
-#text(x = 450, y = 19, "Drought tolerance", pos = 2,cex = 0.7)
+text(x = usr[2] * 0.64, y = usr[4] * 0.99, labels = paste(c("Drought", "tolerance"), collapse = "\n"), adj = c(0.5,0.5), cex = 0.3)
 
-legend(x = usr[2] * 0.6,
-       y = usr[4] * 0.3,
+legend(x = usr[2] * 0.62,
+       y = usr[4] * 0.975,
        legend = c("High", "Moderate", "Low"),
        fill = c("#da691f", "#e79259","#f0bb98"),
        border = NA,
        bty = "n",
        horiz = FALSE,
        xjust = 0,
-       yjust = 0.5,cex = 0.7)
+       yjust = 0.5,cex = 0.3)
 
 legend_vals <- c(min(weightLeaf, na.rm=TRUE),
                  mean(weightLeaf, na.rm=TRUE),
@@ -896,9 +897,9 @@ legend_sizes <- (legend_vals - min(weightLeaf, na.rm=TRUE)) /
 
 legend_sizes <- sizeMin + legend_sizes * (sizeMax - sizeMin)
 
-#text(x = 450, y = 19, "Leaf longevity", pos = 2, cex = 0.7)
-legend(x = usr[2] * 0.6,
-       y = usr[4] * 0.2,
+text(x = usr[2] * 0.69, y = usr[4] * 0.99, labels = paste(c("Leaf", "longevity"), collapse = "\n"), adj = c(0.5,0.5), cex = 0.3)
+legend(x = usr[2] * 0.67,
+       y = usr[4] * 0.983,
        legend = round(legend_vals, 2),
        pt.cex = legend_sizes,
        pch = 21,
@@ -906,10 +907,10 @@ legend(x = usr[2] * 0.6,
        col = "white",
        bty = "n",
        horiz = FALSE,
-       cex = 0.7)
+       cex = 0.3)
 
 
-text(x = usr[2] * 0.8,
+text(x = usr[2] * 0.85,
      y = usr[4] * 0.01,
      labels = paste(c("Lambda:",
                       "Seed weight (Log): 0.95",
