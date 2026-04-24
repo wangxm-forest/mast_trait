@@ -898,7 +898,7 @@ legend_sizes <- (legend_vals - min(weightLeaf, na.rm=TRUE)) /
 legend_sizes <- sizeMin + legend_sizes * (sizeMax - sizeMin)
 
 text(x = usr[2] * 0.69, y = usr[4] * 0.99, labels = paste(c("Leaf", "longevity"), collapse = "\n"), adj = c(0.5,0.5), cex = 0.3)
-legend(x = usr[2] * 0.67,
+legend(x = usr[2] * 0.68,
        y = usr[4] * 0.983,
        legend = round(legend_vals, 2),
        pt.cex = legend_sizes,

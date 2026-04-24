@@ -4,30 +4,38 @@
 \SweaveOpts{concordance=TRUE}
 
 \section{Introduction}
-\subsection{Observations of masting in relation to seed predation and flowering}
+\subsection{Definition of masting}
 \begin{itemize}
-\item Definition of masting
+\item Observations of masting in relation to seed predation and flowering
 \end{itemize}
 \subsection{Major hypotheses for masting}
+\begin{itemize}
+\item Predation satiation
+\item Pollination coupling
+\item Resource matching
+\end{itemize}
 \subsection{Hypotheses operating at different reproductive stages}
 \begin{itemize}
 \item Predation satiation—seed maturation/dispersal stages
 \item Pollination coupling—flowering/pollination stages
 \item Resource matching—across stages
 \item Mechanisms are not mutually exclusive
+\item Traits thus might be important to understand masting
 \end{itemize}
 \subsection{Trait-based perspective}
 \begin{itemize}
-\item Literature review on masting and functionaltraits
+\item Literature review on understanding masting from traits perspective 
 \item Briefly connect traits to mechanisms
-\item Shift focus from seed and pollination-related hypotheses toward resource-matching oriented mechanisms
+\item Not clear connection between traits and hypotheses
 \end{itemize}
 \subsection{Introduce framework linking hypothesis x traits x masting}
 \begin{itemize}
+\item Link traits to hypotheses help understand drivers of masting for different species 
 \item Here we use North American tree data to test this framework
 \begin{itemize}
 \item Masting info available
 \item Includes both masting and non-masting species
+\item Not using CV data because don't have stand-level traits data
 \end{itemize}
 \end{itemize}
 \section{Methods}
@@ -61,6 +69,7 @@
 \item Seed weight supports the predation satiation hypothesis
 \item Pollination supports the pollination coupling hypothesis
 \item Discuss mechanisms in the context of existing literature
+\item Other traits show some pattern but statistically non-significant
 \item Transition to alternative hypotheses
 \end{itemize}
 \subsection{Masting is a population-level phenomenon}
@@ -80,10 +89,12 @@
 \item Angiosperm vs. gymnosperm results
 \begin{itemize}
 \item More masting gymnosperm sp
-\item Longer leaf longevity in gymnosperm sp
+\item Longer leaf longevity in gymnosperm
+\item More monoecious species in gymnosperm
 \item Wind pollination is universal among gymnosperms
 \end{itemize}
 \item Importance of testing within clades (\textit{Quercus.})
+\item Importance of looking for potential evolution support between gymnosperm and angiosperm
 \end{itemize}
 \end{document}
 \subsection{Definetly include}
