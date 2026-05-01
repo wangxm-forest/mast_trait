@@ -25,7 +25,7 @@ source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/nmds.R")
 \begin{itemize}
 \item Structure of data from Silvics
 \begin{itemize}
-\item Angiosperm (124 total ; 79\% (98/124) with masting data; Masting and non-masting split almost equally (52\%(51/98), 48\%(47/98)); Gymnosperm (64 total; 95\% (61/64) with masting data; almost all species are masting (89\%(54/61), 11\%(7/61)))
+\item Angiosperm (124 total ; 79\% (98/124) with masting data; Masting and non-masting split almost equally (52\%(51/98)); Gymnosperm (64 total; 95\% (61/64) with masting data; almost all species are masting (89\%(54/61))
 \item Masting more common for gymnosperm
 \end{itemize}
 \item Number of traits for different hypotheses
@@ -36,20 +36,20 @@ source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/nmds.R")
 \item Pollination coupling: pollination mode, reproductive type
 \item Resource matching: drought tolerance, leaf longevity
 \end{itemize}
-\item For gymnosperm, we only have oil content for masting species and all the gymnosperm species are wind pollinated.
+\item For gymnosperm, we have the same data as for angiosperm, but we only have oil content for masting species and all the gymnosperm species are wind pollinated.
 \end{itemize}
 \end{itemize}
 \newgeometry{margin=1cm}
 \begin{figure}[p]
 \centering
 \includegraphics[width=\textwidth, height=0.8\textheight]{../output/figures/rawDataWithStatsAngio.pdf}
-\caption{Relationships between plant traits (a) Seed weight; (b) Fruit size; (c) Oil content; (d) Dispersal mode; (e) Seed dormancy; (f) Pollination mode; (g) Reproductive mode; (h) Drought tolerance; (i) Leaf longevity and masting based on phylogenetic logistic regression for angiosperm species. Raw data are shown for each trait: continuous traits are displayed as violin plots, and categorical traits as histograms, the y-axis of the histograms represents the proportion of each category within either the non-mast or mast group. Overlaid model summaries are derived from phylogenetic logistic regression models fitted using phyloglm. For each model, we report sample size (N), regression coefficient (Estimate), phylogenetic signal parameter $\alpha$, and associated P-value. (a)-(e) are traits related to predation satiation hypothesis; (f), (g) are traits related to pollination coupling hypothesis; (h), (i) are traits related to resource matching hypothesis. Legends are shared across panels.}
+\caption{Relationships between plant traits (a) Seed weight; (b) Fruit size; (c) Oil content; (d) Dispersal mode; (e) Seed dormancy; (f) Pollination mode; (g) Reproductive mode; (h) Drought tolerance; (i) Leaf longevity and masting based on phylogenetic logistic regression for angiosperm species. Raw data are shown for each trait: continuous traits are displayed as violin plots, and categorical traits as histograms, the y-axis of the histograms represents the proportion of each category within either the non-mast or mast group. Overlaid model summaries are derived from phylogenetic logistic regression models fitted using phyloglm. For each model, we report sample size (N), regression coefficient (Estimate), phylogenetic signal parameter $\alpha$, and associated P-value for traits with a P-value < 0.5. (a)-(e) are traits related to predation satiation hypothesis; (f), (g) are traits related to pollination coupling hypothesis; (h), (i) are traits related to resource matching hypothesis. Legends are shared across panels.}
 \label{fig:rawangio}
 \end{figure}
 \begin{figure}[p]
 \centering
 \includegraphics[width=\textwidth,height=0.8\textheight]{../output/figures/rawDataWithStatsCon.pdf}
-\caption{Relationships between plant traits (a) Seed weight; (b) Fruit size; (c) Oil content; (d) Dispersal mode; (e) Seed dormancy; (f) Reproductive mode; (g) Drought tolerance; (h) Leaf longevity and masting based on phylogenetic logistic regression for gymnosperm species. Raw data are shown for each trait: continuous traits are displayed as violin plots, and categorical traits as histograms, the y-axis of the histograms represents the proportion of each category within either the non-mast or mast group. Overlaid model summaries are derived from phylogenetic logistic regression models fitted using phyloglm. For each model, we report sample size (N), regression coefficient (Estimate), phylogenetic signal parameter $\alpha$, and associated P-value. (a)-(e) are traits related to predation satiation hypothesis; (f) is trait related to pollination coupling hypothesis; (g), (h) are traits related to resource matching hypothesis. Legends are shared across panels.}
+\caption{Relationships between plant traits (a) Seed weight; (b) Fruit size; (c) Oil content; (d) Dispersal mode; (e) Seed dormancy; (f) Reproductive mode; (g) Drought tolerance; (h) Leaf longevity and masting based on phylogenetic logistic regression for gymnosperm species. Raw data are shown for each trait: continuous traits are displayed as violin plots, and categorical traits as histograms, the y-axis of the histograms represents the proportion of each category within either the non-mast or mast group. Overlaid model summaries are derived from phylogenetic logistic regression models fitted using phyloglm. For each model, we report sample size (N), regression coefficient (Estimate), phylogenetic signal parameter $\alpha$, and associated P-value for traits with a P-value < 0.5. (a)-(e) are traits related to predation satiation hypothesis; (f) is trait related to pollination coupling hypothesis; (g), (h) are traits related to resource matching hypothesis. Legends are shared across panels.}
 \label{fig:rawcon}
 \end{figure}
 \restoregeometry
@@ -108,7 +108,7 @@ Dispersal mode & Biotic vs abiotic & 0.55 & 0.53 & 0.30 & 0.06 &  93 \\
 \begin{itemize}
 \item Predation satiation: seed weight only with a small effect and only for angiosperm
 \begin{itemize}
-\item Only seed weight is related to masting with having bigger seeds will increase the chance of being a masting species Figure (\ref{fig:rawangio}), At the mean log seed weight (4.54), the predicted probability of masting was 0.43. (\ref{tab:regressionangio}). At the 75th percentile log seed mass (7.5103), the predicted probability of masting was 0.6. Only within angiosperm we found this significant effect (p-value = 0.02) of seed weight.
+\item Only seed weight is related to masting with having bigger seeds will increase the chance of being a masting species Figure (\ref{fig:rawangio}). An increase in seed weight in the log-scale by about 3 would increase the predicted probability of masting from 0.43 to 0.6. Only within angiosperm we found this significant effect (p-value = 0.02) of seed weight.
 \end{itemize}
 \item Pollination satiation: wind pollination for angiosperm
 \begin{itemize}
@@ -122,7 +122,7 @@ Dispersal mode & Biotic vs abiotic & 0.55 & 0.53 & 0.30 & 0.06 &  93 \\
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{../output/figures/nmdsFinal_scalearea.pdf}
-\caption{Non-metric multidimensional scaling (NMDS) of trait composition for angiosperm and gymnosperm species. Each point represents a species, with position determined by NMDS axes. Points are colored by drought tolerance, filled by masting or not, shaped by reproductive type, sized by seed weight. Panels are arranged as (a) angiosperm NMDS1–NMDS2, (b) angiosperm NMDS2–NMDS3, (c) conifer NMDS1–NMDS2, and (d) conifer NMDS2–NMDS3.}
+\caption{Non-metric multidimensional scaling (NMDS) of trait composition for angiosperm and gymnosperm species. Each point represents a species, with position determined by NMDS axes. Points are colored by drought tolerance, filled by masting or not, shaped by reproductive type, sized by seed weight. Panels are arranged as (a) angiosperm NMDS1–NMDS2, (b) angiosperm NMDS2–NMDS3, (c) gymnosperm NMDS1–NMDS2, and (d) gymnosperm NMDS2–NMDS3.}
 \label{fig:nmds}
 \end{figure}
 
@@ -131,6 +131,7 @@ Dispersal mode & Biotic vs abiotic & 0.55 & 0.53 & 0.30 & 0.06 &  93 \\
 \item No single trait drives most of the variation
 \begin{itemize}
 \item We don't see masting aligned well along any axis in the NMDS analysis.
+\item We don't have evidence that the combination of traits for any of the hypotheses is driving the pattern of masting.
 \end{itemize}
 \end{itemize}
 % ------------------------------------------
