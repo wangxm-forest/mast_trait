@@ -22,7 +22,7 @@ source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/nmds.R")
 @
 \section{Results}
 \subsection{Gathered data}
-\begin{itemize}
+\begin{enumerate}
 \item Structure of data from Silvics
 \begin{itemize}
 \item Angiosperm (124 total ; 79\% (98/124) with masting data; Masting and non-masting split almost equally (52\%(51/98)); Gymnosperm (64 total; 95\% (61/64) with masting data; almost all species are masting (89\%(54/61))
@@ -38,7 +38,7 @@ source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/nmds.R")
 \end{itemize}
 \item For gymnosperm, we have the same data as for angiosperm, but we only have oil content for masting species and all the gymnosperm species are wind pollinated.
 \end{itemize}
-\end{itemize}
+\end{enumerate}
 \newgeometry{margin=1cm}
 \begin{figure}[p]
 \centering
@@ -55,19 +55,46 @@ source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/nmds.R")
 \restoregeometry
 \newpage
 \begin{landscape}
+
 \begin{table}[ht]
 \centering
 \begin{tabular}{llrrrrr}
   \hline
-Trait & Predictor & Estimate & SE & P & Phylo $\alpha$ & N \\ 
+Trait & Predictor & Estimate & SE & P & Phylo α & N \\ 
+  \hline
+Dispersal mode & Biotic vs abiotic & 0.55 & 0.53 & 0.30 & 0.06 &  93 \\ 
+  Dispersal mode & Both vs abiotic & 0.55 & 0.57 & 0.33 & 0.06 &  93 \\ 
+  Pollination mode & Wind vs animal pollination* & 1.72 & 0.72 & 0.02 & 0.35 &  52 \\ 
+  Pollination mode & Wind vs animal pollination and animals & 1.23 & 1.15 & 0.29 & 0.35 &  52 \\ 
+  Seed dormancy & Dormant vs non−dormant & 0.03 & 0.50 & 0.95 & 0.10 &  85 \\ 
+  Reproductive type & Monoecious vs dioecious & 0.90 & 0.68 & 0.18 & 0.11 &  89 \\ 
+  Reproductive type & Monoecious vs polygamous & -0.13 & 0.96 & 0.89 & 0.11 &  89 \\ 
+  Seed weight (log) & logSeedWeight* & 0.21 & 0.09 & 0.02 & 0.06 &  91 \\ 
+  Fruit size (log) & logFruit & 0.08 & 0.30 & 0.80 & 0.17 &  88 \\ 
+  Seed size (log) & logSeedSize & 0.24 & 0.30 & 0.43 & 0.08 &  69 \\ 
+  Oil content (\%) & Oil content (\%) & 0.03 & 0.03 & 0.22 & 0.14 &  19 \\ 
+  Leaf longevity (years) & Leaf longevity (years) & 0.26 & 0.95 & 0.78 & 0.01 &  16 \\ 
+  Drought tolerance & Low vs high drought tolerance & 0.04 & 0.48 & 0.92 & 0.11 &  79 \\ 
+  Drought tolerance & Moderate vs high drought tolerance & -0.13 & 0.46 & 0.79 & 0.11 &  79 \\ 
+   \hline
+\end{tabular}
+\caption{Phylogenetic generalized linear model results for angiosperm. Estimate represents the log-odds associated with each predictor. SE is the standard error, and P indicates statistical significance, with P < 0.05 considered significant and marked with an asterisk (*) in the table. “Phylo $\alpha$” represents the phylogenetic correlation parameter estimated for each trait using phyloglm, lower values indicate a stronger phylogenetic signal for that trait. N indicates the number of observations available for each trait.} 
+\label{tab:regressiongym} 
+\label{tab:regressionangio}
+\end{table}
+\begin{table}[ht]
+\centering
+\begin{tabular}{llrrrrr}
+  \hline
+Trait & Predictor & Estimate & SE & P & Phylo α & N \\ 
   \hline
 Seed dispersal & Biotic vs abiotic & -0.83 & 0.81 & 0.30 & 0.01 &  60 \\ 
   Seed dispersal & Both vs abiotic & -1.11 & 0.67 & 0.10 & 0.01 &  60 \\ 
-  Seed dormancy & Dormant vs non-dormant & 0.71 & 0.70 & 0.32 & 0.41 &  59 \\ 
+  Seed dormancy & Dormant vs non−dormant & 0.71 & 0.70 & 0.32 & 0.41 &  59 \\ 
   Reproductive type & Monoecious vs dioecious & -1.14 & 1.02 & 0.26 & 0.01 &  61 \\ 
   Seed weight (log) & logSeedWeight & -0.03 & 0.25 & 0.91 & 0.43 &  59 \\ 
   Fruit size (log) & logFruit & 0.03 & 0.36 & 0.94 & 0.43 &  60 \\ 
-  Seed size (log) & logSeedSize & -0.24 & 0.92 & 0.80 & 0.41 &  51 \\ 
+  Seed size (log) & logSeedSize & -0.37 & 0.93 & 0.69 & 0.41 &  51 \\ 
   Leaf longevity (years) & Leaf longevity (years) & 0.15 & 0.34 & 0.67 & 0.43 &  38 \\ 
   Drought tolerance & Low vs high drought tolerance & 0.91 & 1.64 & 0.58 & 0.43 &  52 \\ 
   Drought tolerance & Moderate vs high drought tolerance & -1.56 & 1.06 & 0.14 & 0.43 &  52 \\ 
@@ -75,32 +102,6 @@ Seed dispersal & Biotic vs abiotic & -0.83 & 0.81 & 0.30 & 0.01 &  60 \\
 \end{tabular}
 \caption{Phylogenetic generalized linear model results for gymnosperms. Estimate represents the log-odds associated with each predictor. SE is the standard error, and P indicates statistical significance, with P < 0.05 considered significant and marked with an asterisk (*) in the table. “Phylo $\alpha$” represents the phylogenetic signal estimated for each trait using phyloglm, lower values indicate a stronger phylogenetic signal for that trait. N indicates the number of observations available for each trait.} 
 \label{tab:regressiongym}
-\end{table}
-\begin{table}[ht]
-\centering
-\begin{tabular}{llrrrrr}
-  \hline
-Trait & Predictor & Estimate & SE & P & Phylo $\alpha$ & N \\ 
-  \hline
-Dispersal mode & Biotic vs abiotic & 0.55 & 0.53 & 0.30 & 0.06 &  93 \\ 
-  Dispersal mode & Both vs abiotic & 0.55 & 0.57 & 0.33 & 0.06 &  93 \\ 
-  Pollination mode & Wind vs animal pollination & 1.72 & 0.72 & 0.02* & 0.35 &  52 \\ 
-  Pollination mode & Wind vs animal pollination and animals & 1.23 & 1.15 & 0.29 & 0.35 &  52 \\ 
-  Seed dormancy & Dormant vs non-dormant & 0.03 & 0.50 & 0.95 & 0.10 &  85 \\ 
-  Reproductive type & Monoecious vs dioecious & 0.90 & 0.68 & 0.18 & 0.11 &  89 \\ 
-  Reproductive type & Monoecious vs polygamous & -0.13 & 0.96 & 0.89 & 0.11 &  89 \\ 
-  Seed weight (log) & logSeedWeight & 0.21 & 0.09 & 0.02* & 0.06 &  91 \\ 
-  Fruit size (log) & logFruit & 0.08 & 0.30 & 0.80 & 0.17 &  88 \\ 
-  Seed size (log) & logSeedSize & 0.24 & 0.30 & 0.43 & 0.08 &  69 \\ 
-  Oil content (\%) & Oil content (\%) & 0.04 & 0.03 & 0.20 & 0.14 &  19 \\ 
-  Leaf longevity (years) & Leaf longevity (years) & 0.26 & 0.95 & 0.78 & 0.01 &  16 \\ 
-  Drought tolerance & Low vs high drought tolerance & 0.04 & 0.48 & 0.92 & 0.11 &  79 \\ 
-  Drought tolerance & Moderate vs high drought tolerance & -0.13 & 0.46 & 0.79 & 0.11 &  79 \\ 
-   \hline
-\end{tabular}
-\caption{Phylogenetic generalized linear model results for angiosperm. Estimate represents the log-odds associated with each predictor. SE is the standard error, and P indicates statistical significance, with P < 0.05 considered significant and marked with an asterisk (*) in the table. “Phylo $\alpha$” represents the phylogenetic signal estimated for each trait using phyloglm, lower values indicate a stronger phylogenetic signal for that trait. N indicates the number of observations available for each trait.} 
-\label{tab:regressiongym} 
-\label{tab:regressionangio}
 \end{table}
 \end{landscape}
 \newpage

@@ -17,23 +17,23 @@
 
 \section{Results}
 \subsection{Gathered data}
-\begin{itemize}
+\begin{enumerate}
 \item Structure of data from Silvics
 \begin{itemize}
 \item Angiosperm (124 total ; 79\% (98/124) with masting data; Masting and non-masting split almost equally (52\%(51/98)); Gymnosperm (64 total; 95\% (61/64) with masting data; almost all species are masting (89\%(54/61))
-\item Masting more common for gymnosperm
+\item Masting more common for gymnosperms
 \end{itemize}
 \item Number of traits for different hypotheses
 \begin{itemize}
-\item For angiosperm, we have data for:
+\item For angiosperms, we have data for:
 \begin{itemize}
 \item Predation satiation: seed weight, fruit size, oil content, seed dispersal mode, seed dormancy
 \item Pollination coupling: pollination mode, reproductive type
 \item Resource matching: drought tolerance, leaf longevity
 \end{itemize}
-\item For gymnosperm, we have the same data as for angiosperm, but we only have oil content for masting species and all the gymnosperm species are wind pollinated.
+\item For gymnosperms, we have the same data as for angiosperms, but we only have oil content for masting species and all the gymnosperm species are wind pollinated.
 \end{itemize}
-\end{itemize}
+\end{enumerate}
 \newgeometry{margin=1cm}
 \begin{figure}[p]
 \centering
@@ -50,6 +50,33 @@
 \restoregeometry
 \newpage
 \begin{landscape}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{llrrrrr}
+  \hline
+Trait & Predictor & Estimate & SE & P & Phylo $\alpha$ & N \\ 
+  \hline
+Dispersal mode & Biotic vs abiotic & 0.55 & 0.53 & 0.30 & 0.06 &  93 \\ 
+  Dispersal mode & Both vs abiotic & 0.55 & 0.57 & 0.33 & 0.06 &  93 \\ 
+  Pollination mode & Wind vs animal pollination* & 1.72 & 0.72 & 0.02 & 0.35 &  52 \\ 
+  Pollination mode & Wind vs animal pollination and animals & 1.23 & 1.15 & 0.29 & 0.35 &  52 \\ 
+  Seed dormancy & Dormant vs non-dormant & 0.03 & 0.50 & 0.95 & 0.10 &  85 \\ 
+  Reproductive type & Monoecious vs dioecious & 0.90 & 0.68 & 0.18 & 0.11 &  89 \\ 
+  Reproductive type & Monoecious vs polygamous & -0.13 & 0.96 & 0.89 & 0.11 &  89 \\ 
+  Seed weight (log) & logSeedWeight* & 0.21 & 0.09 & 0.02 & 0.06 &  91 \\ 
+  Fruit size (log) & logFruit & 0.08 & 0.30 & 0.80 & 0.17 &  88 \\ 
+  Seed size (log) & logSeedSize & 0.24 & 0.30 & 0.43 & 0.08 &  69 \\ 
+  Oil content (\%) & Oil content (\%) & 0.03 & 0.03 & 0.22 & 0.14 &  19 \\ 
+  Leaf longevity (years) & Leaf longevity (years) & 0.26 & 0.95 & 0.78 & 0.01 &  16 \\ 
+  Drought tolerance & Low vs high drought tolerance & 0.04 & 0.48 & 0.92 & 0.11 &  79 \\ 
+  Drought tolerance & Moderate vs high drought tolerance & -0.13 & 0.46 & 0.79 & 0.11 &  79 \\ 
+   \hline
+\end{tabular}
+\caption{Phylogenetic generalized linear model results for angiosperms. Estimate represents the log-odds associated with each predictor. SE is the standard error, and P indicates statistical significance, with P < 0.05 considered significant and marked with an asterisk (*) in the table. “Phylo $\alpha$” represents the phylogenetic correlation parameter estimated for each trait using phyloglm, lower values indicate a stronger phylogenetic signal for that trait. N indicates the number of observations available for each trait.} 
+\label{tab:regressiongym} 
+\label{tab:regressionangio}
+\end{table}
 \begin{table}[ht]
 \centering
 \begin{tabular}{llrrrrr}
@@ -62,7 +89,7 @@ Seed dispersal & Biotic vs abiotic & -0.83 & 0.81 & 0.30 & 0.01 &  60 \\
   Reproductive type & Monoecious vs dioecious & -1.14 & 1.02 & 0.26 & 0.01 &  61 \\ 
   Seed weight (log) & logSeedWeight & -0.03 & 0.25 & 0.91 & 0.43 &  59 \\ 
   Fruit size (log) & logFruit & 0.03 & 0.36 & 0.94 & 0.43 &  60 \\ 
-  Seed size (log) & logSeedSize & -0.24 & 0.92 & 0.80 & 0.41 &  51 \\ 
+  Seed size (log) & logSeedSize & -0.37 & 0.93 & 0.69 & 0.41 &  51 \\ 
   Leaf longevity (years) & Leaf longevity (years) & 0.15 & 0.34 & 0.67 & 0.43 &  38 \\ 
   Drought tolerance & Low vs high drought tolerance & 0.91 & 1.64 & 0.58 & 0.43 &  52 \\ 
   Drought tolerance & Moderate vs high drought tolerance & -1.56 & 1.06 & 0.14 & 0.43 &  52 \\ 
@@ -71,43 +98,17 @@ Seed dispersal & Biotic vs abiotic & -0.83 & 0.81 & 0.30 & 0.01 &  60 \\
 \caption{Phylogenetic generalized linear model results for gymnosperms. Estimate represents the log-odds associated with each predictor. SE is the standard error, and P indicates statistical significance, with P < 0.05 considered significant and marked with an asterisk (*) in the table. “Phylo $\alpha$” represents the phylogenetic signal estimated for each trait using phyloglm, lower values indicate a stronger phylogenetic signal for that trait. N indicates the number of observations available for each trait.} 
 \label{tab:regressiongym}
 \end{table}
-\begin{table}[ht]
-\centering
-\begin{tabular}{llrrrrr}
-  \hline
-Trait & Predictor & Estimate & SE & P & Phylo $\alpha$ & N \\ 
-  \hline
-Dispersal mode & Biotic vs abiotic & 0.55 & 0.53 & 0.30 & 0.06 &  93 \\ 
-  Dispersal mode & Both vs abiotic & 0.55 & 0.57 & 0.33 & 0.06 &  93 \\ 
-  Pollination mode & Wind vs animal pollination & 1.72 & 0.72 & 0.02* & 0.35 &  52 \\ 
-  Pollination mode & Wind vs animal pollination and animals & 1.23 & 1.15 & 0.29 & 0.35 &  52 \\ 
-  Seed dormancy & Dormant vs non-dormant & 0.03 & 0.50 & 0.95 & 0.10 &  85 \\ 
-  Reproductive type & Monoecious vs dioecious & 0.90 & 0.68 & 0.18 & 0.11 &  89 \\ 
-  Reproductive type & Monoecious vs polygamous & -0.13 & 0.96 & 0.89 & 0.11 &  89 \\ 
-  Seed weight (log) & logSeedWeight & 0.21 & 0.09 & 0.02* & 0.06 &  91 \\ 
-  Fruit size (log) & logFruit & 0.08 & 0.30 & 0.80 & 0.17 &  88 \\ 
-  Seed size (log) & logSeedSize & 0.24 & 0.30 & 0.43 & 0.08 &  69 \\ 
-  Oil content (\%) & Oil content (\%) & 0.04 & 0.03 & 0.20 & 0.14 &  19 \\ 
-  Leaf longevity (years) & Leaf longevity (years) & 0.26 & 0.95 & 0.78 & 0.01 &  16 \\ 
-  Drought tolerance & Low vs high drought tolerance & 0.04 & 0.48 & 0.92 & 0.11 &  79 \\ 
-  Drought tolerance & Moderate vs high drought tolerance & -0.13 & 0.46 & 0.79 & 0.11 &  79 \\ 
-   \hline
-\end{tabular}
-\caption{Phylogenetic generalized linear model results for angiosperm. Estimate represents the log-odds associated with each predictor. SE is the standard error, and P indicates statistical significance, with P < 0.05 considered significant and marked with an asterisk (*) in the table. “Phylo $\alpha$” represents the phylogenetic signal estimated for each trait using phyloglm, lower values indicate a stronger phylogenetic signal for that trait. N indicates the number of observations available for each trait.} 
-\label{tab:regressiongym} 
-\label{tab:regressionangio}
-\end{table}
 \end{landscape}
 \newpage
 \subsection{Results for each hypothesis}
 \begin{itemize}
-\item Predation satiation: seed weight only with a small effect and only for angiosperm
+\item Predation satiation: seed weight only with a small effect and only for angiosperms
 \begin{itemize}
-\item Only seed weight is related to masting with having bigger seeds will increase the chance of being a masting species Figure (\ref{fig:rawangio}), At the mean log seed weight (4.54), the predicted probability of masting was 0.43. (\ref{tab:regressionangio}). At the 75th percentile log seed mass (7.5103), the predicted probability of masting was 0.6. Only within angiosperm we found this significant effect (p-value = 0.02) of seed weight.
+\item Only seed weight is related to masting with having bigger seeds will increase the chance of being a masting species Figure (\ref{fig:rawangio}). An increase in seed weight in the log-scale by about 3 would increase the predicted probability of masting from 0.43 to 0.6. Only within angiosperms we found this significant effect (p-value = 0.02, Table \ref{regressionangio}) of seed weight.
 \end{itemize}
-\item Pollination satiation: wind pollination for angiosperm
+\item Pollination satiation: wind pollination for angiosperms
 \begin{itemize}
-\item we found wind pollination is related to masting for angiosperm species, wind pollinated species have a significantly higher probability (59\%) of being strong masting species. Gymnosperm are all wind pollinated, and gymnosperm has a greater portion of masting species (89\% (54/61)).
+\item we found wind pollination is related to masting for angiosperm species, wind pollinated species have a significantly higher probability (59\%) of being strong masting species compared to animal pollinated species. Gymnosperms are all wind pollinated, and gymnosperms have a greater portion of masting species (89\% (54/61)).
 \end{itemize}
 \item Resource matching: nothing significant
 
@@ -117,7 +118,7 @@ Dispersal mode & Biotic vs abiotic & 0.55 & 0.53 & 0.30 & 0.06 &  93 \\
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{../output/figures/nmdsFinal_scalearea.pdf}
-\caption{Non-metric multidimensional scaling (NMDS) of trait composition for angiosperm and gymnosperm species. Each point represents a species, with position determined by NMDS axes. Points are colored by drought tolerance, filled by masting or not, shaped by reproductive type, sized by seed weight. Panels are arranged as (a) angiosperm NMDS1–NMDS2, (b) angiosperm NMDS2–NMDS3, (c) gymnosperm NMDS1–NMDS2, and (d) gymnosperm NMDS2–NMDS3.}
+\caption{Non-metric multidimensional scaling (NMDS) of trait composition for angiosperm and gymnosperm species. Each point represents a species, with position determined by NMDS axes. Points are colored by drought tolerance, filled by masting or not, shaped by reproductive type, sized by seed weight. Panels are arranged as (a) angiosperms NMDS1–NMDS2, (b) angiosperms NMDS2–NMDS3, (c) gymnosperms NMDS1–NMDS2, and (d) gymnosperms NMDS2–NMDS3.}
 \label{fig:nmds}
 \end{figure}
 
@@ -126,13 +127,14 @@ Dispersal mode & Biotic vs abiotic & 0.55 & 0.53 & 0.30 & 0.06 &  93 \\
 \item No single trait drives most of the variation
 \begin{itemize}
 \item We don't see masting aligned well along any axis in the NMDS analysis.
+\item We don't have evidence that the combination of traits for any of the hypotheses is driving the pattern of masting.
 \end{itemize}
 \end{itemize}
 % ------------------------------------------
 \newgeometry{margin=1cm}
 \begin{figure}[p]
 \centering
-\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{../output/figures/weightTreeConcept1.jpg}
+\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{../output/figures/weightTreeConceptual1.jpg}
 \caption{Phylogenetic tree for all angioperm species included in the analysis. The color scheme of the branch is the trait value for seed weight (log). The color tip is colored by masting or not. The other traits are labeled after the tip labels with different color and size. We also show the predictions of relationship between traits and masting. We calculated the Pagel's $\lambda$ for continuous traits as well as multilevel categorical traits, and calculated D-statistic for binary traits}
 \label{fig:coneptangio}
 \end{figure}
@@ -188,7 +190,7 @@ Angiosperm & Seed dormancy & 0.25 & 0 & 0.16 \\
 \item Pagel's $\lambda$ for continuous traits and multilevel categorical traits in Table \ref{tab:lambda}, D-statistic for binary traits in Table \ref{tab:d}.
 \begin{itemize}
 \item Masting shows a moderate phylogenetic signal in both gymnosperms (estimated D = 0.51) and angiosperms (estimated D = 0.58).
-\item Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = 0.95) and gymnosperm ($\lambda$ = 0.97). We can see the similarity in certain group in Figure \ref{fig:coneptangio} it's relatively reliable estimate. Dispersal mode, leaf longevity pollination mode and reproductive type also showed high phylogenetic signal, but leaf longevity data is nested in certain clades, and the other traits are categorical traits.
+\item Seed weight has strong phylogenetic signal for both angiosperms ($\lambda$ = 0.95) and gymnosperms ($\lambda$ = 0.97). We can see the similarity in certain group in Figure \ref{fig:coneptangio} it's relatively reliable estimate. Dispersal mode, leaf longevity pollination mode and reproductive type also showed high phylogenetic signal, but leaf longevity data is nested in certain clades, and the other traits are categorical traits.
 \item Be cautious that $\lambda$ might not be comparable among traits, not only because the way $\lambda$ is calculated for continuous traits and categorical traits are different, but also because $\lambda$ might depend on the data structure when sampling is uneven, take leaf longevity as an example in Figure \ref{fig:coneptangio}. 
 \end{itemize}
 \item When we know the phylogenetic results, we need to be cautious interpretating relationships between traits, it is hard to tease out traits from masting, which limits the inference)
