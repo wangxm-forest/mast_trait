@@ -72,6 +72,12 @@ phytree$node.label <- NULL
 phyconifer <- drop.tip(phytree, setdiff(phytree$tip.label, conifer$latbi))
 phyangio   <- drop.tip(phytree, setdiff(phytree$tip.label, angio$latbi))
 
+#smallTreeUltra <- force.ultrametric(
+#  smallTree,
+#  method = "extend"  # Extends terminal branches
+#)
+
+
 rownames(conifer) <- conifer$latbi
 rownames(angio)   <- angio$latbi
 
@@ -253,15 +259,14 @@ getAnnotation <- function(trait_name, model_results, subData) {
   df <- model_results[model_results$Trait == trait_name, ]
   
   # Always keep N
- 
-  n_text <- paste0("Nmast = ", sum(subData[,1] == "1" & !is.na(subData[,2])), " Nnon = ",  sum(subData[,1] == "0" & !is.na(subData[,2])))
+  #n_text <- paste0("Nmast = ", sum(subData[,1] == "1" & !is.na(subData[,2])), " Nnon = ",  sum(subData[,1] == "0" & !is.na(subData[,2])))
   
   # Keep only predictors with P < 0.5
   df_sig <- df[df$P < 0.05, ]
   alpha_text <- paste0("Phylo α = ", round(unique(df$`Phylo α`), 2))
   # If none meet threshold → return only alpha
   if(nrow(df_sig) == 0){
-    return(paste(n_text, sep = "\n"))
+    return(paste0(" ", sep = "\n"))
   }
   
   # If multiple predictors (categorical trait)
@@ -277,7 +282,7 @@ getAnnotation <- function(trait_name, model_results, subData) {
       collapse = "\n"
     )
     
-    label <- paste(alpha_text, pred_text, n_text, sep = "\n")
+    label <- paste(alpha_text, pred_text, sep = "\n")
     
   } else {
     
@@ -289,7 +294,7 @@ getAnnotation <- function(trait_name, model_results, subData) {
       " *"
     )
     
-    label <- paste(alpha_text, pred_text, n_text, sep = "\n")
+    label <- paste(alpha_text, pred_text, sep = "\n")
   }
   
   return(label)
@@ -386,7 +391,7 @@ annotate("text", x = 1.5, y = 17,
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
-    labels = c("0"="No", "1"="Yes")) + scale_x_discrete(labels = c("0" = "Non-masting", "1" = "Masting")) +
+    labels = c("0"="No", "1"="Yes")) + scale_x_discrete(labels = c("0" = "Non-masting (43)", "1" = "Masting (48)")) +
   labs(y = "Seed Weight (log)", x = NULL) +
   theme_classic(base_size = 12) + scale_y_continuous(limits = c(NA, 18))+ theme(legend.position = "none")
 
@@ -403,7 +408,7 @@ annotate("text", x = 1.5, y = 5.7,
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
     labels = c("0"="No", "1"="Yes") 
-  ) + scale_x_discrete(labels = c("0" = "Non-masting", "1" = "Masting")) +
+  ) + scale_x_discrete(labels = c("0" = "Non-masting (40)", "1" = "Masting (48)")) +
   labs(y = "Fruit size (log)", x = NULL) +
   theme_classic(base_size = 12) + scale_y_continuous(limits = c(NA, 6))+ theme(legend.position = "none")
 
@@ -420,7 +425,7 @@ annotate("text", x = 1.5, y = 115,
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
     labels = c("0"="No", "1"="Yes") 
-  ) + scale_x_discrete(labels = c("0" = "Non-masting", "1" = "Masting")) +
+  ) + scale_x_discrete(labels = c("0" = "Non-masting (14)", "1" = "Masting (5)")) +
   labs(y = "Oil content %", x = NULL) +
   theme_classic(base_size = 12) + scale_y_continuous(limits = c(NA, 120))+ theme(legend.position = "none")
 
@@ -519,7 +524,7 @@ leaf <- ggplot(leafData, aes(x = mastEvent, y = leafLongevity, fill = mastEvent)
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
-    labels = c("0"="No", "1"="Yes"))  + scale_x_discrete(labels = c("0" = "Non-masting", "1" = "Masting")) +
+    labels = c("0"="No", "1"="Yes"))  + scale_x_discrete(labels = c("0" = "Non-masting (7)", "1" = "Masting (9)")) +
   labs(y = "Leaf longevity (year)", x = NULL) +
   theme_classic(base_size = 12) + scale_y_continuous(limits = c(NA, 4))+ theme(legend.position = "none")
 
@@ -632,7 +637,7 @@ annotate("text", x = 1.5, y = 11, label = getAnnotation("Seed weight (log)", con
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
-    labels = c("0"="No", "1"="Yes")) + scale_x_discrete(labels = c("0" = "Non-masting", "1" = "Masting")) +
+    labels = c("0"="No", "1"="Yes")) + scale_x_discrete(labels = c("0" = "Non-masting (7)", "1" = "Masting (52)")) +
   labs(y = "Seed Weight (log)", x = NULL) +
   theme_classic(base_size = 12) + scale_y_continuous(limits = c(NA, 13))
 
@@ -647,7 +652,7 @@ annotate("text", x = 1.5, y = 5, label = getAnnotation("Fruit size (log)", conif
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
     labels = c("0"="No", "1"="Yes") 
-  ) + scale_x_discrete(labels = c("0" = "Non-masting", "1" = "Masting")) +
+  ) + scale_x_discrete(labels = c("0" = "Non-masting (6)", "1" = "Masting (55)")) +
   labs(y = "Fruit size (log)", x = NULL) +
   theme_classic(base_size = 12) + scale_y_continuous(limits = c(NA, 6))
 
@@ -660,7 +665,7 @@ oil <- ggplot(oilData, aes(x = mastEvent, y = oilContent, fill = mastEvent)) +
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
     labels = c("0"="No", "1"="Yes") , guide = "none"
-  ) + scale_x_discrete(labels = c("0" = "Non-masting", "1" = "Masting")) +
+  ) + scale_x_discrete(labels = c("0" = "Non-masting", "1" = "Masting (7)")) +
   labs(y = "Oil content %", x = NULL) +
   theme_classic(base_size = 12) + scale_y_continuous(limits = c(NA, 100))
 
@@ -747,7 +752,7 @@ leaf <- ggplot(leafData, aes(x = mastEvent, y = leafLongevity, fill = mastEvent)
   scale_fill_manual(
     name = "Masting", 
     values = c("0"="#A9D5B1", "1"="#ED562C"), 
-    labels = c("0"="No", "1"="Yes"))  + scale_x_discrete(labels = c("0" = "Non-masting", "1" = "Masting")) +
+    labels = c("0"="No", "1"="Yes"))  + scale_x_discrete(labels = c("0" = "Non-masting (4)", "1" = "Masting (34)")) +
   labs(y = "Leaf longevity (year)", x = NULL) +
   theme_classic(base_size = 12) + scale_y_continuous(limits = c(NA, 12))
 
