@@ -72,6 +72,8 @@ phytree$node.label <- NULL
 phyconifer <- drop.tip(phytree, setdiff(phytree$tip.label, conifer$latbi))
 phyangio   <- drop.tip(phytree, setdiff(phytree$tip.label, angio$latbi))
 
+phyconifer <- rescale(phyconifer, model="depth", depth=1)
+phyangio <- rescale(phyangio, model="depth", depth=1) 
 #smallTreeUltra <- force.ultrametric(
 #  smallTree,
 #  method = "extend"  # Extends terminal branches
@@ -104,8 +106,8 @@ tidy_phyloglm <- function(model) {
 }
 
 # Run phyloglm model and attach metadata
-run_phyloglm <- function(formula, data, phy, method, trait_name) {
-  model <- phyloglm(formula, phy = phy, data = data, method = method)
+run_phyloglm <- function(formula, data, phy, method, trait_name, btol) {
+  model <- phyloglm(formula, phy = phy, data = data, method = method, btol = btol)
   tbl <- tidy_phyloglm(model)
   tbl$trait <- trait_name
   tbl$model_formula <- deparse(formula)
@@ -122,27 +124,28 @@ get_legend <- function(myplot) {
 # Model definitions
 
 conifer_list <- list(
-  list(name="Seed dispersal", formula=mastEvent ~ seedDispersal, data=conifer, phy=phyconifer, method="logistic_MPLE"),
-  list(name="Seed dormancy",  formula=mastEvent ~ seedDormancy, data=conifer, phy=phyconifer, method="logistic_MPLE"),
-  list(name="Reproductive type",       formula=mastEvent ~ typeMonoOrDio, data=conifer, phy=phyconifer, method="logistic_MPLE"),
-  list(name="Seed weight (log)",    formula=mastEvent ~ logSeedWeight, data=conifer, phy=phyconifer, method="logistic_IG10"),
-  list(name="Fruit size (log)",     formula=mastEvent ~ logFruit, data=conifer, phy=phyconifer, method="logistic_IG10"),
-  list(name="Seed size (log)",      formula=mastEvent ~ logSeedSize, data=conifer, phy=phyconifer, method="logistic_IG10"),
-  list(name="Leaf longevity (years)", formula=mastEvent ~ leafLongevity, data=conifer, phy=phyconifer, method="logistic_IG10"),
-  list(name="Drought tolerance",    formula=mastEvent ~ droughtTolerance, data=conifer, phy=phyconifer, method="logistic_IG10")
+  list(name="Seed dispersal", formula=mastEvent ~ seedDispersal, data=conifer, phy=phyconifer, method="logistic_MPLE", btol = 10),
+  list(name="Seed dormancy",  formula=mastEvent ~ seedDormancy, data=conifer, phy=phyconifer, method="logistic_MPLE", btol = 10),
+  list(name="Reproductive type",       formula=mastEvent ~ typeMonoOrDio, data=conifer, phy=phyconifer, method="logistic_MPLE", btol = 10),
+  list(name="Seed weight (log)",    formula=mastEvent ~ logSeedWeight, data=conifer, phy=phyconifer, method="logistic_IG10", btol = 10),
+  list(name="Fruit size (log)",     formula=mastEvent ~ logFruit, data=conifer, phy=phyconifer, method="logistic_IG10", btol = 10),
+  list(name="Seed size (log)",      formula=mastEvent ~ logSeedSize, data=conifer, phy=phyconifer, method="logistic_IG10", btol = 10),
+  list(name="Leaf longevity (years)", formula=mastEvent ~ leafLongevity, data=conifer, phy=phyconifer, method="logistic_IG10", btol = 10),
+  list(name="Drought tolerance",    formula=mastEvent ~ droughtTolerance, data=conifer, phy=phyconifer, method="logistic_MPLE", btol = 20)
 )
 
+
 angio_list <- list(
-list(name="Dispersal mode",   formula=mastEvent ~ seedDispersal, data=angio,   phy=phyangio,   method="logistic_MPLE"),
-list(name="Pollination mode",   formula=mastEvent ~ pollination, data=angio,   phy=phyangio,   method="logistic_MPLE"),
-list(name="Seed dormancy",    formula=mastEvent ~ seedDormancy, data=angio,   phy=phyangio,   method="logistic_MPLE"),
-list(name="Reproductive type",         formula=mastEvent ~ typeMonoOrDio, data=angio,   phy=phyangio,   method="logistic_MPLE"),
-list(name="Seed weight (log)",      formula=mastEvent ~ logSeedWeight, data=angio,   phy=phyangio,   method="logistic_IG10"),
-list(name="Fruit size (log)",       formula=mastEvent ~ logFruit, data=angio,   phy=phyangio,   method="logistic_IG10"),
-list(name="Seed size (log)",        formula=mastEvent ~ logSeedSize, data=angio,   phy=phyangio,   method="logistic_IG10"),
-list(name="Oil content (%)",      formula=mastEvent ~ oilContent, data=angio, phy=phyangio, method="logistic_IG10"),
-list(name="Leaf longevity (years)",   formula=mastEvent ~ leafLongevity, data=angio,   phy=phyangio,   method="logistic_IG10"),
-list(name="Drought tolerance",      formula=mastEvent ~ droughtTolerance, data=angio,   phy=phyangio,   method="logistic_IG10")
+list(name="Dispersal mode",   formula=mastEvent ~ seedDispersal, data=angio,   phy=phyangio,   method="logistic_MPLE", btol = 10),
+list(name="Pollination mode",   formula=mastEvent ~ pollination, data=angio,   phy=phyangio,   method="logistic_MPLE", btol = 10),
+list(name="Seed dormancy",    formula=mastEvent ~ seedDormancy, data=angio,   phy=phyangio,   method="logistic_MPLE", btol = 10),
+list(name="Reproductive type",         formula=mastEvent ~ typeMonoOrDio, data=angio,   phy=phyangio,   method="logistic_MPLE", btol = 10),
+list(name="Seed weight (log)",      formula=mastEvent ~ logSeedWeight, data=angio,   phy=phyangio,   method="logistic_IG10", btol = 10),
+list(name="Fruit size (log)",       formula=mastEvent ~ logFruit, data=angio,   phy=phyangio,   method="logistic_IG10", btol = 10),
+list(name="Seed size (log)",        formula=mastEvent ~ logSeedSize, data=angio,   phy=phyangio,   method="logistic_IG10", btol = 10),
+list(name="Oil content (%)",      formula=mastEvent ~ oilContent, data=angio, phy=phyangio, method="logistic_IG10", btol = 10),
+list(name="Leaf longevity (years)",   formula=mastEvent ~ leafLongevity, data=angio,   phy=phyangio,   method="logistic_IG10", btol = 10),
+list(name="Drought tolerance",      formula=mastEvent ~ droughtTolerance, data=angio,   phy=phyangio,   method="logistic_MPLE", btol = 10)
 )
 
 
@@ -159,6 +162,7 @@ for (m in conifer_list) {
     data    = m$data,
     phy     = m$phy,
     method  = m$method,
+    btol = m$btol,
     trait_name = m$name
   )
   
@@ -173,6 +177,7 @@ for (m in angio_list) {
     data    = m$data,
     phy     = m$phy,
     method  = m$method,
+    btol = m$btol,
     trait_name = m$name
   )
   
@@ -196,6 +201,8 @@ clean_results <- function(results) {
   results_no_int$z_value   <- round(results_no_int$z_value,   2)
   results_no_int$p_value   <- signif(results_no_int$p_value,  3)
   results_no_int$alpha     <- round(results_no_int$alpha,     3)
+  results_no_int$half     <- round(log(2)/results_no_int$alpha,     3)
+  results_no_int$tree     <- round(max(nodeHeights(phyangio)) ,     3)
   
   final_table <- results_no_int[, c(
     "trait",
@@ -204,6 +211,8 @@ clean_results <- function(results) {
     "std_error",
     "p_value",
     "alpha",
+    "half",
+    "tree",
     "N"
   )]
   
@@ -214,8 +223,11 @@ clean_results <- function(results) {
     "SE",
     "P",
     "Phylo α",
+    "Half-time",
+    "Tree Height",
     "N"
   )
+  
   final_table$Predictor <- gsub("logFruitStd",     "Fruit size (log, std)", final_table$Predictor)
   final_table$Predictor <- gsub("logSeedWeightStd","Seed weight (log, std)", final_table$Predictor)
   final_table$Predictor <- gsub("logSeedSizeStd",  "Seed size (log, std)", final_table$Predictor)
