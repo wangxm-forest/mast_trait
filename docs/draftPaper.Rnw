@@ -5,46 +5,53 @@
 
 \section{Introduction}
 \subsection{Definition of masting}
-\begin{itemize}
+\begin{enumerate}
 \item Observations of masting in relation to seed predation and flowering
-\end{itemize}
+\end{enumerate}
 \subsection{Major hypotheses for masting}
-\begin{itemize}
+\begin{enumerate}
 \item Predation satiation
 \item Pollination coupling
 \item Resource matching
-\end{itemize}
-\subsection{Hypotheses operating at different reproductive stages}
-\begin{itemize}
-\item Predation satiation—seed maturation/dispersal stages
-\item Pollination coupling—flowering/pollination stages
-\item Resource matching—across stages
+\end{enumerate}
+\subsection{Hypotheses operating at different reproductive stages like filters}
+\begin{enumerate}
+\item Pollination success (Pollination coupling)
+\item Resources availability (Resource Matching)
+\item Dispersal (Predation satiation)
 \item Mechanisms are not mutually exclusive
-\item Traits thus might be important to understand masting
-\end{itemize}
+\item Traits thus can be important to understand masting through their relative importance
+\end{enumerate}
 \subsection{Trait-based perspective}
-\begin{itemize}
+\begin{enumerate}
 \item Literature review on understanding masting from traits perspective 
-\item Briefly connect traits to mechanisms
-\item Not clear connection between traits and hypotheses
-\end{itemize}
-\subsection{Introduce framework linking hypothesis x traits x masting}
 \begin{itemize}
+\item Larger seed is associate with higher CV
+\item Animal dispersed seeds have higher CV than wind dispersed seeds
+\item Wind pollination is related to higher CV
+\item Recent papers also focus on resource perspective using leaf and shoot traits
+\end{itemize}
+\item Existing studies seem focus mainly on correlations
+\item Not clear connection between traits and hypotheses and potential evolutionary drivers
+\end{enumerate}
+\subsection{Introduce framework linking hypothesis x traits x masting}
+\begin{enumerate}
 \item Link traits to hypotheses help understand drivers of masting for different species 
-\item Here we use North American tree data to test this framework
+\item If the pattern is strong enough, we might be able to find it even using a binary masting definition
+\item Here we use North American tree data to test this framework since they have information on their life-history
 \begin{itemize}
 \item Masting info available
 \item Includes both masting and non-masting species
 \item Not using CV data because don't have stand-level traits data
 \end{itemize}
-\end{itemize}
+\end{enumerate}
 \section{Methods}
 \subsection{Data collection}
-\begin{itemize}
+\begin{enumerate}
 \item Data scraping
   \begin{itemize}
-  \item Data sources: Silvics of North America, Kew Seed Dataset, TRY Dataset
   \item Trait selection
+  \item Data sources: Silvics of North America, Kew Seed Dataset, TRY Dataset
   \item Keywords used for data scraping
   \begin{itemize}
   \item Definition of strong masting vs. non-masting (referred to as masting vs. non-masting moving forward)
@@ -56,46 +63,58 @@
   \item Cleaning of categorical traits
   \item Decision for numeric traits with a range
   \end{itemize}
-\end {itemize}
+\end {enumerate}
 \subsection{Statistical analysis}
-  \begin{itemize}
+  \begin{enumerate}
   \item Main analysis for masting pattern and single trait: phyloglm
   \item Masting pattern with a multivariate analysis: NMDS
   \item Phylogenetic signal check for traits: Pagel's $\lambda$ and D-statistics
-  \end{itemize}
+  \end{enumerate}
 \section{Discussion}
 \subsection{Summary of main findings}
-\begin{itemize}
+\begin{enumerate}
 \item Seed weight supports the predation satiation hypothesis
 \item Pollination supports the pollination coupling hypothesis
+\item These act at the start and the end of the reproductive cycle, provide evolutionary incentive
 \item Discuss mechanisms in the context of existing literature
+\begin{itemize}
+\item Previous literature on seed mass and masting think from the resource depletion perspective
+\item From evolutionary perspective, seeds attractive to animal dispersers will benefit more from masting
+\end{itemize}
 \item Other traits show some pattern but statistically non-significant
 \item Transition to alternative hypotheses
-\end{itemize}
+\end{enumerate}
 \subsection{Masting is a population-level phenomenon}
-\begin{itemize}
-\item Examples of species that mast only under certain environmental conditions
+\begin{enumerate}
+\item No evidence found at species level data does not mean traits are not related to masting
+\item Examples of species that mast only under certain environmental conditions (E.g., \textit{Hymenaea coubaril})
 \item Traits need to be measured locally
-\end{itemize}
+\end{enumerate}
 \subsection{Different species selected under different hypotheses}
-\begin{itemize}
+\begin{enumerate}
 \item Introduce flowering masting vs. seed masting
 \item Different species driven by different mechanisms
 \item Need a more refined definition of masting and additional flowering-related traits
 \item Transition to phylogeny
-\end{itemize}
+\end{enumerate}
 \subsection{Evolutionary scale}
-\begin{itemize}
+\begin{enumerate}
 \item Angiosperm vs. gymnosperm results
 \begin{itemize}
 \item More masting gymnosperm sp
 \item Longer leaf longevity in gymnosperm
 \item More monoecious species in gymnosperm
 \item Wind pollination is universal among gymnosperms
-\end{itemize}
-\item Importance of testing within clades (\textit{Quercus.})
+\item Gymnosperm and angiosperm have distinct trait space occupancy
 \item Importance of looking for potential evolution support between gymnosperm and angiosperm
+\begin{itemize}
+\item Test if masting was gradually diluted in angiosperm as they transitioned to biotic pollination and faster life histories
 \end{itemize}
+\end{itemize}
+\item Many traits have strong phylogenetic signal, it is hard to tease out traits from masting, which limits the inference
+\item Data is strongly nested in phylogeny, and data is sparse.
+\item Importance of testing within clades and collect more data (\textit{Quercus.})
+\end{enumerate}
 \end{document}
 \subsection{Definetly include}
 \begin{itemize}
