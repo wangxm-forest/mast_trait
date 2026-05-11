@@ -1,0 +1,16 @@
+\documentclass{article}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\section{Method}
+\subsection{Trait selection}
+We decided on the traits in the context of three different hypotheses. Traits related to pollination coupling hypothesis include pollination mode and reproductive type. Traits related to predation satiation hypothesis include seed weight, fruit size, oil content, dispersal mode and seed dormancy. Traits related to resource matching include Drought tolerance and leaf longevity.
+\subsection{Data collection}
+For our analyses, we obtained the species list from Silvics of North America (Short as Silvics moving forward). We extracted the masting data mostly from Silvics, with MASTREE as a supplementary source when there is no description on the seed production pattern in the Silvics. Pollination method and seed dispersal data are also mainly from Silvics. Seed weight is from Kew seed database. Dormancy is from Baskin. Leaf longevity, oil content is from TRY database. Fruit weight is from multiple database, including: Silvics, USDA Fire Effects Information System, USA National Phenology Network, The Gymnosperm Database.
+For masting data, instead of more commonly used CV, we define masting or not based on the description on seed production pattern. If the description says good crop almost every year, we consider this species a non-masting species. If the description says good crop happens every several year, we consider this as a masting species.
+In total, our dataset includes 188 species, with 124 angiosperm species and 64 gymnosperm species. Within angiosperm species, 79\% species have masting data, and masting species account for 52\%. Within gymnosperm species, 95\% species have masting data, and 89\% species are masting species.
+
+
+
+\end{document}
