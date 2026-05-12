@@ -7,6 +7,8 @@ library(phytools)
 library(viridisLite)
 library(geiger)
 library(xtable)
+library(stringr)
+library(WorldFlora)
 library(caper)
 # housekeeping
 rm(list=ls()) 
@@ -14,12 +16,41 @@ options(stringsAsFactors = FALSE)
 
 setwd("C:/PhD/Project/PhD_thesis/mast_trait/")
 d <- read.csv("data/cleanSilvics.csv")
-d$latbi <- gsub(" ", "_", d$latbi)
 
 maketree <- FALSE
 if(maketree){
 phy.plants<-read.tree("C:/PhD/Project/egret/analyses/input/ALLMB.tre")
 
+backbone <- read.csv("C:/PhD/Project/classification.csv",head = TRUE, sep="\t")
+d$speciesName <- tolower(d$speciesName)
+# Remove trailing spaces:
+d$speciesName <- str_trim(d$speciesName)
+d$genusName <- str_trim(d$genusName)
+d_species <- unique(paste(d$genusName, d$speciesName))
+checks<-WFO.match(spec.data=d_species, WFO.data=backbone, counter=1, verbose=TRUE)
+d_species_fix <- unique(checks$scientificName)
+names_changed <- setdiff(d_species, d_species_fix)
+names_changed
+
+# Fix species names that Worldflora flagged #
+d$genusName[which(d$genusName == "Chamaecyparis" & d$speciesName == "nootkatensis")] <- "Callitropsis"
+d$speciesName[which(d$genusName == "Juniperus" & d$speciesName == "silicicola")] <- "virginiana_var._silicicola"
+d$genusName[which(d$genusName == "Libocedrus" & d$speciesName == "decurrens")] <- "Calocedrus"
+d$speciesName[which(d$genusName == "Acer" & d$speciesName == "barbatum")] <- "glabrum_var._glabrum"
+d$speciesName[which(d$genusName == "Acer" & d$speciesName == "nigrum")] <- "saccharum_subsp._nigrum"
+d$speciesName[which(d$genusName == "Aesculus" & d$speciesName == "octandra")] <- "flava"
+d$speciesName[which(d$genusName == "Carya" & d$speciesName == "illinoensis")] <- "illinoinensis"
+d$genusName[which(d$genusName == "Castanopsis" & d$speciesName == "chrysophylla")] <- "Chrysolepis"
+d$genusName[which(d$genusName == "Lithocarpus" & d$speciesName == "densiflorus")] <- "Notholithocarpus"
+d$speciesName[which(d$genusName == "Nyssa" & d$speciesName == "sylvatica var. biflora")] <- "biflora"
+d$genusName[which(d$genusName == "Pithecellobium" & d$speciesName == "saman")] <- "Samanea"
+d$speciesName[which(d$genusName == "Populus" & d$speciesName == "deltoides var occidentalis")] <- "deltoides_subsp._monilifera"
+d$genusName[which(d$genusName == "Prosopis" & d$speciesName == "pallida")] <- "Neltuma"
+d$speciesName[which(d$genusName == "Quercus" & d$speciesName == "falcata var. falcata")] <- "falcata"
+d$speciesName[which(d$genusName == "Quercus" & d$speciesName == "falcata var. pagodifolia")] <- "pagoda"
+d$speciesName[which(d$genusName == "Quercus" & d$speciesName == "nuttallii")] <- "texana"
+d$latbi <- paste(d$genusName, d$speciesName, sep = "_")
+unique(d$latbi)
 d$latbi <- gsub(" ", "_", d$latbi)
 ## getting a list of genera in S&B's phylo
 phy.genera<-unlist(
@@ -32,7 +63,7 @@ phy.sps.uniqu <- gsub(" ", "_", phy.sps.uniqu)
 
 silvics.sps <- sort(unique(d$latbi))
 
-silvics.phenosp.sps.inphylo <- silvics.sps[which(!silvics.sps%in%phy.sps.uniqu)] #20 out of 190
+silvics.phenosp.sps.inphylo <- silvics.sps[which(!silvics.sps%in%phy.sps.uniqu)] #15 out of 190
 
 kew <- read.csv("C:/PhD/Project/egret/wcvp_Mao/wcvp_names.csv", header = TRUE, sep = "|", stringsAsFactors = FALSE )
 kew$taxon_name <- gsub(" ", "_", kew$taxon_name)
@@ -86,7 +117,7 @@ matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Metroside
 #phy.sps.uniqu[grepl("Quercus_texana", phy.sps.uniqu)]
 matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Quercus_texana")] <-  "Quercus_buckleyi"
 
-phy.sps.uniqu[grepl("Notholithocarpus_densiflorus", phy.sps.uniqu)]
+#phy.sps.uniqu[grepl("Notholithocarpus_densiflorus", phy.sps.uniqu)]
 matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Notholithocarpus_densiflorus")] <-  "Notholithocarpus_densiflorus_var._densiflorus"
 
 #phy.sps.uniqu[grepl("Calophyllum_calaba", phy.sps.uniqu)]
@@ -95,11 +126,11 @@ matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Calophyll
 #phy.sps.uniqu[grepl("Populus_deltoides", phy.sps.uniqu)]
 matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Populus_deltoides_subsp._monilifera")] <-  "Populus_deltoides"
 
+#phy.sps.uniqu[grepl("Acer_saccharum", phy.sps.uniqu)]
+matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Acer_glabrum_var._glabrum")] <-  "Acer_saccharum_subsp._saccharum"
+
 phy.sps.uniqu[grepl("Schefflera_morototoni", phy.sps.uniqu)]
 matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Didymopanax_morototoni")] <-  "Schefflera_morototoni"
-
-#phy.sps.uniqu[grepl("Acer", phy.sps.uniqu)]
-matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Acer_nigrum")] <-  "Acer_saccharum_subsp._nigrum"
 
 #phy.sps.uniqu[grepl("Eucalyptus_globulus", phy.sps.uniqu)]
 matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Eucalyptus_globulus")] <-  "Eucalyptus_globulus_subsp._globulus"
@@ -107,14 +138,8 @@ matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Eucalyptu
 #phy.sps.uniqu[grepl("Magnolia_virginiana", phy.sps.uniqu)]
 matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Magnolia_virginiana")] <-  "Magnolia_virginiana_var._australis"
 
-#phy.sps.uniqu[grepl("Quercus_falcata_var._pagodifolia", phy.sps.uniqu)]
-matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Quercus_falcata_var._pagodifolia")] <-  "Quercus_pagoda"
-
 #phy.sps.uniqu[grepl("", phy.sps.uniqu)]
 matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Taxodium_distichum_var._distichum")] <-  "Taxodium_distichum"
-
-#phy.sps.uniqu[grepl("Quercus_falcata", phy.sps.uniqu)]
-matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Quercus_falcata_var._falcata")] <-  "Quercus_falcata"
 
 nomatchAfterKewcheck <- subset(matchednamessilvics , is.na(sppMatch))
 nrow(nomatchAfterKewcheck)
