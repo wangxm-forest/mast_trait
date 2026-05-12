@@ -5,7 +5,7 @@
 \input{paperWritten-concordance}
 
 \section{Method}
-\subsection{Data collection}
+\subsection{Data Collection}
 \subsubsection{Trait selection}
 We decided on the traits in the context of three different hypotheses. Traits related to pollination coupling hypothesis include pollination mode and reproductive type. Traits related to predation satiation hypothesis include seed weight, fruit size, oil content, dispersal mode and seed dormancy. Traits related to resource matching include Drought tolerance and leaf longevity.
 \subsubsection{Data scraping}
@@ -14,7 +14,7 @@ For our analyses, we obtained the species list from Silvics of North America (Sh
 For masting data, instead of more commonly used CV, we define masting or not based on the description on seed production pattern. If the description says good crop almost every year, we consider this species a non-masting species. If the description says good crop happens every several year, we consider this as a masting species. For fruit size data, we take the whole range from the source, and taking the mean for further analysis. For pollination mode, we categorize it into wind, animal (bird, bat, insects) and both. For seed dispersal mode, we categorize it into biotic (animal-dispersed), abiotic (wind, gravity, water) and both.
 
 In total, our dataset includes 188 species, with 124 angiosperm species and 64 gymnosperm species. Within angiosperm species, 79\% species have masting data, and masting species account for 52\%. Within gymnosperm species, 95\% species have masting data, and 89\% species are masting species.
-\subsection{Statistical analysis}
+\subsection{Statistical Analysis}
 \subsubsection{Masting pattern and single trait}
 We used phyloglm function in phylolm package (v. 2.6.2) to analyze the relationship between masting pattern and every single trait, treating masting as a binary response variable. We verified all species names using WorldFlora package (v. 1.14-5) and updated all species names according to WCVP Backbone data (2023). We then constructed an ultrametric phylogeny tree in R using the phytools
 (v. 2.4-4) and ape (v. 5.7-1) packages. We calculated half-time using the function (log(2)/$\alpha$ to compare with the tree height (standardized to 1), which represents the time required for the influence of ancestral states to decrease by half.
