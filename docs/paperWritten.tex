@@ -5,13 +5,21 @@
 \input{paperWritten-concordance}
 
 \section{Method}
-\subsection{Trait selection}
-We decided on the traits in the context of three different hypotheses. Traits related to pollination coupling hypothesis include pollination mode and reproductive type. Traits related to predation satiation hypothesis include seed weight, fruit size, oil content, dispersal mode and seed dormancy. Traits related to resource matching include Drought tolerance and leaf longevity.
 \subsection{Data collection}
+\subsubsection{Trait selection}
+We decided on the traits in the context of three different hypotheses. Traits related to pollination coupling hypothesis include pollination mode and reproductive type. Traits related to predation satiation hypothesis include seed weight, fruit size, oil content, dispersal mode and seed dormancy. Traits related to resource matching include Drought tolerance and leaf longevity.
+\subsubsection{Data scraping}
 For our analyses, we obtained the species list from Silvics of North America (Short as Silvics moving forward). We extracted the masting data mostly from Silvics, with MASTREE as a supplementary source when there is no description on the seed production pattern in the Silvics. Pollination method and seed dispersal data are also mainly from Silvics. Seed weight is from Kew seed database. Dormancy is from Baskin. Leaf longevity, oil content is from TRY database. Fruit weight is from multiple database, including: Silvics, USDA Fire Effects Information System, USA National Phenology Network, The Gymnosperm Database.
-For masting data, instead of more commonly used CV, we define masting or not based on the description on seed production pattern. If the description says good crop almost every year, we consider this species a non-masting species. If the description says good crop happens every several year, we consider this as a masting species.
+
+For masting data, instead of more commonly used CV, we define masting or not based on the description on seed production pattern. If the description says good crop almost every year, we consider this species a non-masting species. If the description says good crop happens every several year, we consider this as a masting species. For fruit size data, we take the whole range from the source, and taking the mean for further analysis. For pollination mode, we categorize it into wind, animal (bird, bat, insects) and both. For seed dispersal mode, we categorize it into biotic (animal-dispersed), abiotic (wind, gravity, water) and both.
+
 In total, our dataset includes 188 species, with 124 angiosperm species and 64 gymnosperm species. Within angiosperm species, 79\% species have masting data, and masting species account for 52\%. Within gymnosperm species, 95\% species have masting data, and 89\% species are masting species.
-
-
-
+\subsection{Statistical analysis}
+\subsubsection{Masting pattern and single trait}
+We used phyloglm function in phylolm package (v. 2.6.2) to analyze the relationship between masting pattern and every single trait, treating masting as a binary response variable. We verified all species names using WorldFlora package (v. 1.14-5) and updated all species names according to WCVP Backbone data (2023). We then constructed an ultrametric phylogeny tree in R using the phytools
+(v. 2.4-4) and ape (v. 5.7-1) packages. We calculated half-time using the function (log(2)/$\alpha$ to compare with the tree height (standardized to 1), which represents the time required for the influence of ancestral states to decrease by half.
+\subsubsection{Masting pattern with a multivariate analysis}
+Since most of our traits are categorical traits, we used NMDS for a multivariate analysis. We used metaMDS function in vegan package(v. 2.7-1) and tried k=2 and 3 separately and decided on 3 to get the best stress score. We then plotted all the traits on two panels (NMDS1 vs. NMDS2; NMDS2 vs. NMDS3) to check potential patterns.
+\subsubsection{Phylogenetic signal for single trait}
+We calculated the phylogenetic signal for every single trait. For binary trait, we calculated the D-statistics using function phylo.d in caper package (v. 1.0.4). For continuous trait, we calculated the Pagel's lambda using function phylosig in phytools (v. 2.4-4) package. For categorical traits, we also calculated the Pagel's lambda using function fitDiscrete function in geiger (v. 2.0.11) package.
 \end{document}
