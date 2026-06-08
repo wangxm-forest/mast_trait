@@ -182,7 +182,8 @@ for (m in angio_list) {
   angio_results <- rbind(angio_results, tbl)
 }
 
-mean(as.numeric(angio$logSeedWeight), na.rm = TRUE)
+median(angio$seedWeights, na.rm = TRUE)
+
 #Make a table to present the results:
 clean_results <- function(results) {
   
@@ -330,6 +331,49 @@ dTable <- xtable(seed_results,
                  label = "tab:regressionseedweight")
 print(dTable, type = "latex", include.rownames = FALSE)
 
+###Plot seed weight and model fit ----
+
+b0 <- -1.189452530
+b1 <- 0.219796507
+
+b0_bio <- -1.9024530
+b1_bio <- 0.4045427
+
+pdf("output/figures/modelFitSeedWeight.pdf",
+    width = 8, height = 6)
+plot(angio$seedWeights, angio$mastEvent,
+     xlab = "Seed Weight (g)",
+     ylab = "",
+     pch = 16, 
+     col = "grey", 
+     las = 1,
+     yaxt = "n", 
+     ylim = c(-0.05, 1.05))
+
+axis(2, at = seq(0, 1, by = 0.2), labels = c("0.0", "0.2", "0.4", "0.6", "0.8", "1.0"), las = 1)
+
+x_seq <- seq(min(angio$seedWeights, na.rm = TRUE), 
+             max(angio$seedWeights, na.rm = TRUE), 
+             length.out = 1000)
+x_seq_bio <- seq(min(angioBio$seedWeights, na.rm = TRUE), 
+             max(angioBio$seedWeights, na.rm = TRUE), 
+             length.out = 1000)
+
+y_pred_all <- exp(b0 + b1 * log(x_seq)) / (1 + exp(b0 + b1 * log(x_seq)))
+lines(x_seq, y_pred_all, col = "darkred", lwd = 2.5)
+
+y_pred_bio <- exp(b0_bio + b1_bio * log(x_seq_bio)) / (1 + exp(b0_bio + b1_bio * log(x_seq_bio)))
+lines(x_seq, y_pred_bio, col = "darkgreen", lwd = 2.5, lty = 2)
+
+title(ylab = "Likelihood of Masting Species", line = 2.5)
+legend("right", 
+       legend = c("All Angiosperms", "Biotic Dispersed Only"),
+       col = c("darkred", "darkgreen"), 
+       lty = c(1, 2), 
+       lwd = 2.5, 
+       bty = "n")
+
+dev.off()
 ###Plot the raw data with the phyloglm results ----
 ## Angiosperm
 getAnnotation <- function(trait_name, model_results, subData) {
