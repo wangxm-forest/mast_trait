@@ -83,8 +83,6 @@ phyangio <- rescale(phyangio, model="depth", depth=1)
 rownames(conifer) <- conifer$latbi
 rownames(angio)   <- angio$latbi
 
-
-
 ## Functions used later for the analysis ----
 
 # Extract key results from a phyloglm object
@@ -263,7 +261,64 @@ dTable <- xtable(angio_results,
                  label = "tab:regressionangio")
 print(dTable, type = "latex", include.rownames = FALSE)
 
+###Analyze seed weight for species with different dispersal strategies ----
 
+angioBio   <- angio[(angio$seedDispersal %in% c("biotic", "both")), ]
+angioAbio   <-  angio[(!angio$seedDispersal %in% c("biotic", "both")), ]
+
+phyangioBio   <- drop.tip(phyangio, setdiff(phyangio$tip.label, angioBio$latbi))
+phyangioAbio   <- drop.tip(phyangio, setdiff(phyangio$tip.label, angioAbio$latbi))
+
+phyangioBio <- rescale(phyangioBio, model="depth", depth=1)
+phyangioAbio <- rescale(phyangioAbio, model="depth", depth=1) 
+
+angio_bio_list <- list(
+  list(name="Seed weight (log)",      formula=mastEvent ~ logSeedWeight, data=angioBio,   phy=phyangioBio,   method="logistic_IG10", btol = 10),
+  list(name="Fruit size (log)",       formula=mastEvent ~ logFruit, data=angioBio,   phy=phyangioBio,   method="logistic_IG10", btol = 10),
+  list(name="Seed size (log)",        formula=mastEvent ~ logSeedSize, data=angioBio,   phy=phyangioBio,   method="logistic_IG10", btol = 10),
+  list(name="Oil content (%)",      formula=mastEvent ~ oilContent, data=angioBio, phy=phyangioBio, method="logistic_IG10", btol = 10)
+)
+
+angio_abio_list <- list(
+  list(name="Seed weight (log)",      formula=mastEvent ~ logSeedWeight, data=angioAbio,   phy=phyangioAbio,   method="logistic_IG10", btol = 10),
+  list(name="Fruit size (log)",       formula=mastEvent ~ logFruit, data=angioAbio,   phy=phyangioAbio,   method="logistic_IG10", btol = 10),
+  list(name="Seed size (log)",        formula=mastEvent ~ logSeedSize, data=angioAbio,   phy=phyangioAbio,   method="logistic_IG10", btol = 10),
+  list(name="Oil content (%)",      formula=mastEvent ~ oilContent, data=angioAbio, phy=phyangioAbio, method="logistic_IG10", btol = 10)
+)
+
+angio_bio_results <- NULL
+
+for (m in angio_bio_list) {
+  cat("Running model:", m$name, "\n")
+  
+  tbl <- run_phyloglm(
+    formula = m$formula,
+    data    = m$data,
+    phy     = m$phy,
+    method  = m$method,
+    btol = m$btol,
+    trait_name = m$name
+  )
+  
+  angio_bio_results <- rbind(angio_bio_results, tbl)
+}
+
+angio_abio_results <- NULL
+
+for (m in angio_abio_list) {
+  cat("Running model:", m$name, "\n")
+  
+  tbl <- run_phyloglm(
+    formula = m$formula,
+    data    = m$data,
+    phy     = m$phy,
+    method  = m$method,
+    btol = m$btol,
+    trait_name = m$name
+  )
+  
+  angio_abio_results <- rbind(angio_abio_results, tbl)
+}
 ###Plot the raw data with the phyloglm results ----
 ## Angiosperm
 getAnnotation <- function(trait_name, model_results, subData) {
