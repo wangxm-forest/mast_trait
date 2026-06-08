@@ -53,10 +53,10 @@ source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/nmds.R")
 \end{figure}
 \restoregeometry
 \newpage
-\begin{landscape}
 
 \begin{table}[ht]
 \centering
+\resizebox{\textwidth}{!}{
 \begin{tabular}{llrrrrrrr}
   \hline
 Trait & Predictor & Type & Estimate & SE & P & Phylo $\alpha$ & Half-time & N \\ 
@@ -76,12 +76,14 @@ Seed weight (log) & logSeedWeight* & Numeric & 0.21 & 0.09 & 0.02 & 8.54 & 0.08 
   Leaf longevity (years) & Leaf longevity (years) & Numeric & 0.26 & 0.95 & 0.78 & 0.90 & 0.77 &  16 \\ 
    \hline
 \end{tabular}
-\caption{Phylogenetic generalized linear model results for angiosperm. The structure of the model is Masting$\sim$Trait, with masting (Y/N) being the response variable and each trait being the explainatory variable seperately. For categorical trait, predictor is the difference between each level compared to the reference level for a specific trait. Estimate represents the log-odds associated with each predictor. SE is the standard error, and P indicates statistical significance, with P < 0.05 considered significant and marked with an asterisk (*) in the table. “Phylo $\alpha$” represents the phylogenetic signal in the residuals estimated for each trait using phyloglm, we calculated half-time (log(2)/$\alpha$) to compare with the tree height, which represents the time required for the influence of ancestral states to decrease by half. The tree we used is ultrametric with a standardized height of 1. If half-time is greater than tree height, it indicates strong phylogenetic signal in the residuals; if half-time is smaller than tree height, it indicates relatively weak phylogenetic signal in the residuals. N indicates the number of observations available for each trait.} 
+}
+\caption{Phylogenetic generalized linear model results for angiosperm. Each trait was evaluated in a separate model structured as Masting$\sim$Trait, where masting(Yes/No) is the binary response variable.  For categorical traits, the estimate represents the difference in log-odds between a given level and tis designated baseline reference level. For numeric traits, the estimate represents the change in log-odds per unit increase of the predictor. SE is the standard error, and P indicates statistical significance, with P < 0.05 considered significant and marked with an asterisk (*) in the table. “Phylo $\alpha$” represents the phylogenetic signal in the residuals estimated for each trait using phyloglm, we calculated half-time (log(2)/$\alpha$) to compare with the tree height, which represents the time required for the influence of ancestral states to decrease by half. The tree we used is ultrametric with a standardized height of 1. If half-time is greater than tree height, it indicates strong phylogenetic signal in the residuals; if half-time is smaller than tree height, it indicates relatively weak phylogenetic signal in the residuals. N indicates the number of observations available for each trait.} 
 \label{tab:regressionangio}
 \end{table}
 
 \begin{table}[ht]
 \centering
+\resizebox{\textwidth}{!}{
 \begin{tabular}{llrrrrrrr}
   \hline
 Trait & Predictor & Type & Estimate & SE & P & Phylo $\alpha$ & Half-time & N \\ 
@@ -97,30 +99,39 @@ Seed weight (log) & logSeedWeight & Numeric & -0.03 & 0.25 & 0.91 & 54.43 & 0.01
   Leaf longevity (years) & Leaf longevity (years) & Numeric & 0.15 & 0.34 & 0.67 & 54.44 & 0.01 &  38 \\ 
    \hline
 \end{tabular}
-\caption{Phylogenetic generalized linear model results for gymnosperm. The structure of the model is Masting$\sim$Trait, with masting (Y/N) being the response variable and each trait being the explainatory variable seperately. For categorical trait, predictor is the difference between each level compared to the reference level for a specific trait. Estimate represents the log-odds associated with each predictor. SE is the standard error, and P indicates statistical significance, with P < 0.05 considered significant and marked with an asterisk (*) in the table. “Phylo $\alpha$” represents the phylogenetic signal in the residuals estimated for each trait using phyloglm, we calculated half-time (log(2)/$\alpha$) to compare with the tree height, which represents the time required for the influence of ancestral states to decrease by half. The tree we used is ultrametric with a standardized height of 1. If half-time is greater than tree height, it indicates strong phylogenetic signal in the residuals; if half-time is smaller than tree height, it indicates relatively weak phylogenetic signal in the residuals. N indicates the number of observations available for each trait.} 
+}
+\caption{Phylogenetic generalized linear model results for gymnosperm. Each trait was evaluated in a separate model structured as Masting$\sim$Trait, where masting(Yes/No) is the binary response variable.  For categorical traits, the estimate represents the difference in log-odds between a given level and tis designated baseline reference level. For numeric traits, the estimate represents the change in log-odds per unit increase of the predictor. SE is the standard error, and P indicates statistical significance, with P < 0.05 considered significant and marked with an asterisk (*) in the table. “Phylo $\alpha$” represents the phylogenetic signal in the residuals estimated for each trait using phyloglm, we calculated half-time (log(2)/$\alpha$) to compare with the tree height, which represents the time required for the influence of ancestral states to decrease by half. The tree we used is ultrametric with a standardized height of 1. If half-time is greater than tree height, it indicates strong phylogenetic signal in the residuals; if half-time is smaller than tree height, it indicates relatively weak phylogenetic signal in the residuals. N indicates the number of observations available for each trait.} 
 \label{tab:regressiongym}
 \end{table}
 \begin{table}[ht]
 \centering
+\resizebox{\textwidth}{!}{
 \begin{tabular}{llrrrrrrr}
   \hline
 Group & Trait & Predictor & Estimate & SE & P & Phylo $\alpha$ & Half-time & N \\ 
   \hline
 Biotic dispersed & Seed weight (log) & logSeedWeight & 0.40 & 0.15 & 0.01 & 54.57 & 0.01 &  53 \\ 
 Abiotic dispersed & Seed weight (log) & logSeedWeight & 0.12 & 0.12 & 0.36 & 50.33 & 0.01 &  36 \\ 
-
    \hline
 \end{tabular}
-\caption{Phylogenetic Generalized Linear Model Results for only seed weight for biotic dispersed group and abiotic dispersed group} 
+}
+\caption{Phylogenetic Generalized Linear Model Results for only seed weight for biotic-dispersed subgroup and abiotic-dispersed subgroup} 
 \label{tab:regressionseedweight}
 \end{table}
-\end{landscape}
+
 \newpage
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{../output/figures/modelFitSeedWeight.pdf}
+\caption{Predicted likelihood of masting as a function of seed mass for all angiosperm species (solid red line) and the biotic-dispersed subgroup (dashed green line), estimated using phylogenetic logistic regression (phyloglm). Individual species observations are plotted as binary data points at 0 (non-masting) and 1 (masting).}
+\label{fig:seedweight}
+\end{figure}
+
 \subsection{Results for each hypothesis}
 \begin{enumerate}
 \item Predation satiation: seed weight only with a small effect and only for angiosperm
 \begin{enumerate}
-\item Only seed weight is related to masting with having bigger seeds will increase the chance of being a masting species Figure (\ref{fig:rawangio}). An increase in seed weight in the log-scale by about 3 would increase the predicted probability of masting from 0.43 to 0.6. Only within angiosperm we found this significant effect (p-value = 0.02) of seed weight.
+\item Only seed weight is related to masting with having bigger seeds will increase the chance of being a masting species Figure (\ref{fig:rawangio}). A tripling of seed weight (from a sample median baseline of 90.9g to 272.7g) is predicted to increase the likelihood of masting from 0.45 to 0.51 Figure (\ref{fig:seedweight}). And this increase is stronger in biotic-dispersed seed group Table (\ref{tab:regressionseedweight}), Figure (\ref{fig:seedweight}). Only within angiosperm we found this significant effect (p-value = 0.02) of seed weight.
 \end{enumerate}
 \item Pollination satiation: wind pollination for angiosperm
 \begin{enumerate}
@@ -140,7 +151,7 @@ Abiotic dispersed & Seed weight (log) & logSeedWeight & 0.12 & 0.12 & 0.36 & 50.
 
 \subsection{Multidimension-NMDS}
 \begin{enumerate}
-\item No single trait drives most of the variation
+\item No strong trend when considering single trait, maybe because it happens in multidimensional space
 \begin{enumerate}
 \item We don't see masting aligned well along any axis in the NMDS analysis.
 \item We don't have evidence that the combination of traits for any of the hypotheses is driving the pattern of masting.
@@ -150,7 +161,7 @@ Abiotic dispersed & Seed weight (log) & logSeedWeight & 0.12 & 0.12 & 0.36 & 50.
 \newgeometry{margin=1cm}
 \begin{figure}[p]
 \centering
-\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{../output/figures/weightTreeConceptual1.jpg}
+\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{../output/figures/weightTreeConceptual2.jpg}
 \caption{Phylogenetic tree for all angioperm species included in the analysis. The color scheme of the branch is the trait value for seed weight (log). The color tip is colored by masting or not. The other traits are labeled after the tip labels with different color and size. We also show the predictions of relationship between traits and masting. We calculated the Pagel's $\lambda$ for continuous traits as well as multilevel categorical traits, and calculated D-statistic for binary traits}
 \label{fig:coneptangio}
 \end{figure}
