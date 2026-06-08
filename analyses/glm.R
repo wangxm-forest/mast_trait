@@ -319,6 +319,17 @@ for (m in angio_abio_list) {
   
   angio_abio_results <- rbind(angio_abio_results, tbl)
 }
+angio_abio_results <- clean_results(angio_abio_results)
+angio_bio_results <- clean_results(angio_bio_results)
+
+seed_results <- rbind(angio_bio_results, angio_abio_results)
+
+
+dTable <- xtable(seed_results, 
+                 caption = "Phylogenetic Generalized Linear Model Results for only seed weight for biotic dispersed group and abiotic dispersed group", 
+                 label = "tab:regressionseedweight")
+print(dTable, type = "latex", include.rownames = FALSE)
+
 ###Plot the raw data with the phyloglm results ----
 ## Angiosperm
 getAnnotation <- function(trait_name, model_results, subData) {
