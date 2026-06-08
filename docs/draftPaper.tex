@@ -9,39 +9,36 @@
 \begin{enumerate}
 \item Observations of masting in relation to seed predation and flowering
 \end{enumerate}
-\subsection{Major hypotheses for masting}
-\begin{enumerate}
-\item Predation satiation
-\item Pollination coupling
-\item Resource matching
-\end{enumerate}
-\subsection{Hypotheses operating at different reproductive stages like filters}
+\subsection{Different hypotheses operating at different reproductive stages like filters}
 \begin{enumerate}
 \item Pollination success (Pollination coupling)
 \item Resources availability (Resource Matching)
 \item Dispersal (Predation satiation)
-%emw25May2026 -- do you want to start a new break here? It seems like 'Mechanisms are not mutually exclusive' is likely a separate paragraph and you may want to give some examples of this? Or explain more somehow. 
-\item Mechanisms are not mutually exclusive
+\end{enumerate}
+\subsection{Why traits can help link hypotheses to masting mechanisms}
+\begin{enumerate}
+\item Mechanisms might not be mutually exclusive, but some might be stronger than the other for certain species
 \item Traits thus can be important to understand masting through their relative importance
 \end{enumerate}
 \subsection{Trait-based perspective}
 \begin{enumerate}
 \item Literature review on understanding masting from traits perspective 
 \begin{enumerate}
-%emw25May2026 --  how did you pick the order below? If you're not sure what works, then mirror an order you have above. 
 \item Wind pollination is related to higher CV
 \item Animal dispersed seeds have higher CV than wind dispersed seeds
 \item Larger seed is associate with higher CV
 \item Recent papers also focus on resource perspective using leaf and shoot traits
 \end{enumerate}
-\item Existing studies seem focus mainly on correlations %emw25May2026 -- so do we ... can you explain more what you want to say here? 
+\item Existing studies mainly trying to find relations between different traits and masting.
 \item Not clear connection between traits and hypotheses and potential evolutionary drivers
 \end{enumerate}
 \subsection{Introduce framework linking hypothesis x traits x masting}
 \begin{enumerate}
-\item Link traits to hypotheses help understand drivers of masting for different species 
-\item If the pattern is strong enough, we might be able to find it even using a binary masting definition %emw25May2026 -- I think this may belong in the discussion?
-%emw25May2026 -- this should be a separate section from the above
+\item Link traits to hypotheses help understand drivers of masting for different species
+\item Especially when consider whether the evolutionary drivers are more similar for clades those are closely related.
+\end{enumerate}
+\subsection{Use data from one specific geographical region}
+\begin{enumerate}
 \item Here we use North American tree data to test this framework since they have information on their life-history
 \begin{enumerate}
 \item Masting info available
@@ -49,49 +46,25 @@
 \item Not using CV data because don't have stand-level traits data
 \end{enumerate}
 \end{enumerate}
-\section{Methods} %emw25May2026 --- skipping now that we're writing it!
-\subsection{Data collection}
-\begin{enumerate}
-\item Data scraping
-  \begin{enumerate}
-  \item Trait selection
-  \item Data sources: Silvics of North America, Kew Seed Dataset, TRY Dataset
-  \item Keywords used for data scraping
-  \begin{enumerate}
-  \item Definition of strong masting vs. non-masting (referred to as masting vs. non-masting moving forward)
-  \item Criteria for other traits
-  \end{enumerate}
-  \end{enumerate}
-\item Data cleaning
-  \begin{enumerate}
-  \item Cleaning of categorical traits
-  \item Decision for numeric traits with a range
-  \end{enumerate}
-\end {enumerate}
-\subsection{Statistical analysis}
-  \begin{enumerate}
-  \item Main analysis for masting pattern and single trait: phyloglm
-  \item Masting pattern with a multivariate analysis: NMDS
-  \item Phylogenetic signal check for traits: Pagel's $\lambda$ and D-statistics
-  \end{enumerate}
+
 \section{Discussion}
 \subsection{Summary of main findings}
 \begin{enumerate}
-\item Seed weight supports the predation satiation hypothesis
 \item Pollination supports the pollination coupling hypothesis
-\item These act at the start and the end of the reproductive cycle, provide evolutionary incentive %emw25May2026 --  nice! (What is an evolutionary incentive though?)
-%emw25May2026 -- I think you need a new break here .. 
+\item Seed weight supports the predation satiation hypothesis
+\item These act at the start and the end of the reproductive cycle, provide evolutionary incentive, which I will explain below
 \item Discuss mechanisms in the context of existing literature
 \begin{enumerate}
 \item Previous literature on seed mass and masting think from the resource depletion perspective (Bigger seeds use up resources so cannot reproduce every year)
 \item However, from evolutionary perspective, seeds attractive to animal dispersers will benefit more from masting
+%Maybe I can try to subset wind dispersed and animal dispersed species and see if this relationship between seed weight and masting is stronger for animal dispersed species!
 \end{enumerate}
 \item Other traits show some pattern but statistically non-significant
 \item Transition to alternative hypotheses
 \end{enumerate}
 \subsection{Masting is a population-level phenomenon}
 \begin{enumerate}
-\item Traits may matter to masting below the species level given that we did not find any strong evidence at species level
+\item Other traits may matter to masting below the species level, like population level
 \item Examples of species that mast only under certain environmental conditions (E.g., \textit{Hymenaea coubaril})
 \item Traits need to be measured locally and match with masting data
 \end{enumerate}
@@ -165,3 +138,28 @@
 \item Different hypotheses may act at different stages (for flower masting and seed masting species), playing the selection on different species, need better data on flowering traits and finer resolution on masting definition.
 \item Existence of clear counterexamples especially within the clade. Focusing on within-clade variation (oaks) may be more informative. Need more detailed monitoring on masting pattern and reproductive traits for more species in oak family, potentially with data for same species in different environment.
 \end{enumerate}
+\section{Methods} %emw25May2026 --- skipping now that we're writing it!
+\subsection{Data collection}
+\begin{enumerate}
+\item Data scraping
+  \begin{enumerate}
+  \item Trait selection
+  \item Data sources: Silvics of North America, Kew Seed Dataset, TRY Dataset
+  \item Keywords used for data scraping
+  \begin{enumerate}
+  \item Definition of strong masting vs. non-masting (referred to as masting vs. non-masting moving forward)
+  \item Criteria for other traits
+  \end{enumerate}
+  \end{enumerate}
+\item Data cleaning
+  \begin{enumerate}
+  \item Cleaning of categorical traits
+  \item Decision for numeric traits with a range
+  \end{enumerate}
+\end {enumerate}
+\subsection{Statistical analysis}
+  \begin{enumerate}
+  \item Main analysis for masting pattern and single trait: phyloglm
+  \item Masting pattern with a multivariate analysis: NMDS
+  \item Phylogenetic signal check for traits: Pagel's $\lambda$ and D-statistics
+  \end{enumerate}
