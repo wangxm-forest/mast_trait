@@ -201,7 +201,6 @@ clean_results <- function(results) {
   results_no_int$p_value   <- signif(results_no_int$p_value,  3)
   results_no_int$alpha     <- round(results_no_int$alpha,     3)
   results_no_int$half     <- round(log(2)/results_no_int$alpha,     3)
-  results_no_int$tree     <- round(max(nodeHeights(phyangio)) ,     3)
   
   final_table <- results_no_int[, c(
     "trait",
@@ -211,7 +210,6 @@ clean_results <- function(results) {
     "p_value",
     "alpha",
     "half",
-    "tree",
     "N"
   )]
   
@@ -221,9 +219,8 @@ clean_results <- function(results) {
     "Estimate",
     "SE",
     "P",
-    "Phylo α",
+    "Phylo $\alpha$",
     "Half-time",
-    "Tree Height",
     "N"
   )
   
@@ -252,15 +249,15 @@ angio_results <- clean_results(angio_results)
 
 #d_results <- rbind(conifer_results, angio_results)
 
-dTable <- xtable(conifer_results, 
-               caption = "Phylogenetic Generalized Linear Model Results for Gymnosperm", 
-               label = "tab:regressiongym")
-print(dTable, type = "latex", include.rownames = FALSE)
+#dTable <- xtable(conifer_results, 
+#               caption = "Phylogenetic Generalized Linear Model Results for Gymnosperm", 
+#               label = "tab:regressiongym")
+#print(dTable, type = "latex", include.rownames = FALSE)
 
-dTable <- xtable(angio_results, 
-                 caption = "Phylogenetic Generalized Linear Model Results for Angiosperm", 
-                 label = "tab:regressionangio")
-print(dTable, type = "latex", include.rownames = FALSE)
+#dTable <- xtable(angio_results, 
+#                 caption = "Phylogenetic Generalized Linear Model Results for Angiosperm", 
+#                 label = "tab:regressionangio")
+#print(dTable, type = "latex", include.rownames = FALSE)
 
 ###Analyze seed weight for species with different dispersal strategies ----
 
