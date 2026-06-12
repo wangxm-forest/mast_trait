@@ -15,7 +15,7 @@
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 
-<<load-plots, eval=FALSE, echo=FALSE>>=
+<<load-plots,eval=FALSE,echo=FALSE>>=
 source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/phyo.R")
 source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/glm.R")
 source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/nmds.R")
@@ -53,6 +53,19 @@ source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/nmds.R")
 \end{figure}
 \restoregeometry
 \newpage
+
+<<Table phyloglmangio,results='tex',echo = FALSE>>=
+library(xtable)
+dTable <- xtable(conifer_results, 
+               caption = "Phylogenetic Generalized Linear Model Results for Gymnosperm", 
+               label = "tab:regressiongym")
+
+
+print(dTable,
+      include.rownames = FALSE,
+      sanitize.text.function = identity,
+      caption.placement = "top")
+@
 
 \begin{table}[ht]
 \centering
