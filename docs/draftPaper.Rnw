@@ -4,12 +4,12 @@
 \SweaveOpts{concordance=TRUE}
 
 \section{Introduction}
-\subsection{Definition of masting}
+\subsection{Definition of masting} %emw16Jun: can you please switch to enumerate instead of subsection? See my example in the methods. 
 \begin{enumerate}
 \item Observations of masting in relation to seed predation and flowering
 \end{enumerate}
 \subsection{Different hypotheses operating at different reproductive stages like filters}
-\begin{enumerate}
+\begin{enumerate} %emw16Jun: do the below go in a certain order? If so I might add that ... First,  Pollination success (Pollination coupling) ... next growing seeds, Resources availability (Resource Matching)
 \item Pollination success (Pollination coupling)
 \item Resources availability (Resource Matching)
 \item Dispersal (Predation satiation)
@@ -23,21 +23,22 @@
 \begin{enumerate}
 \item Literature review on understanding masting from traits perspective 
 \begin{enumerate}
-\item Wind pollination is related to higher CV
-\item Animal dispersed seeds have higher CV than wind dispersed seeds
-\item Larger seed is associate with higher CV
+\item Wind pollination is related to masting
+\item Animal dispersed seeds have higher masting than wind dispersed seeds
+\item Larger seed is associate with masting
+\item All these studies use CV to quantify masting but ... %emw16Jun: maybe you want to discuss here or somewhere else this vs binary? At least in a sentence or two?
 \item Recent papers also focus on resource perspective using leaf and shoot traits
 \end{enumerate}
 \item Existing studies mainly trying to find relations between traits and masting.
-\item Not clear connection between traits and hypotheses and potential evolutionary drivers
+\item Next step may be clear connection between traits and hypotheses and potential evolutionary drivers %emw16Jun: I am pretty negative so I always try when I can to frame 'you didn't do this!' to ''ah, maybe now we need to ...' 
 \end{enumerate}
 
 \subsection{Introduce framework linking hypothesis x traits x masting}
 \begin{enumerate}
 \item Linking traits to specific hypotheses helps us understand the underlying drivers of masting across different species
-\item This framework is especially useful when considering whether evolutionary drivers are more similar within clades that are closely related
+\item This framework is especially useful when considering whether evolutionary drivers are more similar within closely related species (clades) %emw16Jun: when writing for ecologists say 'clades' sparingly, as it confuses them. 
 \end{enumerate}
-\subsection{Use data from one specific geographical region}
+\subsection{We try to do this using data from one specific geographical region}
 \begin{enumerate}
 \item Here we use North American tree data to test this framework since they have information on their life-history
 \begin{enumerate}
@@ -52,7 +53,7 @@
 \begin{enumerate}
 \item Pollination supports the pollination coupling hypothesis
 \item Seed weight supports the predation satiation hypothesis
-\item These act at the start and the end of the reproductive cycle, provide evolutionary incentive, which I will explain below
+\item These act at the start and the end of the reproductive cycle, provide evolutionary incentive, which I will explain below %emw16Jun: Hmm, two problems -- (1) you never say evolutionary incentive below so I still personally do not know what you mean and (2) you cannot tell your audience to wait on a critical term like this, you have to find another way .... 
 \item Discuss mechanisms in the context of existing literature
 \begin{enumerate}
 \item Previous literature on seed mass and masting think from the resource depletion perspective (Bigger seeds use up resources so cannot reproduce every year)
@@ -66,7 +67,7 @@
 \begin{enumerate}
 \item Other traits may matter to masting below the species level, like population level
 \item Examples of species that mast only under certain environmental conditions (E.g., \textit{Hymenaea coubaril})
-\item Traits need to be measured locally and match with masting data
+\item To address, this traits need to be measured locally and match with masting data -- we need more data below the level of species!
 \end{enumerate}
 \subsection{Different species selected under different hypotheses}
 \begin{enumerate}
@@ -78,6 +79,7 @@
 \subsection{Phylogenetic signal for traits and masting}
 \begin{enumerate}
 \item Many traits have strong phylogenetic signal, it is hard to tease out traits from masting, which limits the inference
+\item The lit on this seems to have lots of ecology but is based in evolution, needs more evolutionary theory and models perhaps?  %emw16Jun: I am riffing here but I think maybe this is true? Could you do a search for what there is from an evol. perspective on masting (set up a git issue) and I would search for seed number or reproductive variability as it could be a terminology issue. 
 \item Data is strongly nested in phylogeny, and data is sparse.
 \end{enumerate}
 \subsection{Deep evolutionary split between angiosperm and gymnosperm} %emw25May2026 -- at some point we may want to make the point that basically we think these relationships may appear at different scales -- either below the population level or while controlling for deep evolutionary time... 
@@ -91,7 +93,7 @@
 \item Importance of looking for potential evolution support between gymnosperm and angiosperm
 \begin{enumerate}
 \item Masting is more common in gymnosperm with specific functional traits
-\item Test if masting was gradually diluted in angiosperm as they transitioned to biotic pollination and faster life histories
+\item Test if masting was gradually diluted in angiosperm as they transitioned to biotic pollination and faster life histories  %emw16Jun: Cool!
 \end{enumerate}
 \end{enumerate}
 \end{enumerate}
@@ -100,6 +102,7 @@
 \begin{enumerate}
 \item Existing literature points out the potentials within certain clade for evolutionary investigations (\cite{satake2021studying})
 \item This requires more data collection on species-level and population-level within clade, for example: (\textit{Quercus.})
+\item So we need more data lower than species and more targeted data across species that considers deeper evolutionary time (we're missing both the super recent evolution. -- populations -- and the super deep). 
 \end{enumerate}
 \bibliographystyle{besjournals}
 \bibliography{mastTreeRef} 
