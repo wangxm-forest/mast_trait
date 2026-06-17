@@ -260,9 +260,10 @@ write.tree(silvicsSpliced,"output/silvicsPhylogenyFull.tre")
 silvicsTree <- read.tree("output/silvicsPhylogenyFull.tre")
 masting <- d[!duplicated(d$latbi), c("latbi","mastEvent")]
 masting$mastEvent[is.na(masting$mastEvent)] <- "No information"
-
+d$latbi <- gsub(" ", "_", d$latbi)
 conifer <- d[d$familyName %in% c("Pinaceae", "Taxodiaceae"), ]
 angio   <- d[!(d$familyName %in% c("Pinaceae", "Taxodiaceae")), ]
+
 phyconifer <- drop.tip(silvicsTree, setdiff(silvicsTree$tip.label, conifer$latbi))
 phyangio   <- drop.tip(silvicsTree, setdiff(silvicsTree$tip.label, angio$latbi))
 d$logSeedWeight <- log(d$seedWeights)
@@ -648,7 +649,8 @@ weightTree <- drop.tip(phyangio,
 name.check(weightTree, weight)
 
 
-
+phyloTraits <- FALSE
+if(phyloTraits){
 pdf("output/figures/weightTree1.pdf", width = 10, height = 20)
 weightMap <- contMap(weightTree,
                      weight,fsize=c(1,1),
@@ -968,6 +970,7 @@ text(x = usr[2] * 0.85,
 #     pos = 3, cex =0.7)
 
 dev.off()
+}
 
 # Calculating phylogenetic signal -- gymnosperm
 weight <- conifer$logSeedWeight
