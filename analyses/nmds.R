@@ -384,12 +384,6 @@ ggsave(
   height = 10
 )
 
-phylomorphospace(
-  phyconifer,
-  nmds_con$points,
-  label = "horizontal"
-)
-
 
 
 
