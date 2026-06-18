@@ -8,28 +8,65 @@
 \usepackage{hyperref}
 \usepackage{indentfirst}
 \usepackage[top=1.0in, bottom=1.0in, left=1.1in, right=1.1in]{geometry}
+\usepackage[utf8]{inputenc}
 
 \title{Mast-Trait}
 \author{Xiaomao Wang}
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+\SweaveOpts{concordance=FALSE}
 
-<<load-plots,eval=FALSE,echo=FALSE>>=
+<<load-plots,echo=FALSE,results=hide,warning=FALSE,message=FALSE>>=
 source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/phyo.R")
-source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/glm.R")
 source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/nmds.R")
+source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/glm.R")
 @
 
 %emw16Jun: Nice work! This is feeling closer. I think now we should indicate what is supp and what will be main text, so can you indicate here what will be in the supp for tables and figures? Those should all come AFTER the main text figures, and eventually should go in a supp file. Also we should start moving towards captions we could send to a journal. See also my comments throughout with: %emw16Jun
 \section{Results}
-% \subsection{Gathered data} %emw16Jun -- the results is your subsection, can you please use enumerate instead of subsection throughout? I show how here for this first one. 
 \begin{enumerate}
 \item Gathered data
 \begin{enumerate}
 \item Structure of data from Silvics
 \begin{enumerate}
-\item Angiosperm (124 total; 79\% (98/124) with masting data; Masting and non-masting split almost equally (52\%(51/98)); Gymnosperm (64 total; 95\% (61/64) with masting data; almost all species are masting (89\%(54/61)) %emw16Jun: These #s need to be done with \Sexpr *and* don't repeat #s here -- so you say there are 124 total and then 98/124 -- you just need to say: 79% (98/124) masting ... 
+<<setup, echo=FALSE>>=
+angio_n <- length(angio$latbi)
+N_angio <- 124
+N_angio_mast <- sum(angio$mastEvent == "1", na.rm = TRUE)
+angio_sum <- paste0(round(100 * angio_n/N_angio),
+  "\\% (",
+  angio_n,
+  "/",
+  N_angio,
+  ")"
+)
+angio_mast <- paste0(round(100 * N_angio_mast/angio_n),
+  "\\% (",
+  N_angio_mast,
+  "/",
+  angio_n,
+  ")"
+)
+
+gymno_n <- length(conifer$latbi)
+N_gymno <- 64
+N_gymno_mast <- sum(conifer$mastEvent == "1", na.rm = TRUE)
+gymno_sum <- paste0(round(100 * gymno_n/N_gymno),
+  "\\% (",
+  gymno_n,
+  "/",
+  N_gymno,
+  ")"
+)
+gymno_mast <- paste0(round(100 * N_gymno_mast/gymno_n),
+  "\\% (",
+  N_gymno_mast,
+  "/",
+  gymno_n,
+  ")"
+)
+@
+\item Angiosperm \Sexpr{gsub("%", "\\\\%", angio_sum)} with masting data; Masting and non-masting split almost equally \Sexpr{gsub("%", "\\\\%", angio_mast)}; Gymnosperm (6\Sexpr{gsub("%", "\\\\%", gymno_sum)} with masting data; almost all species are masting \Sexpr{gsub("%", "\\\\%", gymno_mast)}
 \end{enumerate}
 \item Number of traits for different hypotheses
 \begin{enumerate}
@@ -61,19 +98,6 @@ source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/nmds.R")
 \end{figure}
 \restoregeometry
 \newpage
-
-<<Table phyloglmangio,results='tex',echo = FALSE>>=
-library(xtable)
-dTable <- xtable(conifer_results, 
-               caption = "Phylogenetic Generalized Linear Model Results for Gymnosperm", 
-               label = "tab:regressiongym")
-
-
-print(dTable,
-      include.rownames = FALSE,
-      sanitize.text.function = identity,
-      caption.placement = "top")
-@
 
 \begin{table}[ht]
 \centering
