@@ -242,6 +242,7 @@ clean_results <- function(results) {
 }
 
 conifer_results <- clean_results(conifer_results)
+colnames(conifer_results)[6] <- "Phylo $\alpha$"
 #conifer_results <- cbind(Group = "Gymnosperm", conifer_results)
 
 angio_results <- clean_results(angio_results)
@@ -382,7 +383,8 @@ getAnnotation <- function(trait_name, model_results, subData) {
   
   # Keep only predictors with P < 0.5
   df_sig <- df[df$P < 0.05, ]
-  alpha_text <- paste0("Phylo alpha = ", round(unique(df$`Phylo alpha`), 2))
+  # alpha_text <- paste0("Phylo α = ", round(unique(df$`Phylo alpha`), 2))
+  alpha_text <-  bquote(alpha= .(round(unique(df$`Phylo alpha`), 2)))
   # If none meet threshold → return only alpha
   if(nrow(df_sig) == 0){
     return(paste0(" ", sep = "\n"))
@@ -400,6 +402,8 @@ getAnnotation <- function(trait_name, model_results, subData) {
       sep = "",
       collapse = "\n"
     )
+    
+    alpha_text <- paste0("Phylo α = ", round(unique(df$`Phylo alpha`), 2))
     
     label <- paste(alpha_text, pred_text, sep = "\n")
     

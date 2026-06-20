@@ -72,7 +72,7 @@ gymno_mast <- paste0(round(100 * N_gymno_mast/gymno_n),
 \begin{enumerate}
 \item For angiosperm, we have data for:
 \begin{enumerate}
-\item Predation satiation: seed weight, fruit size, oil content, seed dispersal mode, seed dormancy
+\item Predator satiation: seed weight, fruit size, oil content, seed dispersal mode, seed dormancy
 \item Pollination coupling: pollination mode, reproductive type
 \item Resource matching: drought tolerance, leaf longevity
 \end{enumerate}
@@ -81,13 +81,12 @@ gymno_mast <- paste0(round(100 * N_gymno_mast/gymno_n),
 \end{enumerate}
 \end{enumerate}
 
-%emw16Jun: I know it's more work but I want the same size #s ABOVE each violin plot -- just like the boxplots. Also make the legends masting and non-masting (not yes/no). 
 \newgeometry{margin=1cm}
 \begin{figure}[p]
 \centering
 \includegraphics[width=\textwidth, height=0.8\textheight]{../output/figures/rawDataWithStatsAngio.pdf} %emw16Jun: I edited the caption of this figure to be something closer to publishable, can you make similar changes to the others, please? Also I think it is predator satiation, right? Not predation satiation. 
-\caption{How plant traits related to different hypotheses differ in masting and non-masting species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (1-c, i) or proportional histograms (d-h) separated by species categorized as masting (red) or non-masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate), and phylogenetic signal parameter $\alpha$. Full model results are show in supp table XX.}
-% \caption{Relationships between plant traits (a) Seed weight; (b) Fruit size; (c) Oil content; (d) Dispersal mode; (e) Seed dormancy; (f) Pollination mode; (g) Reproductive mode; (h) Drought tolerance; (i) Leaf longevity and masting based on phylogenetic logistic regression for angiosperm species. Raw data are shown for each trait: continuous traits are displayed as violin plots, and categorical traits as histograms, the y-axis of the histograms represents the proportion of each category within either the non-mast or mast group. Overlaid model summaries are derived from phylogenetic logistic regression models fitted using phyloglm. For each model, we report sample size (N), regression coefficient (Estimate), phylogenetic signal parameter $\alpha$, and associated P-value for traits with a P-value < 0.5. (a)-(e) are traits related to predation satiation hypothesis; (f), (g) are traits related to pollination coupling hypothesis; (h), (i) are traits related to resource matching hypothesis. Legends are shared across panels.}
+\caption{How plant traits related to different hypotheses differ in masting and non-masting for angiosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (1-c, i) or proportional histograms (d-h) separated by species categorized as masting (red) or non-masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate), and phylogenetic signal parameter $\alpha$. Full model results are show in supp table XX.}
+
 \label{fig:rawangio}
 \end{figure}
 \begin{figure}[p]
