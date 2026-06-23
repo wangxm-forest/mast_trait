@@ -339,11 +339,14 @@ b1_bio <- 0.4045427
 
 pdf("output/figures/modelFitSeedWeight.pdf",
     width = 8, height = 6)
+point_colors <- ifelse(angio$seedDispersal == c("biotic","both"), 
+                       "mediumseagreen",  # Dark Green with transparency for biotic
+                       "grey")
 plot(angio$seedWeights, angio$mastEvent,
      xlab = "Seed Weight (g)",
      ylab = "",
      pch = 16, 
-     col = "grey", 
+     col = point_colors, 
      las = 1,
      yaxt = "n", 
      ylim = c(-0.05, 1.05))
@@ -365,10 +368,13 @@ lines(x_seq, y_pred_bio, col = "darkgreen", lwd = 2.5, lty = 2)
 
 title(ylab = "Likelihood of Masting Species", line = 2.5)
 legend("right", 
-       legend = c("All Angiosperms", "Biotic Dispersed Only"),
-       col = c("darkred", "darkgreen"), 
-       lty = c(1, 2), 
-       lwd = 2.5, 
+       legend = c("All Angiosperms (Line)", "All Angiosperms (Points)", 
+                  "Biotic Dispersed (Line)", "Biotic Dispersed (Points)"),
+       col = c("darkred", "grey", "darkgreen", "mediumseagreen"), 
+       lty = c(1, 2, 0, 0), 
+       pch = c(NA, NA, 16, 16),
+       pt.cex = c(1, 1, 1, 1),
+       lwd = c(2.5, 2.5, NA, NA), 
        bty = "n")
 
 dev.off()
