@@ -65,9 +65,42 @@ gymno_mast <- paste0(round(100 * N_gymno_mast/gymno_n),
   gymno_n,
   ")"
 )
+
+fix_unicode <- function(x) {
+  x <- gsub("\u2212", "-", x)
+  x <- gsub("–", "-", x)
+  x <- gsub("—", "-", x)
+  x <- gsub("%", "\\\\%", x)
+  x <- gsub("\\balpha\\b", "$\\\\alpha$", x)
+  x
+}
+
+angio_results[] <- lapply(angio_results, function(x) {
+  if (is.character(x))
+    fix_unicode(x)
+  else
+    x
+})
+
+colnames(angio_results) <-
+    fix_unicode(colnames(angio_results))
+
+conifer_results[] <- lapply(conifer_results, function(x) {
+  if (is.character(x))
+    fix_unicode(x)
+  else
+    x
+})
+
+colnames(conifer_results) <-
+    fix_unicode(colnames(conifer_results))
+
+
 @
-\item Angiosperm \Sexpr{gsub("%", "\\\\%", angio_sum)} with masting data; Masting and non-masting split almost equally \Sexpr{gsub("%", "\\\\%", angio_mast)}; Gymnosperm (6\Sexpr{gsub("%", "\\\\%", gymno_sum)} with masting data; almost all species are masting \Sexpr{gsub("%", "\\\\%", gymno_mast)}
+
+\item Angiosperm \Sexpr{gsub("%", "\\\\%", angio_sum)} with masting data; Masting and non-masting split almost equally \Sexpr{gsub("%", "\\\\%", angio_mast)}; Gymnosperm \Sexpr{gsub("%", "\\\\%", gymno_sum)} with masting data; almost all species are masting \Sexpr{gsub("%", "\\\\%", gymno_mast)}
 \end{enumerate}
+
 \item Number of traits for different hypotheses
 \begin{enumerate}
 \item For angiosperm, we have data for:
@@ -79,113 +112,43 @@ gymno_mast <- paste0(round(100 * N_gymno_mast/gymno_n),
 \item For gymnosperm, we have the same data as for angiosperm, but we only have oil content for masting species and all the gymnosperm species are wind pollinated.
 \end{enumerate}
 \end{enumerate}
-\end{enumerate}
+
 
 \newgeometry{margin=1cm}
 \begin{figure}[p]
 \centering
 \includegraphics[width=\textwidth, height=0.8\textheight]{../output/figures/rawDataWithStatsAngio.pdf}
-\caption{How plant traits related to different hypotheses differ in masting and non-masting for angiosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (1-c, i) or proportional histograms (d-h) separated by species categorized as masting (red) or non-masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate), and phylogenetic signal parameter $\alpha$. Full model results are show in supp table XX.}
+\caption{How plant traits related to different hypotheses differ in masting and non-masting for angiosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (1-c, i) or proportional histograms (d-h) separated by species categorized as masting (red) or non-masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate), and phylogenetic signal parameter $\alpha$. Full model results are show in supp Table 1.}
 \label{fig:rawangio}
 \end{figure}
 
 \begin{figure}[p]
 \centering
 \includegraphics[width=\textwidth,height=0.8\textheight]{../output/figures/rawDataWithStatsCon.pdf}
-\caption{How plant traits related to different hypotheses differ in masting and non-masting for gymnosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (1-c, i) or proportional histograms (d-h) separated by species categorized as masting (red) or non-masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate), and phylogenetic signal parameter $\alpha$. Full model results are show in supp table XX.}
+\caption{How plant traits related to different hypotheses differ in masting and non-masting for gymnosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (1-c, i) or proportional histograms (d-h) separated by species categorized as masting (red) or non-masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate), and phylogenetic signal parameter alpha. Full model results are show in supp Table 2.}
 \label{fig:rawcon}
 \end{figure}
 \restoregeometry
 \newpage
 
-\begin{table}[ht]
-\centering
-\resizebox{\textwidth}{!}{
-\begin{tabular}{llrrrrrrr}
-  \hline
-Trait & Predictor & Type & Estimate & SE & P & Phylo $\alpha$ & Half-time & N \\ 
-  \hline
-Seed weight (log) & logSeedWeight* & Numeric & 0.21 & 0.09 & 0.02 & 8.54 & 0.08 &  91 \\ 
-  Fruit size (log) & logFruit & Numeric & 0.08 & 0.30 & 0.80 & 23.25 & 0.03 &  88 \\ 
-  Oil content (\%) & Oil content (\%) & Numeric & 0.04 & 0.03 & 0.19 & 19.28 & 0.04 &  19 \\ 
-  Dispersal mode & Biotic vs abiotic & Categorical & 0.55 & 0.53 & 0.30 & 8.00 & 0.09 &  93 \\ 
-  Dispersal mode & Both vs abiotic & Categorical & 0.55 & 0.57 & 0.33 & 8.00 & 0.09 &  93 \\
-  Seed dormancy & Dormant vs non-dormant & Categorical & 0.03 & 0.50 & 0.95 & 13.07 & 0.05 &  85 \\
-  Pollination mode & Wind vs animal pollination* & Categorical & 1.72 & 0.72 & 0.02 & 47.03 & 0.01 &  52 \\ 
-  Pollination mode & Wind vs animal pollination and animals & Categorical & 1.23 & 1.15 & 0.29 & 47.03 & 0.01 &  52 \\
-  Reproductive type & Monoecious vs dioecious & Categorical & 0.91 & 0.68 & 0.18 & 15.00 & 0.05 &  89 \\ 
-  Reproductive type & Monoecious vs polygamous & Categorical & -0.12 & 0.96 & 0.90 & 15.00 & 0.05 &  89 \\ 
-  Drought tolerance & Low vs high drought tolerance & Categorical & 0.14 & 0.47 & 0.76 & 12.57 & 0.06 &  79 \\ 
-  Drought tolerance & Moderate vs high drought tolerance & Categorical & -0.13 & 0.46 & 0.78 & 12.57 & 0.06 &  79 \\ 
-  Leaf longevity (years) & Leaf longevity (years) & Numeric & 0.26 & 0.95 & 0.78 & 0.90 & 0.77 &  16 \\ 
-   \hline
-\end{tabular}
-}
- %emw16Jun: I edited the caption of this table to be something closer to publishable, can you make similar changes to the others, please? Also please move the N column to after or before Type (it's more information about the data than the model estimates, it should go earlier).  
-  %emw16Jun: Are you sure values less than 1 half time represent "relatively weak" signal -- that's everything, but leaf longeivity is close to 1 ... so what do I make of that? 
-  \caption{Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), “Phylo $\alpha$”, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.} 
- %  \caption{Phylogenetic generalized linear model results for angiosperm. Each trait was evaluated in a separate model structured as Masting$\sim$Trait, where masting(Yes/No) is the binary response variable.  For categorical traits, the estimate represents the difference in log-odds between a given level and its designated baseline reference level. For numeric traits, the estimate represents the change in log-odds per unit increase of the predictor. SE is the standard error, and P indicates statistical significance, with P < 0.05 considered significant and marked with an asterisk (*) in the table. “Phylo $\alpha$” represents the phylogenetic signal in the residuals estimated for each trait using phyloglm, we calculated half-time (log(2)/$\alpha$) to compare with the tree height, which represents the time required for the influence of ancestral states to decrease by half. The tree we used is ultrametric with a standardized height of 1. If half-time is greater than tree height, it indicates strong phylogenetic signal in the residuals; if half-time is smaller than tree height, it indicates relatively weak phylogenetic signal in the residuals. N indicates the number of observations available for each trait.} 
-\label{tab:regressionangio}
-\end{table}
-
-\begin{table}[ht]
-\centering
-\resizebox{\textwidth}{!}{
-\begin{tabular}{llrrrrrrr}
-  \hline
-Trait & Predictor & Type & Estimate & SE & P & Phylo $\alpha$ & Half-time & N \\ 
-  \hline
-Seed weight (log) & logSeedWeight & Numeric & -0.03 & 0.25 & 0.91 & 54.43 & 0.01 &  59 \\ 
-  Fruit size (log) & logFruit & Numeric & 0.03 & 0.36 & 0.94 & 54.45 & 0.01 &  60 \\ 
-  Seed dispersal & Biotic vs abiotic & Categorical & -0.83 & 0.81 & 0.30 & 1.93 & 0.36 &  60 \\ 
-  Seed dispersal & Both vs abiotic & Categorical & -1.11 & 0.67 & 0.10 & 1.93 & 0.36 &  60 \\ 
-  Seed dormancy & Dormant vs non-dormant & Categorical & 0.71 & 0.70 & 0.32 & 52.15 & 0.01 &  59 \\ 
-  Reproductive type & Monoecious vs dioecious & Categorical & -1.14 & 1.02 & 0.26 & 0.93 & 0.74 &  61 \\
-  Drought tolerance & Low vs high drought tolerance & Categorical & 11.50 & 94.75 & 0.90 & 0.02 & 36.48 &  52 \\ 
-  Drought tolerance & Moderate vs high drought tolerance & Categorical & -0.25 & 0.58 & 0.67 & 0.02 & 36.48 &  52 \\
-  Leaf longevity (years) & Leaf longevity (years) & Numeric & 0.15 & 0.34 & 0.67 & 54.44 & 0.01 &  38 \\ 
-   \hline
-\end{tabular}
-}
-\caption{Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), “Phylo $\alpha$”, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.} 
-
-\label{tab:regressiongym}
-\end{table}
-\begin{table}[ht]
-\centering
-\resizebox{\textwidth}{!}{
-\begin{tabular}{llrrrrrrr}
-  \hline
-Group & Trait & Predictor & Estimate & SE & P & Phylo $\alpha$ & Half-time & N \\ 
-  \hline
-Biotic dispersed & Seed weight (log) & logSeedWeight & 0.40 & 0.15 & 0.01 & 54.57 & 0.01 &  53 \\ 
-Abiotic dispersed & Seed weight (log) & logSeedWeight & 0.12 & 0.12 & 0.36 & 50.33 & 0.01 &  36 \\ 
-   \hline
-\end{tabular}
-}
-\caption{Phylogenetic generalized linear model results for only seed eight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), “Phylo $\alpha$”, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.} 
-\label{tab:regressionseedweight}
-\end{table}
-
-\newpage
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{../output/figures/modelFitSeedWeight.pdf}  %emw16Jun: Nice, can you color code the dots in light green if they are biotic dispersed? 
+\includegraphics[width=0.8\textwidth]{../output/figures/modelFitSeedWeight.pdf}
 \caption{Predicted likelihood of masting as a function of seed weight for all angiosperm species (solid red line) and the biotic-dispersed subgroup (dashed green line), estimated using phylogenetic logistic regression. Individual species observations are plotted as binary data points at 0 (non-masting) and 1 (masting).}
 \label{fig:seedweight}
 \end{figure}
 
-\subsection{Results for each hypothesis}
+\item Results for each hypothesis
 \begin{enumerate}
 \item Predation satiation: seed weight only with a small effect and only for angiosperm
 \begin{enumerate}
 \item Only seed weight is related to masting with larger seeds increasing the probability of being a masting species (Figure (\ref{fig:rawangio})). For angiosperms only, tripling of seed weight (from a median seed weight of 90.9g to 272.7g) is predicted to increase the likelihood of masting from 0.45 to 0.51 (Figure (\ref{fig:seedweight})).
-And this increase is stronger in biotic-dispersed seed group (Table (\ref{tab:regressionseedweight}); Figure (\ref{fig:seedweight})). %emw16Jun: if you're saying it's stronger than also give here the predicted increase in likelihood of masting from 0.XX to 0.YY for this group. 
+And this increase is stronger in biotic-dispersed seed group, tripling of seed weight (from a median seed weight of 1087.15g to 3261.45g) is predicted to increase the likelihood of masting from 0.72 to 0.80 (Table (\ref{tab:regressionseedweight}); Figure (\ref{fig:seedweight})). 
 
 \end{enumerate}
 \item Pollination satiation: wind pollination for angiosperm
 \begin{enumerate}
-\item we found wind pollination is related to masting for angiosperm species, wind pollinated species have a significantly higher probability (59\%) %emw16Jun:  what do I compare this to? 50% or 0%? I think you need another number ... 
+\item we found wind pollination is related to masting for angiosperm species, likelihood for wind-pollinated species is predicted to increase the likelihood of masting to 0.62, whereas the likelihood is 0.20 for animal-pollinated species.
 of being strong masting species. Gymnosperm are all wind pollinated, and gymnosperm has a greater portion of masting species (89\% (54/61)).
 \end{enumerate}
 \item Resource matching: nothing significant
@@ -200,12 +163,12 @@ of being strong masting species. Gymnosperm are all wind pollinated, and gymnosp
 \label{fig:nmds}
 \end{figure}
 
-\subsection{Multidimension-NMDS}
+\item Multidimension-NMDS
 \begin{enumerate}
 \item No strong trend when considering single trait, maybe because it happens in multidimensional space
 \begin{enumerate} 
 \item Masting is not aligned well along any axis in the NMDS analysis.
-\item We don't have evidence that the combination of traits for any of the hypotheses is driving the pattern of masting.
+\item We do not have evidence that the combination of traits for any of the hypotheses is driving the pattern of masting.
 \end{enumerate}
 \end{enumerate}
 % ------------------------------------------
@@ -220,13 +183,85 @@ of being strong masting species. Gymnosperm are all wind pollinated, and gymnosp
 \newpage
 % ------------------------------------------
 
+\item Phylogenetic patterns
+\begin{enumerate}
+\item Pagel's $\lambda$ for continuous traits and multilevel categorical traits in Table \ref{tab:lambda}, D-statistic for binary traits in Table \ref{tab:d}.
+\begin{enumerate}
+\item Masting shows a moderate phylogenetic signal in both gymnosperms (estimated D = 0.51) and angiosperms (estimated D = 0.58) (Table \ref{tab:d}).
+\item Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = 0.95) and gymnosperm ($\lambda$ = 0.97). We can see the similarity in certain group in Figure \ref{fig:coneptangio} it's relatively reliable estimate. Dispersal mode, leaf longevity, pollination mode and reproductive type also showed high phylogenetic signal in Table \ref{tab:lambda}, but be cautious that $\lambda$ for categorical traits might not be accurate. 
+\item Be cautious that $\lambda$ might not be comparable among traits, not only because the way $\lambda$ is calculated for continuous traits and categorical traits are different, but also because $\lambda$ might depend on the data structure when sampling is uneven, take leaf longevity as an example in Figure \ref{fig:coneptangio},leaf longevity data is sparse and nested in \textit{Quercus.} (5/16). 
+\end{enumerate}
+
+\end{enumerate}
+
+\newpage
+
+ %emw16Jun: I edited the caption of this table to be something closer to publishable, can you make similar changes to the others, please? Also please move the N column to after or before Type (it's more information about the data than the model estimates, it should go earlier).
+
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{
+<<echo=FALSE, results=tex>>=
+dTable <- xtable(angio_results, 
+                 caption = "Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.", 
+                 label = "tab:regressionangio")
+print(dTable,
+      type="latex",
+      include.rownames=FALSE,
+      floating=FALSE,
+      sanitize.text.function = identity,
+      sanitize.colnames.function = identity)
+@
+}
+\caption{Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.}
+\label{tab:regressionangio}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{
+<<echo=FALSE, results=tex>>=
+dTable <- xtable(conifer_results, 
+                 caption = "Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.", 
+                 label = "tab:regressiongym")
+print(dTable,
+      type="latex",
+      include.rownames=FALSE,
+      floating=FALSE,
+      sanitize.text.function = identity,
+      sanitize.colnames.function = identity)
+@
+}
+\caption{Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.}
+\label{tab:regressiongym}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{
+<<echo=FALSE, results=tex>>=
+dTable <- xtable(seed_results, 
+                 caption = "Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.", 
+                 label = "tab:regressionseed")
+print(dTable,
+      type="latex",
+      include.rownames=FALSE,
+      floating=FALSE,
+      sanitize.text.function = identity,
+      sanitize.colnames.function = identity)
+@
+}
+\caption{Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.}
+\label{tab:regressionseed}
+\end{table}
+
 \begin{table}[ht]
 \centering
 \begin{tabular}{llr}
   \hline
 Group & Trait & ($\lambda$) \\ 
   \hline
-Angiosperm & Seed weight (Log) & 0.95 \\ 
+  Angiosperm & Seed weight (Log) & 0.95 \\ 
   Angiosperm & Fruit size (Log) & 0.93 \\ 
   Angiosperm & Oil content & 0.25 \\ 
   Angiosperm & Leaf longevity & 1.00 \\ 
@@ -251,7 +286,7 @@ Angiosperm & Seed weight (Log) & 0.95 \\
   \hline
 Group & Trait & Estimated D & P(random) & P(Brownian) \\ 
   \hline
-Angiosperm & Seed dormancy & 0.25 & 0 & 0.16 \\ 
+  Angiosperm & Seed dormancy & 0.25 & 0 & 0.16 \\ 
   Angiosperm & Masting & 0.58 & 0 & 0.01 \\ 
   Gymnosperm & Masting & 0.51 & 0.02 & 0.10 \\ 
   Gymnosperm & Seed dormancy & 0.98 & 0.41 & 0 \\ 
@@ -262,20 +297,7 @@ Angiosperm & Seed dormancy & 0.25 & 0 & 0.16 \\
 \label{tab:d}
 \end{table}
 
-\newpage
-\subsection{Phylogenetic patterns}
-\begin{enumerate}
-\item Pagel's $\lambda$ for continuous traits and multilevel categorical traits in Table \ref{tab:lambda}, D-statistic for binary traits in Table \ref{tab:d}.
-\begin{enumerate}
-\item Masting shows a moderate phylogenetic signal in both gymnosperms (estimated D = 0.51) and angiosperms (estimated D = 0.58) (Table \ref{tab:d}).
-\item Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = 0.95) and gymnosperm ($\lambda$ = 0.97). We can see the similarity in certain group in Figure \ref{fig:coneptangio} it's relatively reliable estimate. Dispersal mode, leaf longevity, pollination mode and reproductive type also showed high phylogenetic signal in Table \ref{tab:lambda}, but be cautious that $\lambda$ for categorical traits might not be accurate. 
-\item Be cautious that $\lambda$ might not be comparable among traits, not only because the way $\lambda$ is calculated for continuous traits and categorical traits are different, but also because $\lambda$ might depend on the data structure when sampling is uneven, take leaf longevity as an example in Figure \ref{fig:coneptangio},leaf longevity data is sparse and nested in \textit{Quercus.} (5/16). 
 \end{enumerate}
-
-\end{enumerate}
-
-\newpage
-
 \end{document}
 
 When we know the phylogenetic results, we need to be cautious interpretating relationships between traits, it is hard to tease out traits from masting, which limits the inference)
@@ -293,3 +315,4 @@ When we know the phylogenetic results, we need to be cautious interpretating rel
 \item Among all the \textit{Quercus} species with well-resolved phylogeny (268), our dataset includes only 21 species, and only two of them are non-masting species (Figure \ref{fig:quercus}).
 
 \end {enumerate}
+
