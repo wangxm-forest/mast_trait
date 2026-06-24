@@ -72,6 +72,7 @@ fix_unicode <- function(x) {
   x <- gsub("—", "-", x)
   x <- gsub("%", "\\\\%", x)
   x <- gsub("\\balpha\\b", "$\\\\alpha$", x)
+  x <- gsub("\\blambda\\b", "$\\\\lambda$", x)
   x
 }
 
@@ -143,7 +144,7 @@ colnames(conifer_results) <-
 \item Predation satiation: seed weight only with a small effect and only for angiosperm
 \begin{enumerate}
 \item Only seed weight is related to masting with larger seeds increasing the probability of being a masting species (Figure (\ref{fig:rawangio})). For angiosperms only, tripling of seed weight (from a median seed weight of 90.9g to 272.7g) is predicted to increase the likelihood of masting from 0.45 to 0.51 (Figure (\ref{fig:seedweight})).
-And this increase is stronger in biotic-dispersed seed group, tripling of seed weight (from a median seed weight of 1087.15g to 3261.45g) is predicted to increase the likelihood of masting from 0.72 to 0.80 (Table (\ref{tab:regressionseedweight}); Figure (\ref{fig:seedweight})). 
+And this increase is stronger in biotic-dispersed seed group, tripling of seed weight (from a median seed weight of 1087.15g to 3261.45g) is predicted to increase the likelihood of masting from 0.72 to 0.80 (Table (\ref{tab:regressionseed}); Figure (\ref{fig:seedweight})). 
 
 \end{enumerate}
 \item Pollination satiation: wind pollination for angiosperm
@@ -196,16 +197,14 @@ of being strong masting species. Gymnosperm are all wind pollinated, and gymnosp
 
 \newpage
 
- %emw16Jun: I edited the caption of this table to be something closer to publishable, can you make similar changes to the others, please? Also please move the N column to after or before Type (it's more information about the data than the model estimates, it should go earlier).
-
 \begin{table}[ht]
 \centering
 \resizebox{\textwidth}{!}{
 <<echo=FALSE, results=tex>>=
-dTable <- xtable(angio_results, 
+angioTable <- xtable(angio_results, 
                  caption = "Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.", 
                  label = "tab:regressionangio")
-print(dTable,
+print(angioTable,
       type="latex",
       include.rownames=FALSE,
       floating=FALSE,
@@ -221,10 +220,10 @@ print(dTable,
 \centering
 \resizebox{\textwidth}{!}{
 <<echo=FALSE, results=tex>>=
-dTable <- xtable(conifer_results, 
+conTable <- xtable(conifer_results, 
                  caption = "Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.", 
                  label = "tab:regressiongym")
-print(dTable,
+print(conTable,
       type="latex",
       include.rownames=FALSE,
       floating=FALSE,
@@ -240,10 +239,10 @@ print(dTable,
 \centering
 \resizebox{\textwidth}{!}{
 <<echo=FALSE, results=tex>>=
-dTable <- xtable(seed_results, 
+seedTable <- xtable(seed_results, 
                  caption = "Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.", 
                  label = "tab:regressionseed")
-print(dTable,
+print(seedTable,
       type="latex",
       include.rownames=FALSE,
       floating=FALSE,
@@ -257,19 +256,17 @@ print(dTable,
 
 \begin{table}[ht]
 \centering
-\resizebox{\textwidth}{!}{
+
 <<echo=FALSE, results=tex>>=
-lamTable <- xtable(labmdaTable, 
-                 caption = "Phylogenetic Signal (Pagel's $\lambda$) for continous traits and multi-level categorical traits. $\lambda$ = 0 indicates no phylogenetic signal, trait districuted independent of the phylogeny; 0 < $\lambda$ < 1 means moderate phylogenetic signal, trait is partially structured by the phylogeny; $\lambda$ = 1 indicates strong phylogenetic signal, trait follows Brownian motion.", 
+lamTable <- xtable(lambda, 
+                 caption = "Phylogenetic Signal (Pagel's lambda) for continous traits and multi-level categorical traits. lambda = 0 indicates no phylogenetic signal, trait districuted independent of the phylogeny; 0 < lambda < 1 means moderate phylogenetic signal, trait is partially structured by the phylogeny; lambda = 1 indicates strong phylogenetic signal, trait follows Brownian motion.", 
                  label = "tab:lambda")
 print(lamTable,
       type="latex",
       include.rownames=FALSE,
-      floating=FALSE,
-      sanitize.text.function = identity,
-      sanitize.colnames.function = identity)
+      floating=FALSE)
 @
-}
+
 \caption{Phylogenetic Signal (Pagel's $\lambda$) for continous traits and multi-level categorical traits. $\lambda$ = 0 indicates no phylogenetic signal, trait districuted independent of the phylogeny; 0 < $\lambda$ < 1 means moderate phylogenetic signal, trait is partially structured by the phylogeny; $\lambda$ = 1 indicates strong phylogenetic signal, trait follows Brownian motion.}
 \label{tab:lambda}
 \end{table}
@@ -280,7 +277,7 @@ print(lamTable,
 <<echo=FALSE, results=tex>>=
 dStatTable <- xtable(dStat, 
                  caption = "Phylogenetic Signal (D-statistic) for the phylogenetic signal of binary traits, with probabilities calculated under a random phylogenetic structure and under a Brownian motion phylogenetic structure. D = 1 indicates the trait is randomly distributed across the phylogeny; D = 0 indicates the trait follows a Brownian motion model; 0 < D < 1 indivates moderate phylogenetic signal; D < 0 indicates the trait is more clumped than expected under Brownian motion; and D > 1 indicates overdispersion. P random is the p-value for the null hypothesis that the trait is randomly distributed across the phylogeny (no phylogenetic signal), and P Brownian is the p-value for the null hypothesis that the trait follows a Brownian motion model (strong phylogenetic signal). A low p-value indicates rejection of the corresponding null hypothesis.", 
-                 label = "tab:d")
+                 label = "tab:dstat")
 print(dStatTable,
       type="latex",
       include.rownames=FALSE,
@@ -290,8 +287,9 @@ print(dStatTable,
 @
 }
 \caption{Phylogenetic Signal (D-statistic) for the phylogenetic signal of binary traits, with probabilities calculated under a random phylogenetic structure and under a Brownian motion phylogenetic structure. D = 1 indicates the trait is randomly distributed across the phylogeny; D = 0 indicates the trait follows a Brownian motion model; 0 < D < 1 indivates moderate phylogenetic signal; D < 0 indicates the trait is more clumped than expected under Brownian motion; and D > 1 indicates overdispersion. P random is the p-value for the null hypothesis that the trait is randomly distributed across the phylogeny (no phylogenetic signal), and P Brownian is the p-value for the null hypothesis that the trait follows a Brownian motion model (strong phylogenetic signal). A low p-value indicates rejection of the corresponding null hypothesis.}
-\label{tab:d}
+\label{tab:dstat}
 \end{table}
+
 
 \end{enumerate}
 \end{document}
