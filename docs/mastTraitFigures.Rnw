@@ -17,8 +17,8 @@
 \SweaveOpts{concordance=FALSE}
 
 <<load-plots,echo=FALSE,results=hide,warning=FALSE,message=FALSE>>=
-source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/phyo.R")
 source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/nmds.R")
+source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/phyo.R")
 source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/glm.R")
 @
 
@@ -257,43 +257,39 @@ print(dTable,
 
 \begin{table}[ht]
 \centering
-\begin{tabular}{llr}
-  \hline
-Group & Trait & ($\lambda$) \\ 
-  \hline
-  Angiosperm & Seed weight (Log) & 0.95 \\ 
-  Angiosperm & Fruit size (Log) & 0.93 \\ 
-  Angiosperm & Oil content & 0.25 \\ 
-  Angiosperm & Leaf longevity & 1.00 \\ 
-  Angiosperm & Dispersal mode & 1.00 \\ 
-  Angiosperm & Pollination mode & 1.00 \\ 
-  Angiosperm & Reproductive type & 1.00 \\ 
-  Angiosperm & Drought tolerance & 0.00 \\ 
-  Gymnosperm & Seed weight (Log) & 0.97 \\ 
-  Gymnosperm & Fruit size (Log) & 0.90 \\ 
-  Gymnosperm & Oil content & 0.00 \\ 
-  Gymnosperm & Leaf longevity & 0.90 \\ 
-  Gymnosperm & Dispersal mode & 1.00 \\ 
-  Gymnosperm & Drought tolerance & 1.00 \\ 
-   \hline
-\end{tabular}
-\caption{Phylogenetic Signal (Pagel's $\lambda$) for continous traits and multi-level categorical traits. $\lambda$ = 0 indicates no phylogenetic signal, trait districuted independent of the phylogeny; 0 < $\lambda$ < 1 means moderate phylogenetic signal, trait is partially structured by the phylogeny; $\lambda$ = 1 indicates strong phylogenetic signal, trait follows Brownian motion. } 
+\resizebox{\textwidth}{!}{
+<<echo=FALSE, results=tex>>=
+lamTable <- xtable(labmdaTable, 
+                 caption = "Phylogenetic Signal (Pagel's $\lambda$) for continous traits and multi-level categorical traits. $\lambda$ = 0 indicates no phylogenetic signal, trait districuted independent of the phylogeny; 0 < $\lambda$ < 1 means moderate phylogenetic signal, trait is partially structured by the phylogeny; $\lambda$ = 1 indicates strong phylogenetic signal, trait follows Brownian motion.", 
+                 label = "tab:lambda")
+print(lamTable,
+      type="latex",
+      include.rownames=FALSE,
+      floating=FALSE,
+      sanitize.text.function = identity,
+      sanitize.colnames.function = identity)
+@
+}
+\caption{Phylogenetic Signal (Pagel's $\lambda$) for continous traits and multi-level categorical traits. $\lambda$ = 0 indicates no phylogenetic signal, trait districuted independent of the phylogeny; 0 < $\lambda$ < 1 means moderate phylogenetic signal, trait is partially structured by the phylogeny; $\lambda$ = 1 indicates strong phylogenetic signal, trait follows Brownian motion.}
 \label{tab:lambda}
 \end{table}
+
 \begin{table}[ht]
 \centering
-\begin{tabular}{lllll}
-  \hline
-Group & Trait & Estimated D & P(random) & P(Brownian) \\ 
-  \hline
-  Angiosperm & Seed dormancy & 0.25 & 0 & 0.16 \\ 
-  Angiosperm & Masting & 0.58 & 0 & 0.01 \\ 
-  Gymnosperm & Masting & 0.51 & 0.02 & 0.10 \\ 
-  Gymnosperm & Seed dormancy & 0.98 & 0.41 & 0 \\ 
-  Gymnosperm & Reproductive type & -0.52 & 0 & 0.89 \\ 
-   \hline
-\end{tabular}
-\caption{Phylogenetic Signal (D-statistic) for the phylogenetic signal of binary traits, with probabilities calculated under a random phylogenetic structure and under a Brownian motion phylogenetic structure. D = 1 indicates the trait is randomly distributed across the phylogeny; D = 0 indicates the trait follows a Brownian motion model; 0 < D < 1 indivates moderate phylogenetic signal; D < 0 indicates the trait is more clumped than expected under Brownian motion; and D > 1 indicates overdispersion. P random is the p-value for the null hypothesis that the trait is randomly distributed across the phylogeny (no phylogenetic signal), and P Brownian is the p-value for the null hypothesis that the trait follows a Brownian motion model (strong phylogenetic signal). A low p-value indicates rejection of the corresponding null hypothesis.} 
+\resizebox{\textwidth}{!}{
+<<echo=FALSE, results=tex>>=
+dStatTable <- xtable(dStat, 
+                 caption = "Phylogenetic Signal (D-statistic) for the phylogenetic signal of binary traits, with probabilities calculated under a random phylogenetic structure and under a Brownian motion phylogenetic structure. D = 1 indicates the trait is randomly distributed across the phylogeny; D = 0 indicates the trait follows a Brownian motion model; 0 < D < 1 indivates moderate phylogenetic signal; D < 0 indicates the trait is more clumped than expected under Brownian motion; and D > 1 indicates overdispersion. P random is the p-value for the null hypothesis that the trait is randomly distributed across the phylogeny (no phylogenetic signal), and P Brownian is the p-value for the null hypothesis that the trait follows a Brownian motion model (strong phylogenetic signal). A low p-value indicates rejection of the corresponding null hypothesis.", 
+                 label = "tab:d")
+print(dStatTable,
+      type="latex",
+      include.rownames=FALSE,
+      floating=FALSE,
+      sanitize.text.function = identity,
+      sanitize.colnames.function = identity)
+@
+}
+\caption{Phylogenetic Signal (D-statistic) for the phylogenetic signal of binary traits, with probabilities calculated under a random phylogenetic structure and under a Brownian motion phylogenetic structure. D = 1 indicates the trait is randomly distributed across the phylogeny; D = 0 indicates the trait follows a Brownian motion model; 0 < D < 1 indivates moderate phylogenetic signal; D < 0 indicates the trait is more clumped than expected under Brownian motion; and D > 1 indicates overdispersion. P random is the p-value for the null hypothesis that the trait is randomly distributed across the phylogeny (no phylogenetic signal), and P Brownian is the p-value for the null hypothesis that the trait follows a Brownian motion model (strong phylogenetic signal). A low p-value indicates rejection of the corresponding null hypothesis.}
 \label{tab:d}
 \end{table}
 
@@ -315,4 +311,5 @@ When we know the phylogenetic results, we need to be cautious interpretating rel
 \item Among all the \textit{Quercus} species with well-resolved phylogeny (268), our dataset includes only 21 species, and only two of them are non-masting species (Figure \ref{fig:quercus}).
 
 \end {enumerate}
+
 
