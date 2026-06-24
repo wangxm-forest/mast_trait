@@ -15,8 +15,6 @@ library(ggplot2)
 library(xtable)
 library(patchwork)
 
-rm(list = ls())
-options(stringsAsFactors = FALSE)
 
 setwd("C:/PhD/Project/PhD_thesis/mast_trait")
 
@@ -122,28 +120,26 @@ get_legend <- function(myplot) {
 # Model definitions
 
 conifer_list <- list(
+  list(name="Seed weight (log)",    formula=mastEvent ~ logSeedWeight, data=conifer, phy=phyconifer, method="logistic_IG10", btol = 10),
+  list(name="Fruit size (log)",     formula=mastEvent ~ logFruit, data=conifer, phy=phyconifer, method="logistic_IG10", btol = 10),
   list(name="Seed dispersal", formula=mastEvent ~ seedDispersal, data=conifer, phy=phyconifer, method="logistic_MPLE", btol = 10),
   list(name="Seed dormancy",  formula=mastEvent ~ seedDormancy, data=conifer, phy=phyconifer, method="logistic_MPLE", btol = 10),
   list(name="Reproductive type",       formula=mastEvent ~ typeMonoOrDio, data=conifer, phy=phyconifer, method="logistic_MPLE", btol = 10),
-  list(name="Seed weight (log)",    formula=mastEvent ~ logSeedWeight, data=conifer, phy=phyconifer, method="logistic_IG10", btol = 10),
-  list(name="Fruit size (log)",     formula=mastEvent ~ logFruit, data=conifer, phy=phyconifer, method="logistic_IG10", btol = 10),
-  list(name="Seed size (log)",      formula=mastEvent ~ logSeedSize, data=conifer, phy=phyconifer, method="logistic_IG10", btol = 10),
-  list(name="Leaf longevity (years)", formula=mastEvent ~ leafLongevity, data=conifer, phy=phyconifer, method="logistic_IG10", btol = 10),
-  list(name="Drought tolerance",    formula=mastEvent ~ droughtTolerance, data=conifer, phy=phyconifer, method="logistic_MPLE", btol = 20)
+  list(name="Drought tolerance",    formula=mastEvent ~ droughtTolerance, data=conifer, phy=phyconifer, method="logistic_MPLE", btol = 20),
+  list(name="Leaf longevity (years)", formula=mastEvent ~ leafLongevity, data=conifer, phy=phyconifer, method="logistic_IG10", btol = 10)
 )
 
 
 angio_list <- list(
+  list(name="Seed weight (log)",      formula=mastEvent ~ logSeedWeight, data=angio,   phy=phyangio,   method="logistic_IG10", btol = 10),
+  list(name="Fruit size (log)",       formula=mastEvent ~ logFruit, data=angio,   phy=phyangio,   method="logistic_IG10", btol = 10),
+  list(name="Oil content (%)",      formula=mastEvent ~ oilContent, data=angio, phy=phyangio, method="logistic_IG10", btol = 10),
+  list(name="Seed dormancy",    formula=mastEvent ~ seedDormancy, data=angio,   phy=phyangio,   method="logistic_MPLE", btol = 10),
 list(name="Dispersal mode",   formula=mastEvent ~ seedDispersal, data=angio,   phy=phyangio,   method="logistic_MPLE", btol = 10),
 list(name="Pollination mode",   formula=mastEvent ~ pollination, data=angio,   phy=phyangio,   method="logistic_MPLE", btol = 10),
-list(name="Seed dormancy",    formula=mastEvent ~ seedDormancy, data=angio,   phy=phyangio,   method="logistic_MPLE", btol = 10),
 list(name="Reproductive type",         formula=mastEvent ~ typeMonoOrDio, data=angio,   phy=phyangio,   method="logistic_MPLE", btol = 10),
-list(name="Seed weight (log)",      formula=mastEvent ~ logSeedWeight, data=angio,   phy=phyangio,   method="logistic_IG10", btol = 10),
-list(name="Fruit size (log)",       formula=mastEvent ~ logFruit, data=angio,   phy=phyangio,   method="logistic_IG10", btol = 10),
-list(name="Seed size (log)",        formula=mastEvent ~ logSeedSize, data=angio,   phy=phyangio,   method="logistic_IG10", btol = 10),
-list(name="Oil content (%)",      formula=mastEvent ~ oilContent, data=angio, phy=phyangio, method="logistic_IG10", btol = 10),
-list(name="Leaf longevity (years)",   formula=mastEvent ~ leafLongevity, data=angio,   phy=phyangio,   method="logistic_IG10", btol = 10),
-list(name="Drought tolerance",      formula=mastEvent ~ droughtTolerance, data=angio,   phy=phyangio,   method="logistic_MPLE", btol = 10)
+list(name="Drought tolerance",      formula=mastEvent ~ droughtTolerance, data=angio,   phy=phyangio,   method="logistic_MPLE", btol = 10),
+list(name="Leaf longevity (years)",   formula=mastEvent ~ leafLongevity, data=angio,   phy=phyangio,   method="logistic_IG10", btol = 10)
 )
 
 
@@ -182,7 +178,7 @@ for (m in angio_list) {
   angio_results <- rbind(angio_results, tbl)
 }
 
-median(angio$seedWeights, na.rm = TRUE)
+
 
 #Make a table to present the results:
 clean_results <- function(results) {
@@ -191,61 +187,70 @@ clean_results <- function(results) {
   
   results_no_int$signif <- cut(
     results_no_int$p_value,
-    breaks = c(-Inf, 0.001, 0.01, 0.05, 0.1, Inf),
-    labels = c("***", "**", "*", ".", "")
+    breaks = c(-Inf, 0.001, 0.01, 0.05, Inf),
+    labels = c("***", "**", "*", "")
   )
   
-  results_no_int$estimate  <- round(results_no_int$estimate,  3)
-  results_no_int$std_error <- round(results_no_int$std_error, 3)
+  results_no_int$estimate  <- round(results_no_int$estimate,  2)
+  results_no_int$std_error <- round(results_no_int$std_error, 2)
   results_no_int$z_value   <- round(results_no_int$z_value,   2)
   results_no_int$p_value   <- signif(results_no_int$p_value,  3)
-  results_no_int$alpha     <- round(results_no_int$alpha,     3)
-  results_no_int$half     <- round(log(2)/results_no_int$alpha,     3)
-  
+  #results_no_int$p_sig <- paste0(signif(results_no_int$p_value, 2), as.character(results_no_int$signif))
+  results_no_int$alpha     <- round(results_no_int$alpha,     2)
+  results_no_int$half     <- round(log(2)/results_no_int$alpha,     2)
+
   final_table <- results_no_int[, c(
     "trait",
     "term",
+    "N",
     "estimate",
     "std_error",
     "p_value",
     "alpha",
-    "half",
-    "N"
+    "half"
   )]
   
   colnames(final_table) <- c(
     "Trait",
     "Predictor",
+    "N",
     "Estimate",
     "SE",
     "P",
     "Phylo alpha",
-    "Half-time",
-    "N"
+    "Half-time"
   )
-  
-  final_table$Predictor <- gsub("logFruitStd",     "Fruit size (log, std)", final_table$Predictor)
-  final_table$Predictor <- gsub("logSeedWeightStd","Seed weight (log, std)", final_table$Predictor)
-  final_table$Predictor <- gsub("logSeedSizeStd",  "Seed size (log, std)", final_table$Predictor)
-  final_table$Predictor <- gsub("seedDispersalbiotic",  "Biotic vs abiotic", final_table$Predictor)
-  final_table$Predictor <- gsub("seedDispersalboth",  "Both vs abiotic", final_table$Predictor)
-  final_table$Predictor <- gsub("pollinationwind",  "Wind vs animal pollination", final_table$Predictor)
-  final_table$Predictor <- gsub("pollinationwind and animals",  "Wind+animal vs animal pollination", final_table$Predictor)
-  final_table$Predictor <- gsub("seedDormancyY",  "Dormant vs non−dormant", final_table$Predictor)
-  final_table$Predictor <- gsub("typeMonoOrDioMonoecious",  "Monoecious vs dioecious", final_table$Predictor)
-  final_table$Predictor <- gsub("typeMonoOrDioPolygamous",  "Monoecious vs polygamous", final_table$Predictor)
+  final_table$Predictor <- gsub("logSeedWeight","Seed weight (log)", final_table$Predictor)
+  final_table$Predictor <- gsub("logFruit",     "Fruit size (log)", final_table$Predictor)
   final_table$Predictor <- gsub("oilContent",  "Oil content (%)", final_table$Predictor)
+  final_table$Predictor <- gsub("seedDispersalbiotic",  "Biotic vs. abiotic", final_table$Predictor)
+  final_table$Predictor <- gsub("seedDispersalboth",  "Both vs. abiotic", final_table$Predictor)
+  final_table$Predictor <- gsub("seedDormancyY",  "Dormant vs. non−dormant", final_table$Predictor)
+  final_table$Predictor <- gsub("pollinationwind",  "Wind vs. animal", final_table$Predictor)
+  final_table$Predictor <- gsub("pollinationwind and animals",  "Both vs. animal", final_table$Predictor)
+  
+  final_table$Predictor <- gsub("typeMonoOrDioMonoecious",  "Monoecious vs. dioecious", final_table$Predictor)
+  final_table$Predictor <- gsub("typeMonoOrDioPolygamous",  "Monoecious vs. polygamous", final_table$Predictor)
+  final_table$Predictor <- gsub("droughtToleranceLow",  "Low vs. high drought tolerance", final_table$Predictor)
+  final_table$Predictor <- gsub("droughtToleranceModerate",  "Moderate vs. high drought tolerance", final_table$Predictor) 
   final_table$Predictor <- gsub("leafLongevity",  "Leaf longevity (years)", final_table$Predictor)
-  final_table$Predictor <- gsub("droughtToleranceLow",  "Low vs high drought tolerance", final_table$Predictor)
-  final_table$Predictor <- gsub("droughtToleranceModerate",  "Moderate vs high drought tolerance", final_table$Predictor) 
   return(final_table)
 }
 
 conifer_results <- clean_results(conifer_results)
-colnames(conifer_results)[6] <- "Phylo $\alpha$"
+conifer_results <- cbind(
+  conifer_results[1],
+  Type = c("Numeric", "Numeric", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Numeric"),
+  conifer_results[-1]
+)
 #conifer_results <- cbind(Group = "Gymnosperm", conifer_results)
 
 angio_results <- clean_results(angio_results)
+angio_results <- cbind(
+  angio_results[1],
+  Type = c("Numeric", "Numeric", "Numeric", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Numeric"),
+  angio_results[-1]
+)
 #angio_results <- cbind(Group = "Angiosperm", angio_results)
 
 #d_results <- rbind(conifer_results, angio_results)
@@ -271,23 +276,14 @@ phyangioAbio   <- drop.tip(phyangio, setdiff(phyangio$tip.label, angioAbio$latbi
 phyangioBio <- phytools::rescale(phyangioBio, model="depth", depth=1)
 phyangioAbio <- phytools::rescale(phyangioAbio, model="depth", depth=1) 
 
-angio_bio_list <- list(
+angio_seed_list <- list(
   list(name="Seed weight (log)",      formula=mastEvent ~ logSeedWeight, data=angioBio,   phy=phyangioBio,   method="logistic_IG10", btol = 10),
-  list(name="Fruit size (log)",       formula=mastEvent ~ logFruit, data=angioBio,   phy=phyangioBio,   method="logistic_IG10", btol = 10),
-  list(name="Seed size (log)",        formula=mastEvent ~ logSeedSize, data=angioBio,   phy=phyangioBio,   method="logistic_IG10", btol = 10),
-  list(name="Oil content (%)",      formula=mastEvent ~ oilContent, data=angioBio, phy=phyangioBio, method="logistic_IG10", btol = 10)
+  list(name="Seed weight (log)",      formula=mastEvent ~ logSeedWeight, data=angioAbio,   phy=phyangioAbio,   method="logistic_IG10", btol = 10)
 )
 
-angio_abio_list <- list(
-  list(name="Seed weight (log)",      formula=mastEvent ~ logSeedWeight, data=angioAbio,   phy=phyangioAbio,   method="logistic_IG10", btol = 10),
-  list(name="Fruit size (log)",       formula=mastEvent ~ logFruit, data=angioAbio,   phy=phyangioAbio,   method="logistic_IG10", btol = 10),
-  list(name="Seed size (log)",        formula=mastEvent ~ logSeedSize, data=angioAbio,   phy=phyangioAbio,   method="logistic_IG10", btol = 10),
-  list(name="Oil content (%)",      formula=mastEvent ~ oilContent, data=angioAbio, phy=phyangioAbio, method="logistic_IG10", btol = 10)
-)
+angio_seed_results <- NULL
 
-angio_bio_results <- NULL
-
-for (m in angio_bio_list) {
+for (m in angio_seed_list) {
   cat("Running model:", m$name, "\n")
   
   tbl <- run_phyloglm(
@@ -299,35 +295,18 @@ for (m in angio_bio_list) {
     trait_name = m$name
   )
   
-  angio_bio_results <- rbind(angio_bio_results, tbl)
+  angio_seed_results <- rbind(angio_seed_results, tbl)
 }
 
-angio_abio_results <- NULL
+angio_seed_results <- clean_results(angio_seed_results)
 
-for (m in angio_abio_list) {
-  cat("Running model:", m$name, "\n")
-  
-  tbl <- run_phyloglm(
-    formula = m$formula,
-    data    = m$data,
-    phy     = m$phy,
-    method  = m$method,
-    btol = m$btol,
-    trait_name = m$name
-  )
-  
-  angio_abio_results <- rbind(angio_abio_results, tbl)
-}
-angio_abio_results <- clean_results(angio_abio_results)
-angio_bio_results <- clean_results(angio_bio_results)
-
-seed_results <- rbind(angio_bio_results, angio_abio_results)
+seed_results <- cbind(
+  angio_seed_results[1],
+  Group = c("Biotic and both", "Abiotic"),
+  angio_seed_results[-1]
+)
 
 
-dTable <- xtable(seed_results, 
-                 caption = "Phylogenetic Generalized Linear Model Results for only seed weight for biotic dispersed group and abiotic dispersed group", 
-                 label = "tab:regressionseedweight")
-print(dTable, type = "latex", include.rownames = FALSE)
 
 ###Plot seed weight and model fit ----
 
@@ -336,6 +315,9 @@ b1 <- 0.219796507
 
 b0_bio <- -1.9024530
 b1_bio <- 0.4045427
+
+median(angio$seedWeights, na.rm = TRUE)
+median(angioBio$seedWeights, na.rm = TRUE)
 
 pdf("output/figures/modelFitSeedWeight.pdf",
     width = 8, height = 6)
@@ -368,9 +350,9 @@ lines(x_seq, y_pred_bio, col = "darkgreen", lwd = 2.5, lty = 2)
 
 title(ylab = "Likelihood of Masting Species", line = 2.5)
 legend("right", 
-       legend = c("All Angiosperms (Line)", "All Angiosperms (Points)", 
-                  "Biotic Dispersed (Line)", "Biotic Dispersed (Points)"),
-       col = c("darkred", "grey", "darkgreen", "mediumseagreen"), 
+       legend = c("All Angiosperms (Line)", "Biotic Dispersed (Line)", 
+                  "All Angiosperms (Points)", "Biotic Dispersed (Points)"),
+       col = c("darkred", "darkgreen", "grey", "mediumseagreen"), 
        lty = c(1, 2, 0, 0), 
        pch = c(NA, NA, 16, 16),
        pt.cex = c(1, 1, 1, 1),
@@ -384,13 +366,9 @@ getAnnotation <- function(trait_name, model_results, subData) {
   
   df <- model_results[model_results$Trait == trait_name, ]
   
-  # Always keep N
-  #n_text <- paste0("Nmast = ", sum(subData[,1] == "1" & !is.na(subData[,2])), " Nnon = ",  sum(subData[,1] == "0" & !is.na(subData[,2])))
-  
   # Keep only predictors with P < 0.5
   df_sig <- df[df$P < 0.05, ]
-  # alpha_text <- paste0("Phylo α = ", round(unique(df$`Phylo alpha`), 2))
-  alpha_text <-  bquote(alpha= .(round(unique(df$`Phylo alpha`), 2)))
+  alpha_text <- paste0("Phylo alpha = ", round(unique(df$`Phylo alpha`), 2))
   # If none meet threshold → return only alpha
   if(nrow(df_sig) == 0){
     return(paste0(" ", sep = "\n"))
@@ -409,7 +387,7 @@ getAnnotation <- function(trait_name, model_results, subData) {
       collapse = "\n"
     )
     
-    alpha_text <- paste0("Phylo α = ", round(unique(df$`Phylo alpha`), 2))
+    alpha_text <- paste0("Phylo alpha = ", round(unique(df$`Phylo alpha`), 2))
     
     label <- paste(alpha_text, pred_text, sep = "\n")
     
@@ -551,7 +529,7 @@ oil <- ggplot(oilData, aes(x = mastEvent, y = oilContent, fill = mastEvent)) +
        annotate("text", x = c(1, 2), y = c(90, 120), 
                 label = table(oilData$mastEvent), size = 3) +
        annotate("text", x = 1.5, y = 115, 
-                label = getAnnotation("Oil content (%)", angio_results, oilData),size = 3) +
+                label = getAnnotation("Oil content", angio_results, oilData),size = 3) +
        geom_point(position = position_jitter(width = 0.08), size = 1.5, alpha = 0.7) +
        scale_fill_manual(name = "Masting", 
                          values = c("0"="#A9D5B1", "1"="#ED562C"), 
