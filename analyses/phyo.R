@@ -1052,7 +1052,7 @@ lambda_conifer <- data.frame(
     rep("Gymnosperm", 6)
   ,
   Trait = c("Seed weight (Log)", "Fruit size (Log)",
-            "Oil content", "Leaf longevity",
+            "Oil content %", "Leaf longevity",
             "Dispersal mode", 
             "Drought tolerance"),
   Lambda = c(
