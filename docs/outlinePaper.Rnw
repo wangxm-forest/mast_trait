@@ -17,7 +17,7 @@
 \end{enumerate}
 \item Why traits can help link hypotheses to masting mechanisms
 \begin{enumerate}
-\item Mechanisms might not be mutually exclusive, but some might act stronger than the other for certain species
+\item Mechanisms are not mutually exclusive, but some might act stronger than the other for certain species
 \item Traits thus can be important to understand masting through their relative importance
 \end{enumerate}
 \item Trait-based perspective
@@ -27,11 +27,12 @@
 \item Wind pollination is related to masting
 \item Animal dispersed seeds have higher masting than wind dispersed seeds
 \item Larger seed is associate with masting
-\item All these studies use CV to quantify masting but ... %emw16Jun: maybe you want to discuss here or somewhere else this vs binary? At least in a sentence or two?
+\item All these studies use CV to quantify masting but we use a binary definition, whether this species is a strong masting species or weak masting species on a broader species-level
+\item If evolutionary associations are sufficiently strong, we should be able to detect it even under a coarse binary classification
 \item Recent papers also focus on resource perspective using leaf and shoot traits
 \end{enumerate}
-\item Existing studies mainly trying to find relations between traits and masting.
-\item Next step may be clear connection between traits and hypotheses and potential evolutionary drivers
+\item Existing studies mainly focus on ecological mechanisms.
+\item Next step may be clear connection between traits and hypotheses and potential evolutionary drivers for certain species
 \end{enumerate}
 
 \item Introduce framework linking hypothesis x traits x masting
@@ -44,7 +45,7 @@
 \item Here we use North American tree data to test this framework since they have information on their life-history
 \begin{enumerate}
 \item Masting info available
-\item Includes both masting and non-masting species
+\item Includes both strong masting and weak masting species
 \item Not using CV data because don't have stand-level traits data
 \end{enumerate}
 \end{enumerate}
@@ -56,7 +57,7 @@
 \begin{enumerate}
 \item Pollination supports the pollination coupling hypothesis
 \item Seed weight supports the predation satiation hypothesis
-\item These act at the start and the end of the reproductive cycle, provide evolutionary incentive, which I will explain below %emw16Jun: Hmm, two problems -- (1) you never say evolutionary incentive below so I still personally do not know what you mean and (2) you cannot tell your audience to wait on a critical term like this, you have to find another way .... 
+\item These act at the beginning and end of the reproductive cycle, two critical stages for successful reproduction and gene transmission
 \item Discuss mechanisms in the context of existing literature
 \begin{enumerate}
 \item Previous literature on seed mass and masting think from the resource depletion perspective (Bigger seeds use up resources so cannot reproduce every year)
@@ -82,10 +83,10 @@
 \item Phylogenetic signal for traits and masting
 \begin{enumerate}
 \item Many traits have strong phylogenetic signal, it is hard to tease out traits from masting, which limits the inference
-\item The lit on this seems to have lots of ecology but is based in evolution, needs more evolutionary theory and models perhaps?  %emw16Jun: I am riffing here but I think maybe this is true? Could you do a search for what there is from an evol. perspective on masting (set up a git issue) and I would search for seed number or reproductive variability as it could be a terminology issue. 
+\item The lit on this mostly talk about adaptive significance, we need to understand its broader macroevolutionary patterns
 \item Data is strongly nested in phylogeny, and data is sparse.
 \end{enumerate}
-\item Deep evolutionary split between angiosperm and gymnosperm %emw25May2026 -- at some point we may want to make the point that basically we think these relationships may appear at different scales -- either below the population level or while controlling for deep evolutionary time... 
+\item Deep evolutionary split between angiosperm and gymnosperm 
 \begin{enumerate}
 \item Gymnosperms and angiosperms occupy fundamentally different functional spaces
 \begin{enumerate}
@@ -100,13 +101,13 @@
 \end{enumerate}
 \end{enumerate}
 \end{enumerate}
-\end{enumerate}
 
-\subsection{Importance of testing within clade}
+\item Importance of testing within clade
 \begin{enumerate}
 \item Existing literature points out the potentials within certain clade for evolutionary investigations (\cite{satake2021studying})
-\item This requires more data collection on species-level and population-level within clade, for example: (\textit{Quercus.})
-\item So we need more data lower than species and more targeted data across species that considers deeper evolutionary time (we're missing both the super recent evolution. -- populations -- and the super deep). 
+\item This requires more data collection on species-level and population-level within certain genus groups, for example: (\textit{Quercus.})
+\item So we need more data lower than species and more targeted data across species that considers deeper evolutionary time (we're missing both the super recent evolution. -- populations -- and the super deep)
+\end{enumerate}
 \end{enumerate}
 \bibliographystyle{besjournals}
 \bibliography{mastTreeRef} 
@@ -161,7 +162,7 @@
   \item Data sources: Silvics of North America, Kew Seed Dataset, TRY Dataset
   \item Keywords used for data scraping
   \begin{enumerate}
-  \item Definition of strong masting vs. non-masting (referred to as masting vs. non-masting moving forward)
+  \item Definition of strong masting vs. weak masting
   \item Criteria for other traits
   \end{enumerate}
   \end{enumerate}
