@@ -152,6 +152,14 @@ angioScoresN$Drought <- addNA(angioScoresN$Drought)
 levels(angioScoresN$Drought)[is.na(levels(angioScoresN$Drought))] <- 'Unknown'
 angioScoresN$Drought <- factor(angioScoresN$Drought, levels = c("High", "Moderate", "Low", "Unknown"))
 
+
+conScoresN$Mast <- ifelse(conScoresN$Mast == 1,
+                      "Strong",
+                      "Weak")
+angioScoresN$Mast <- ifelse(angioScoresN$Mast == 1,
+                          "Strong",
+                          "Weak")
+
 conN12 <- ggplot(conScoresN, aes(NMDS1, NMDS2)) +
   geom_point(aes(
     colour = Drought,
@@ -167,19 +175,19 @@ conN12 <- ggplot(conScoresN, aes(NMDS1, NMDS2)) +
   scale_colour_manual(values = c("#da691f","#e79259","#f0bb98", "grey"), guide = 'none') +
   scale_fill_manual(
     values = c(
-      "Low.0"    = "white",
-      "Moderate.0" = "white",
-      "High.0"   = "white",
-      "Unknown.0"    = "white",
-      "Low.1"   = "#f0bb98",
-      "Moderate.1"= "#e79259",
-      "High.1"  = "#da691f",
-      "Unknown.1"    = "grey"
+      "Low.Weak"    = "white",
+      "Moderate.Weak" = "white",
+      "High.Weak"   = "white",
+      "Unknown.Weak"    = "white",
+      "Low.Strong"   = "#f0bb98",
+      "Moderate.Strong"= "#e79259",
+      "High.Strong"  = "#da691f",
+      "Unknown.Strong"    = "grey"
     ),
     guide = 'none'
   )  + scale_alpha_manual(
     name = "Mast",
-    values = c("0" = 1, "1" = 0.8),   # keep plot fully opaque
+    values = c("Weak" = 1, "Strong" = 0.8),   # keep plot fully opaque
     guide = guide_legend(
       override.aes = list(
         shape = 21,
@@ -220,19 +228,19 @@ conN23 <- ggplot(conScoresN, aes(NMDS2, NMDS3)) +
   scale_colour_manual(values = c("#da691f","#e79259","#f0bb98", "grey"), guide = 'none') +
   scale_fill_manual(
     values = c(
-      "Low.0"    = "white",
-      "Moderate.0" = "white",
-      "High.0"   = "white",
-      "Unknown.0"    = "white",
-      "Low.1"   = "#f0bb98",
-      "Moderate.1"= "#e79259",
-      "High.1"  = "#da691f",
-      "Unknown.1"    = "grey"
+      "Low.Weak"    = "white",
+      "Moderate.Weak" = "white",
+      "High.Weak"   = "white",
+      "Unknown.Weak"    = "white",
+      "Low.Strong"   = "#f0bb98",
+      "Moderate.Strong"= "#e79259",
+      "High.Strong"  = "#da691f",
+      "Unknown.Strong"    = "grey"
     ),
     guide = 'none'
   ) + scale_alpha_manual(
     name = "Mast",
-    values = c("0" = 1, "1" = 0.8),   # keep plot fully opaque
+    values = c("Weak" = 1, "Strong" = 0.8),   # keep plot fully opaque
     guide = guide_legend(
       override.aes = list(
         shape = 21,
@@ -274,19 +282,19 @@ angioN12 <- ggplot(angioScoresN, aes(NMDS1, NMDS2)) +
   scale_colour_manual(values = c("#da691f","#e79259","#f0bb98", "grey")) +
   scale_fill_manual(
     values = c(
-      "Low.0"    = "white",
-      "Moderate.0" = "white",
-      "High.0"   = "white",
-      "Unknown.0"    = "white",
-      "Low.1"   = "#f0bb98",
-      "Moderate.1"= "#e79259",
-      "High.1"  = "#da691f",
-      "Unknown.1"    = "grey"
+      "Low.Weak"    = "white",
+      "Moderate.Weak" = "white",
+      "High.Weak"   = "white",
+      "Unknown.Weak"    = "white",
+      "Low.Strong"   = "#f0bb98",
+      "Moderate.Strong"= "#e79259",
+      "High.Strong"  = "#da691f",
+      "Unknown.Strong"    = "grey"
     ),
     guide = 'none'
   ) + scale_alpha_manual(
     name = "Mast",
-    values = c("0" = 1, "1" = 0.8),   # keep plot fully opaque
+    values = c("Weak" = 1, "Strong" = 0.8),   # keep plot fully opaque
     guide = guide_legend(
       override.aes = list(
         shape = 21,
@@ -329,19 +337,19 @@ angioN23 <- ggplot(angioScoresN, aes(NMDS2, NMDS3)) +
   scale_colour_manual(values = c("#da691f","#e79259","#f0bb98", "grey"), guide = 'none') +
   scale_fill_manual(
     values = c(
-      "Low.0"    = "white",
-      "Moderate.0" = "white",
-      "High.0"   = "white",
-      "Unknown.0"    = "white",
-      "Low.1"   = "#f0bb98",
-      "Moderate.1"= "#e79259",
-      "High.1"  = "#da691f",
-      "Unknown.1"    = "grey"
+      "Low.Weak"    = "white",
+      "Moderate.Weak" = "white",
+      "High.Weak"   = "white",
+      "Unknown.Weak"    = "white",
+      "Low.Strong"   = "#f0bb98",
+      "Moderate.Strong"= "#e79259",
+      "High.Strong"  = "#da691f",
+      "Unknown.Strong"    = "grey"
     ),
     guide = 'none'
   )  + scale_alpha_manual(
     name = "Mast",
-    values = c("0" = 1, "1" = 0.8),   # keep plot fully opaque
+    values = c("Weak" = 1, "Strong" = 0.8),   # keep plot fully opaque
     guide = guide_legend(
       override.aes = list(
         shape = 21,

@@ -1078,11 +1078,3 @@ d_conifer <- data.frame(
 
 lambda <- rbind(lambda_angio,lambda_conifer)
 dStat <- rbind(d_angio,d_conifer)
-labmdaTable <- xtable(lambda, 
-                      caption = "Phylogenetic Signal (Pagel's ${lambda}$) for continous traits and multi-level categorical traits", 
-                      label = "tab:lambda")
-print(labmdaTable, type = "latex", include.rownames = FALSE)
-dTable <- xtable(dStat, 
-                 caption = "Phylogenetic Signal (D-statistic with probability from random phylogenetic structure and probability from Brownian phylogenetic structure for binary traits", 
-                 label = "tab:d")
-print(dTable, type = "latex", include.rownames = FALSE)
