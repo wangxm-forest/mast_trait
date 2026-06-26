@@ -123,7 +123,7 @@ matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Notholith
 #phy.sps.uniqu[grepl("Calophyllum_calaba", phy.sps.uniqu)]
 matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Calophyllum_calaba")] <-  "Calophyllum_calaba_var._bracteatum"
 
-#phy.sps.uniqu[grepl("Populus_deltoides", phy.sps.uniqu)]
+#phy.sps.uniqu[grepl("Populus_monilifera", phy.sps.uniqu)]
 matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Populus_deltoides_subsp._monilifera")] <-  "Populus_deltoides"
 
 #phy.sps.uniqu[grepl("Acer_saccharum", phy.sps.uniqu)]
@@ -263,6 +263,7 @@ masting$mastEvent[is.na(masting$mastEvent)] <- "No information"
 d$latbi <- gsub(" ", "_", d$latbi)
 conifer <- d[d$familyName %in% c("Pinaceae", "Taxodiaceae"), ]
 angio   <- d[!(d$familyName %in% c("Pinaceae", "Taxodiaceae")), ]
+
 
 phyconifer <- drop.tip(silvicsTree, setdiff(silvicsTree$tip.label, conifer$latbi))
 phyangio   <- drop.tip(silvicsTree, setdiff(silvicsTree$tip.label, angio$latbi))
@@ -651,15 +652,19 @@ name.check(weightTree, weight)
 
 phyloTraits <- FALSE
 if(phyloTraits){
-pdf("output/figures/weightTree1.pdf", width = 10, height = 20)
-weightMap <- contMap(weightTree,
-                     weight,fsize=c(1,1),
-                     plot = TRUE)
-lastPP<-get("last_plot.phylo",envir=.PlotPhyloEnv)
+pdf("output/figures/weightTree1.pdf", width = 8, height = 8)
+plotTree <- weightTree
+H <- max(nodeHeights(plotTree))
+plotTree$edge.length <- plotTree$edge.length / H
+plotTree$edge.length <- plotTree$edge.length * 3
+weightMap <- contMap(plotTree,
+                     weight,fsize=c(0.3,1),
+                     plot = FALSE)
+#lastPP<-get("last_plot.phylo",envir=.PlotPhyloEnv)
 ## for fun, let's change our contMap gradient
 object <- setMap(weightMap, colors = colorRampPalette(c("navy", "white", "darkred"))(100))
-plot(object,ftype="off",fzie=c(0.5,0.7),xlim = c(0, max(lastPP$xx) * 6),
-     leg.txt="Seed weight (Log)",legend=100,sig=1,lwd=2)
+plot(object,ftype="off",type="fan",fsize=c(0.6,0.5), xlim = c(-5, 5),
+     leg.txt="Seed weight (Log)",legend=3,sig=1,lwd=2)
 lastPP<-get("last_plot.phylo",envir=.PlotPhyloEnv)
 ## make sure our discrete character is in the order of our tree
 weightDf <- d[!is.na(d$seedWeights), ]
@@ -728,27 +733,52 @@ weightPoll <- weightPoll[object$tree$tip.label]
 weightDrought <- weightDrought[object$tree$tip.label]
 weightLeaf <- weightLeaf[object$tree$tip.label]
 
-Ntip <- length(object$tree$tip.label)
-tree_width <- diff(range(lastPP$xx))
-for(i in 1:length(weightMast)){
-  text(lastPP$xx[i],
-       lastPP$yy[i],
-       gsub("_", " ", weightMap$tree$tip.label[i]),
-       pos=4,
-       col=cols[weightMast[i]],
-       cex=0.7,
-       font=3)
+Ntip <- Ntip(object$tree)
+
+for(i in 1:Ntip){
+  
+  x <- lastPP$xx[i]
+  y <- lastPP$yy[i]
+  
+  # angle from center
+  angle <- atan2(y, x) * 180 / pi
+  
+  # keep text upright
+  if(angle > 90 || angle < -90){
+    angle <- angle + 180
+    adj <- 0
+  } else {
+    adj <- 1
+  }
+  
+  rlab <- 1.45
+  rdot <- 1.5
+  
+  xlab <- x * rlab
+  ylab <- y * rlab
+  
+  xdot <- x * rdot
+  ydot <- y * rdot
+  
+  text(xlab, ylab,
+       labels = gsub("_", " ", object$tree$tip.label[i]),
+       srt = angle,
+       adj = adj,
+       offset = 1,
+       col = cols[weightMast[i]],
+       cex = 0.3,
+       font = 3,
+       xpd = TRUE)
+  
+  points(xdot, ydot,
+         pch = 21,
+         bg = colsDisp[weightDisp[i]],
+         col = "white",
+         cex = 1.2)
 }
 
-for(i in 1:length(weightDisp)){
-points(lastPP$xx[1:Ntip] + tree_width * 1.3,
-       lastPP$yy[1:Ntip],
-       pch = 21,
-       bg = colsDisp[weightDisp],
-       col = "white",
-       cex = 1.2)
-}
 
+dev.off()
 sizeMin <- 0.6
 sizeMax <- 1.2
 
