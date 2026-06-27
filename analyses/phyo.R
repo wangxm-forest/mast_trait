@@ -775,6 +775,8 @@ for(i in 1:Ntip){
          bg = colsDisp[weightDisp[i]],
          col = "white",
          cex = 1.2)
+  
+  
 }
 
 
