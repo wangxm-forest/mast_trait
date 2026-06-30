@@ -70,6 +70,7 @@ phytree$node.label <- NULL
 phyconifer <- drop.tip(phytree, setdiff(phytree$tip.label, conifer$latbi))
 phyangio   <- drop.tip(phytree, setdiff(phytree$tip.label, angio$latbi))
 
+# Standardize tree height to be 1
 phyconifer <- phytools::rescale(phyconifer, model="depth", depth=1)
 phyangio <- phytools::rescale(phyangio, model="depth", depth=1) 
 #smallTreeUltra <- force.ultrametric(
@@ -153,9 +154,9 @@ for (m in conifer_list) {
   
   tbl <- run_phyloglm(
     formula = m$formula,
-    data    = m$data,
-    phy     = m$phy,
-    method  = m$method,
+    data = m$data,
+    phy = m$phy,
+    method = m$method,
     btol = m$btol,
     trait_name = m$name
   )
@@ -168,9 +169,9 @@ for (m in angio_list) {
   
   tbl <- run_phyloglm(
     formula = m$formula,
-    data    = m$data,
-    phy     = m$phy,
-    method  = m$method,
+    data = m$data,
+    phy = m$phy,
+    method = m$method,
     btol = m$btol,
     trait_name = m$name
   )
@@ -191,13 +192,13 @@ clean_results <- function(results) {
     labels = c("***", "**", "*", "")
   )
   
-  results_no_int$estimate  <- round(results_no_int$estimate,  2)
+  results_no_int$estimate  <- round(results_no_int$estimate, 2)
   results_no_int$std_error <- round(results_no_int$std_error, 2)
-  results_no_int$z_value   <- round(results_no_int$z_value,   2)
-  results_no_int$p_value   <- signif(results_no_int$p_value,  3)
+  results_no_int$z_value   <- round(results_no_int$z_value, 2)
+  results_no_int$p_value   <- signif(results_no_int$p_value, 3)
   #results_no_int$p_sig <- paste0(signif(results_no_int$p_value, 2), as.character(results_no_int$signif))
-  results_no_int$alpha     <- round(results_no_int$alpha,     2)
-  results_no_int$half     <- round(log(2)/results_no_int$alpha,     2)
+  results_no_int$alpha     <- round(results_no_int$alpha, 2)
+  results_no_int$half     <- round(log(2)/results_no_int$alpha, 2)
 
   final_table <- results_no_int[, c(
     "trait",
@@ -220,20 +221,20 @@ clean_results <- function(results) {
     "Phylo alpha",
     "Half-time"
   )
-  final_table$Predictor <- gsub("logSeedWeight","Seed weight (log)", final_table$Predictor)
-  final_table$Predictor <- gsub("logFruit",     "Fruit size (log)", final_table$Predictor)
-  final_table$Predictor <- gsub("oilContent",  "Oil content (%)", final_table$Predictor)
-  final_table$Predictor <- gsub("seedDispersalbiotic",  "Biotic vs. abiotic", final_table$Predictor)
-  final_table$Predictor <- gsub("seedDispersalboth",  "Both vs. abiotic", final_table$Predictor)
-  final_table$Predictor <- gsub("seedDormancyY",  "Dormant vs. non−dormant", final_table$Predictor)
-  final_table$Predictor <- gsub("pollinationwind",  "Wind vs. animal", final_table$Predictor)
-  final_table$Predictor <- gsub("pollinationwind and animals",  "Both vs. animal", final_table$Predictor)
+  final_table$Predictor <- gsub("logSeedWeight", "Seed weight (log)", final_table$Predictor)
+  final_table$Predictor <- gsub("logFruit", "Fruit size (log)", final_table$Predictor)
+  final_table$Predictor <- gsub("oilContent", "Oil content (%)", final_table$Predictor)
+  final_table$Predictor <- gsub("seedDispersalbiotic", "Biotic vs. abiotic", final_table$Predictor)
+  final_table$Predictor <- gsub("seedDispersalboth", "Both vs. abiotic", final_table$Predictor)
+  final_table$Predictor <- gsub("seedDormancyY", "Dormant vs. non−dormant", final_table$Predictor)
+  final_table$Predictor <- gsub("pollinationwind", "Wind vs. animal", final_table$Predictor)
+  final_table$Predictor <- gsub("pollinationwind and animals", "Both vs. animal", final_table$Predictor)
   
-  final_table$Predictor <- gsub("typeMonoOrDioMonoecious",  "Monoecious vs. dioecious", final_table$Predictor)
-  final_table$Predictor <- gsub("typeMonoOrDioPolygamous",  "Monoecious vs. polygamous", final_table$Predictor)
-  final_table$Predictor <- gsub("droughtToleranceLow",  "Low vs. high drought tolerance", final_table$Predictor)
-  final_table$Predictor <- gsub("droughtToleranceModerate",  "Moderate vs. high drought tolerance", final_table$Predictor) 
-  final_table$Predictor <- gsub("leafLongevity",  "Leaf longevity (years)", final_table$Predictor)
+  final_table$Predictor <- gsub("typeMonoOrDioMonoecious", "Monoecious vs. dioecious", final_table$Predictor)
+  final_table$Predictor <- gsub("typeMonoOrDioPolygamous", "Monoecious vs. polygamous", final_table$Predictor)
+  final_table$Predictor <- gsub("droughtToleranceLow", "Low vs. high drought tolerance", final_table$Predictor)
+  final_table$Predictor <- gsub("droughtToleranceModerate", "Moderate vs. high drought tolerance", final_table$Predictor) 
+  final_table$Predictor <- gsub("leafLongevity", "Leaf longevity (years)", final_table$Predictor)
   return(final_table)
 }
 
@@ -251,34 +252,21 @@ angio_results <- cbind(
   Type = c("Numeric", "Numeric", "Numeric", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Categorical", "Numeric"),
   angio_results[-1]
 )
-#angio_results <- cbind(Group = "Angiosperm", angio_results)
-
-#d_results <- rbind(conifer_results, angio_results)
-
-#dTable <- xtable(conifer_results, 
-#               caption = "Phylogenetic Generalized Linear Model Results for Gymnosperm", 
-#               label = "tab:regressiongym")
-#print(dTable, type = "latex", include.rownames = FALSE)
-
-#dTable <- xtable(angio_results, 
-#                 caption = "Phylogenetic Generalized Linear Model Results for Angiosperm", 
-#                 label = "tab:regressionangio")
-#print(dTable, type = "latex", include.rownames = FALSE)
 
 ###Analyze seed weight for species with different dispersal strategies ----
 
-angioBio   <- angio[(angio$seedDispersal %in% c("biotic", "both")), ]
-angioAbio   <-  angio[(!angio$seedDispersal %in% c("biotic", "both")), ]
+angioBio <- angio[(angio$seedDispersal %in% c("biotic", "both")), ]
+angioAbio <-  angio[(!angio$seedDispersal %in% c("biotic", "both")), ]
 
-phyangioBio   <- drop.tip(phyangio, setdiff(phyangio$tip.label, angioBio$latbi))
-phyangioAbio   <- drop.tip(phyangio, setdiff(phyangio$tip.label, angioAbio$latbi))
+phyangioBio <- drop.tip(phyangio, setdiff(phyangio$tip.label, angioBio$latbi))
+phyangioAbio <- drop.tip(phyangio, setdiff(phyangio$tip.label, angioAbio$latbi))
 
 phyangioBio <- phytools::rescale(phyangioBio, model="depth", depth=1)
 phyangioAbio <- phytools::rescale(phyangioAbio, model="depth", depth=1) 
 
 angio_seed_list <- list(
-  list(name="Seed weight (log)",      formula=mastEvent ~ logSeedWeight, data=angioBio,   phy=phyangioBio,   method="logistic_IG10", btol = 10),
-  list(name="Seed weight (log)",      formula=mastEvent ~ logSeedWeight, data=angioAbio,   phy=phyangioAbio,   method="logistic_IG10", btol = 10)
+  list(name="Seed weight (log)", formula=mastEvent ~ logSeedWeight, data=angioBio, phy=phyangioBio,   method="logistic_IG10", btol = 10),
+  list(name="Seed weight (log)", formula=mastEvent ~ logSeedWeight, data=angioAbio, phy=phyangioAbio,   method="logistic_IG10", btol = 10)
 )
 
 angio_seed_results <- NULL
@@ -288,9 +276,9 @@ for (m in angio_seed_list) {
   
   tbl <- run_phyloglm(
     formula = m$formula,
-    data    = m$data,
-    phy     = m$phy,
-    method  = m$method,
+    data = m$data,
+    phy = m$phy,
+    method = m$method,
     btol = m$btol,
     trait_name = m$name
   )
@@ -323,7 +311,7 @@ pdf("output/figures/modelFitSeedWeight.pdf",
     width = 8, height = 6)
 point_colors <- ifelse(angio$seedDispersal == c("biotic","both"), 
                        "mediumseagreen",  # Dark Green with transparency for biotic
-                       "grey")
+                       "indianred3")
 plot(angio$seedWeights, angio$mastEvent,
      xlab = "Seed Weight (g)",
      ylab = "",
@@ -352,7 +340,7 @@ title(ylab = "Likelihood of Strong masting Species", line = 2.5)
 legend("right", 
        legend = c("All Angiosperms (Line)", "Biotic Dispersed (Line)", 
                   "All Angiosperms (Points)", "Biotic Dispersed (Points)"),
-       col = c("darkred", "darkgreen", "grey", "mediumseagreen"), 
+       col = c("darkred", "darkgreen", "indianred3", "mediumseagreen"), 
        lty = c(1, 2, 0, 0), 
        pch = c(NA, NA, 16, 16),
        pt.cex = c(1, 1, 1, 1),
@@ -369,7 +357,7 @@ getAnnotation <- function(trait_name, model_results, subData) {
   # Keep only predictors with P < 0.5
   df_sig <- df[df$P < 0.05, ]
   alpha_text <- paste0("Phylo alpha = ", round(unique(df$`Phylo alpha`), 2))
-  # If none meet threshold → return only alpha
+  # If none meet threshold return only alpha
   if(nrow(df_sig) == 0){
     return(paste0(" ", sep = "\n"))
   }
