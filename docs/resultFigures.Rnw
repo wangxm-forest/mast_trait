@@ -96,6 +96,26 @@ conifer_results[] <- lapply(conifer_results, function(x) {
 colnames(conifer_results) <-
     fix_unicode(colnames(conifer_results))
 
+seed_results[] <- lapply(seed_results, function(x) {
+  if (is.character(x))
+    fix_unicode(x)
+  else
+    x
+})
+
+colnames(seed_results) <-
+    fix_unicode(colnames(seed_results))
+
+
+lambda[] <- lapply(lambda, function(x) {
+  if (is.character(x))
+    fix_unicode(x)
+  else
+    x
+})
+
+colnames(lambda) <-
+    fix_unicode(colnames(lambda))
 
 @
 
@@ -119,14 +139,14 @@ colnames(conifer_results) <-
 \begin{figure}[p]
 \centering
 \includegraphics[width=\textwidth, height=0.8\textheight]{../output/figures/rawDataWithStatsAngio.pdf}
-\caption{How plant traits related to different hypotheses differ in strong masting and weak masting for angiosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (1-c, i) or proportional histograms (d-h) separated by species categorized as strong masting (red) or weak masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate), and phylogenetic signal parameter $\alpha$. Full model results are show in Table (\ref{tab:regressionangio}).}
+\caption{How plant traits related to different hypotheses differ in strong masting and weak masting for angiosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (a-c, i) or proportional histograms (d-h) separated by species categorized as strong masting (red) or weak masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate), and phylogenetic signal parameter $\alpha$. Full model results are show in Table \ref{tab:regressionangio}.}
 \label{fig:rawangio}
 \end{figure}
 
 \begin{figure}[p]
 \centering
 \includegraphics[width=\textwidth,height=0.8\textheight]{../output/figures/rawDataWithStatsCon.pdf}
-\caption{How plant traits related to different hypotheses differ in strong masting and weak masting for gymnosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (1-c, i) or proportional histograms (d-h) separated by species categorized as strong masting (red) or weak masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate), and phylogenetic signal parameter alpha. Full model results are show inTable (\ref{tab:regressiongym}).}
+\caption{How plant traits related to different hypotheses differ in strong masting and weak masting for gymnosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (a-c, i) or proportional histograms (d-h) separated by species categorized as strong masting (red) or weak masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate), and phylogenetic signal parameter $\alpha$. Full model results are show in Table \ref{tab:regressiongym}.}
 \label{fig:rawcon}
 \end{figure}
 \restoregeometry
@@ -143,14 +163,14 @@ colnames(conifer_results) <-
 \begin{enumerate}
 \item Predation satiation: seed weight only with a small effect and only for angiosperm
 \begin{enumerate}
-\item Only seed weight is related to masting with larger seeds increasing the probability of being a strong masting species (Figure (\ref{fig:rawangio})). For angiosperms only, tripling of seed weight (from a median seed weight of 90.9g to 272.7g) is predicted to increase the likelihood of strong masting from 0.45 to 0.51 (Figure (\ref{fig:seedweight})).
-And this increase is stronger in biotic-dispersed seed group, tripling of seed weight (from a median seed weight of 1087.15g to 3261.45g) is predicted to increase the likelihood of strong masting from 0.72 to 0.80 (Table (\ref{tab:regressionseed}); Figure (\ref{fig:seedweight})). 
+\item Only seed weight is related to masting with larger seeds increasing the probability of being a strong masting species (Figure \ref{fig:rawangio}). For angiosperms only, tripling of seed weight (from a median seed weight of 90.9g to 272.7g) is predicted to increase the likelihood of strong masting from 0.45 to 0.51 (Figure \ref{fig:seedweight}).
+And this increase is stronger in biotic-dispersed seed group, tripling of seed weight (from a median seed weight of 1087.15g to 3261.45g) is predicted to increase the likelihood of strong masting from 0.72 to 0.80 (Table \ref{tab:regressionseed}; Figure \ref{fig:seedweight}). 
 
 \end{enumerate}
 \item Pollination satiation: wind pollination for angiosperm
 \begin{enumerate}
 \item We found wind pollination is related to strong masting for angiosperm species, likelihood for wind-pollinated species is predicted to increase the likelihood of strong masting to 0.62, whereas the likelihood is 0.20 for animal-pollinated species.
-of being strong masting species. Gymnosperm are all wind pollinated, and gymnosperm has a greater portion of strong masting species (89\% (54/61)).
+of being strong masting species. Gymnosperm are all wind pollinated, and gymnosperm has a greater portion of strong masting species.
 \end{enumerate}
 \item Resource matching: nothing significant
 
@@ -273,7 +293,9 @@ lamTable <- xtable(lambda,
 print(lamTable,
       type="latex",
       include.rownames=FALSE,
-      floating=FALSE)
+      floating=FALSE,
+      sanitize.text.function = identity,
+      sanitize.colnames.function = identity)
 @
 
 \caption{Phylogenetic Signal (Pagel's $\lambda$) for continous traits and multi-level categorical traits. $\lambda$ = 0 indicates no phylogenetic signal, trait districuted independent of the phylogeny; 0 < $\lambda$ < 1 means moderate phylogenetic signal, trait is partially structured by the phylogeny; $\lambda$ = 1 indicates strong phylogenetic signal, trait follows Brownian motion.}
