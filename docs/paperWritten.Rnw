@@ -1,8 +1,25 @@
 \documentclass{article}
+\usepackage{Sweave}
+\usepackage{float}
+\usepackage{graphicx}
 \usepackage{natbib}
+\usepackage{amsmath}
+\usepackage{pdflscape}
+\usepackage{hyperref}
+\usepackage{indentfirst}
+\usepackage[top=1.0in, bottom=1.0in, left=1.1in, right=1.1in]{geometry}
+\usepackage[utf8]{inputenc}
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
+\title{Mast-Trait Manuscript}
+\author{Xiaomao Wang}
+
+<<load-plots,echo=FALSE,results=hide,warning=FALSE,message=FALSE>>=
+source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/nmds.R")
+source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/phyo.R")
+source("C:/PhD/Project/PhD_thesis/mast_trait/analyses/glm.R")
+@
 
 \section{Method} %emw25May2026 -- Overall, this is a GREAT first draft; I think we can move quickly to a draft closer to final (or at least we can leave it for a while) ... more edits below, please work on these and pass back to me to review again. 
 \subsection{Data Collection}
@@ -10,7 +27,7 @@
 %emw25May2026  -- we need less passive voice below and we need to reverse the order of information -- put the reason generally FIRST ... I suggest you ask Victor about this, perhaps remind him of a book chapter I gave him to read (ask him for the book). 
 We selected traits in the context of three hypotheses. For the predation satiation hypothesis we selected traits associated with seed attractiveness to predators and the potential for surviving in seed caches: seed weight, fruit size, oil content, dispersal mode and seed dormancy. For the pollination coupling hypothesis we aimed for traits related to higher pollination efficiency: pollination mode and reproductive type. For resource matching hypothesis we included traits responsible for higher flexibility in resource use under varying environmental conditions.
 \subsubsection{Data scraping}
-For our analyses, we obtained the full species list from the two volumes of \textit{Silvics of North America}\cite{burns1990silvics,burns1990silvics2} (hereafter referred as \textit{Silvics}). We extracted masting data primarily from \textit{Silvics}, with MASTREE used as a supplementary source when there was no description on the seed production patterns in \textit{Silvics}. Pollination mode and seed dispersal data were also obtained mainly from \textit{Silvics}. Seed weight data were collected from the Seed Information Database by the Society for Ecological Restoration. Seed dormancy data were gathered from \textit{Seeds} by Baskin and Baskin. Leaf longevity and oil content data were accessed through the TRY database. Fruit size and drought tolerance data were compiled from multiple sources, including: \textit{Silvics}, the USDA Fire Effects Information System, the USA National Phenology Network, and The Gymnosperm Database.
+For our analyses, we obtained the full species list from the two volumes of \textit{Silvics of North America} \cite{burns1990silvics,burns1990silvics2} (hereafter referred as \textit{Silvics}). We extracted masting data primarily from \textit{Silvics}, with MASTREE used as a supplementary source when there was no description on the seed production patterns in \textit{Silvics}. Pollination mode and seed dispersal data were also obtained mainly from \textit{Silvics}. Seed weight data were collected from the Seed Information Database by the Society for Ecological Restoration. Seed dormancy data were gathered from \textit{Seeds} by Baskin and Baskin. Leaf longevity and oil content data were accessed through the TRY database. Fruit size and drought tolerance data were compiled from multiple sources, including: \textit{Silvics}, the USDA Fire Effects Information System, the USA National Phenology Network, and The Gymnosperm Database.
 
 We defined masting based on qualitative description of seed production patterns. If the description said the species "have a good crop almost every year", we considered this species a non-masting species, whereas if the description said the species " have a good crop every several years or have irregular seed production", we considered this species as a masting species. 
 %emw25May2026 -- I am not sure where the below goes but not in a topic sentence! I suggest you could contrast your approach with CV in one or two sentences at the end of the paragraph perhaps? (Though eventually we may have to move it to the discussion.)
@@ -20,7 +37,7 @@ We defined masting based on qualitative description of seed production patterns.
 %emw25May2026 --I would add: complete raw and adjusted data are published at KNB (then publish them before you submit). 
 For fruit size data, we recorded the full range from the source, and took the mean value for further analyses. For pollination mode, we categorized it into wind, animal (bird, bat, or insect), or both. For seed dispersal mode, we categorized it into biotic (animal-dispersed), abiotic (wind-, gravity-, or water-dispersed), or both. For drought tolerance, we categorized it into low, moderate, or high. For leave longeivity, we standardized it to years.
 
-In total, our dataset included 188 species, comprising 124 angiosperm species and 64 gymnosperm species. Among angiosperms, 79\% of species had masting data available, and masting species accounted for 52\%. Among gymnosperms, 95\% of species had masting data available, and 89\% species are masting species. %emw25May2026 -- May want to move to results?
+ %emw25May2026 -- May want to move to results?
 \subsection{Statistical Analysis}
 \subsubsection{Masting pattern and single trait}
 %emw25May2026 -- ordering is off here also ... It should start: To analyze the relationship between masting pattern and individual traits ....
@@ -30,7 +47,239 @@ We used \texttt{phyloglm} function in the \texttt{phylolm} package (v. 2.6.2) to
 Since most traits in our dataset were categorical, we selected non-metric multidimensional scaling (NMDS) for a multivariate analysis. We used the \texttt{metaMDS} function in the \texttt{vegan} (v. 2.7-1) package and tested both \(k = 2\) and \(k = 3\) and selected \(k = 3\) based on the lower stress score. We then plotted trait distributions on two panels (NMDS1 vs.\ NMDS2 and NMDS2 vs.\ NMDS3) to check for potential patterns.
 \subsubsection{Phylogenetic signal for individual traits}
 We calculated phylogenetic signal separately for each trait type. For binary traits, we calculated Fritz and Purvis' D-statistics using the function \texttt{phylo.d} in the \texttt{caper}  (v. 1.0.4) package. For continuous traits, we calculated the Pagel's $\lambda$ using the function \texttt{phylosig} in the \texttt{phytools} (v. 2.4-4) package. For categorical traits, we estimated the Pagel's $\lambda$ using the function \texttt{fitDiscrete} in the \texttt{geiger} (v. 2.0.11) package.
+<<setup, echo=FALSE>>=
+setwd("C:/PhD/Project/PhD_thesis/mast_trait/docs")
+angio_n <- length(angio$latbi)
+N_angio <- 124
+N_angio_mast <- sum(angio$mastEvent == "1", na.rm = TRUE)
+angio_sum <- paste0(round(100 * angio_n/N_angio),
+  "\\% (",
+  angio_n,
+  "/",
+  N_angio,
+  ")"
+)
+angio_mast <- paste0(round(100 * N_angio_mast/angio_n),
+  "\\% (",
+  N_angio_mast,
+  "/",
+  angio_n,
+  ")"
+)
+
+gymno_n <- length(conifer$latbi)
+N_gymno <- 64
+N_gymno_mast <- sum(conifer$mastEvent == "1", na.rm = TRUE)
+gymno_sum <- paste0(round(100 * gymno_n/N_gymno),
+  "\\% (",
+  gymno_n,
+  "/",
+  N_gymno,
+  ")"
+)
+gymno_mast <- paste0(round(100 * N_gymno_mast/gymno_n),
+  "\\% (",
+  N_gymno_mast,
+  "/",
+  gymno_n,
+  ")"
+)
+
+fix_unicode <- function(x) {
+  x <- gsub("\u2212", "-", x)
+  x <- gsub("–", "-", x)
+  x <- gsub("—", "-", x)
+  x <- gsub("%", "\\\\%", x)
+  x <- gsub("\\balpha\\b", "$\\\\alpha$", x)
+  x <- gsub("\\blambda\\b", "$\\\\lambda$", x)
+  x
+}
+
+angio_results[] <- lapply(angio_results, function(x) {
+  if (is.character(x))
+    fix_unicode(x)
+  else
+    x
+})
+
+colnames(angio_results) <-
+    fix_unicode(colnames(angio_results))
+
+conifer_results[] <- lapply(conifer_results, function(x) {
+  if (is.character(x))
+    fix_unicode(x)
+  else
+    x
+})
+
+colnames(conifer_results) <-
+    fix_unicode(colnames(conifer_results))
+
+seed_results[] <- lapply(seed_results, function(x) {
+  if (is.character(x))
+    fix_unicode(x)
+  else
+    x
+})
+
+colnames(seed_results) <-
+    fix_unicode(colnames(seed_results))
+
+
+lambda[] <- lapply(lambda, function(x) {
+  if (is.character(x))
+    fix_unicode(x)
+  else
+    x
+})
+
+colnames(lambda) <-
+    fix_unicode(colnames(lambda))
+
+@
+
+\newgeometry{margin=1cm}
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth, height=0.8\textheight]{../output/figures/rawDataWithStatsAngio.pdf}
+\caption{How plant traits related to different hypotheses differ in strong masting and weak masting for angiosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (a-c, i) or proportional histograms (d-h) separated by species categorized as strong masting (red) or weak masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate), and phylogenetic signal parameter $\alpha$. Full model results are show in Table \ref{tab:regressionangio}.}
+\label{fig:rawangio}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth,height=0.8\textheight]{../output/figures/rawDataWithStatsCon.pdf}
+\caption{How plant traits related to different hypotheses differ in strong masting and weak masting for gymnosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (a-c, i) or proportional histograms (d-h) separated by species categorized as strong masting (red) or weak masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate), and phylogenetic signal parameter $\alpha$. Full model results are show in Table \ref{tab:regressiongym}.}
+\label{fig:rawcon}
+\end{figure}
+\restoregeometry
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{../output/figures/modelFitSeedWeight.pdf}
+\caption{Predicted likelihood of masting as a function of seed weight for all angiosperm species (solid red line) and the biotic-dispersed subgroup (dashed green line), estimated using phylogenetic logistic regression. Individual species observations are plotted as binary data points at 0 (weak masting) and 1 (strong masting).}
+\label{fig:seedweight}
+\end{figure}
+
+\section{Results}
+\subsubsection{Structure of Data}
+In total, our dataset included 188 species, comprising 124 angiosperm species and 64 gymnosperm species. Among angiosperms, \Sexpr{gsub("%", "\\\\%", angio_sum)} of species had masting data available, with masting data, with strong masting and weak masting split almost equally \Sexpr{gsub("%", "\\\\%", angio_mast)}. Among gymnosperms, \Sexpr{gsub("%", "\\\\%", gymno_sum)} of species had masting data available, with almost all species are strong masting \Sexpr{gsub("%", "\\\\%", gymno_mast)}.
+We were not able to get complete trait data for every single trait for all species with masting data. The most limited data is oil content and leave longevity (Fig. \ref{fig:rawangio} and Fig. \ref{fig:rawcon}).
+\subsubsection{Results for Each Hypothesis}
+We found relationship between traits related to predator satiation and pollination efficiency and strong masting for angiosperm species. Among traits related to predator satiation, we found seed weight the only significant trait (p-value = 0.01, Table \ref{tab:regressionangio}) related to masting with larger seeds increasing the probability of being a strong masting species (Figure \ref{fig:rawangio}). For angiosperms only, tripling of seed weight (from a median seed weight of 90.9g to 272.7g) is predicted to increase the likelihood of strong masting from 0.45 to 0.51 (Figure \ref{fig:seedweight}). And this increase has a larger log-odds in biotic-dispersed seed group, as tripling of seed weight (from a median seed weight of 1087.15g to 3261.45g) is predicted to increase the likelihood of strong masting from 0.72 to 0.80 (Table \ref{tab:regressionseed}; Figure \ref{fig:seedweight}).
+
+Among traits related to pollination efficiency, we found pollination mode the only significant trait (p-value = 0.01, Table \ref{tab:regressionangio}) related to masting for angiosperm with likelihood for wind-pollinated species is predicted to increase the likelihood of strong masting to 0.62, whereas the likelihood is 0.20 for animal-pollinated species. For gymnosperm, all the species are wind pollinated, and gymnosperm has a greater portion of strong masting species overall.
+
+
+
+\subsubsection{Multivariate analysis}
+\subsubsection{Phylogenetic signal}
 
 \bibliographystyle{besjournals}
 \bibliography{mastTreeRef} 
+
+\clearpage
+\appendix
+\section{Supplementary Material}
+\setcounter{table}{0}
+\renewcommand{\thetable}{S\arabic{table}}
+
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{S\arabic{figure}}
+
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{
+<<echo=FALSE, results=tex>>=
+angioTable <- xtable(angio_results, 
+                 caption = "Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.", 
+                 label = "tab:regressionangio")
+print(angioTable,
+      type="latex",
+      include.rownames=FALSE,
+      floating=FALSE,
+      sanitize.text.function = identity,
+      sanitize.colnames.function = identity)
+@
+}
+\caption{Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.}
+\label{tab:regressionangio}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{
+<<echo=FALSE, results=tex>>=
+conTable <- xtable(conifer_results, 
+                 caption = "Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.", 
+                 label = "tab:regressiongym")
+print(conTable,
+      type="latex",
+      include.rownames=FALSE,
+      floating=FALSE,
+      sanitize.text.function = identity,
+      sanitize.colnames.function = identity)
+@
+}
+\caption{Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.}
+\label{tab:regressiongym}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{
+<<echo=FALSE, results=tex>>=
+seedTable <- xtable(seed_results, 
+                 caption = "Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.", 
+                 label = "tab:regressionseed")
+print(seedTable,
+      type="latex",
+      include.rownames=FALSE,
+      floating=FALSE,
+      sanitize.text.function = identity,
+      sanitize.colnames.function = identity)
+@
+}
+\caption{Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.}
+\label{tab:regressionseed}
+\end{table}
+
+\begin{table}[ht]
+\centering
+
+<<echo=FALSE, results=tex>>=
+lamTable <- xtable(lambda, 
+                 caption = "Phylogenetic Signal (Pagel's lambda) for continous traits and multi-level categorical traits. lambda = 0 indicates no phylogenetic signal, trait districuted independent of the phylogeny; 0 < lambda < 1 means moderate phylogenetic signal, trait is partially structured by the phylogeny; lambda = 1 indicates strong phylogenetic signal, trait follows Brownian motion.", 
+                 label = "tab:lambda")
+print(lamTable,
+      type="latex",
+      include.rownames=FALSE,
+      floating=FALSE,
+      sanitize.text.function = identity,
+      sanitize.colnames.function = identity)
+@
+
+\caption{Phylogenetic Signal (Pagel's $\lambda$) for continous traits and multi-level categorical traits. $\lambda$ = 0 indicates no phylogenetic signal, trait districuted independent of the phylogeny; 0 < $\lambda$ < 1 means moderate phylogenetic signal, trait is partially structured by the phylogeny; $\lambda$ = 1 indicates strong phylogenetic signal, trait follows Brownian motion.}
+\label{tab:lambda}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{
+<<echo=FALSE, results=tex>>=
+dStatTable <- xtable(dStat, 
+                 caption = "Phylogenetic Signal (D-statistic) for the phylogenetic signal of binary traits, with probabilities calculated under a random phylogenetic structure and under a Brownian motion phylogenetic structure. D = 1 indicates the trait is randomly distributed across the phylogeny; D = 0 indicates the trait follows a Brownian motion model; 0 < D < 1 indivates moderate phylogenetic signal; D < 0 indicates the trait is more clumped than expected under Brownian motion; and D > 1 indicates overdispersion. P random is the p-value for the null hypothesis that the trait is randomly distributed across the phylogeny (no phylogenetic signal), and P Brownian is the p-value for the null hypothesis that the trait follows a Brownian motion model (strong phylogenetic signal). A low p-value indicates rejection of the corresponding null hypothesis.", 
+                 label = "tab:dstat")
+print(dStatTable,
+      type="latex",
+      include.rownames=FALSE,
+      floating=FALSE,
+      sanitize.text.function = identity,
+      sanitize.colnames.function = identity)
+@
+}
+\caption{Phylogenetic Signal (D-statistic) for the phylogenetic signal of binary traits, with probabilities calculated under a random phylogenetic structure and under a Brownian motion phylogenetic structure. D = 1 indicates the trait is randomly distributed across the phylogeny; D = 0 indicates the trait follows a Brownian motion model; 0 < D < 1 indivates moderate phylogenetic signal; D < 0 indicates the trait is more clumped than expected under Brownian motion; and D > 1 indicates overdispersion. P random is the p-value for the null hypothesis that the trait is randomly distributed across the phylogeny (no phylogenetic signal), and P Brownian is the p-value for the null hypothesis that the trait follows a Brownian motion model (strong phylogenetic signal). A low p-value indicates rejection of the corresponding null hypothesis.}
+\label{tab:dstat}
+\end{table}
+
 \end{document}
