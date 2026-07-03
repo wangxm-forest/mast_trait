@@ -119,7 +119,7 @@ colnames(lambda) <-
 
 @
 
-\item Angiosperm \Sexpr{gsub("%", "\\\\%", angio_sum)} with masting data; Strong asting and weak masting split almost equally \Sexpr{gsub("%", "\\\\%", angio_mast)}; Gymnosperm \Sexpr{gsub("%", "\\\\%", gymno_sum)} with masting data; almost all species are strong masting \Sexpr{gsub("%", "\\\\%", gymno_mast)}
+\item Angiosperm \Sexpr{gsub("%", "\\\\%", angio_sum)} with masting data; Strong masting and weak masting split almost equally \Sexpr{gsub("%", "\\\\%", angio_mast)}; Gymnosperm \Sexpr{gsub("%", "\\\\%", gymno_sum)} with masting data; almost all species are strong masting \Sexpr{gsub("%", "\\\\%", gymno_mast)}
 \end{enumerate}
 
 \item Number of traits for different hypotheses
@@ -169,8 +169,7 @@ And this increase is stronger in biotic-dispersed seed group, tripling of seed w
 \end{enumerate}
 \item Pollination satiation: wind pollination for angiosperm
 \begin{enumerate}
-\item We found wind pollination is related to strong masting for angiosperm species, likelihood for wind-pollinated species is predicted to increase the likelihood of strong masting to 0.62, whereas the likelihood is 0.20 for animal-pollinated species.
-of being strong masting species. Gymnosperm are all wind pollinated, and gymnosperm has a greater portion of strong masting species.
+\item We found wind pollination is related to strong masting for angiosperm species, likelihood for wind-pollinated species is predicted to increase the likelihood of strong masting to 0.62, whereas the likelihood is 0.20 for animal-pollinated species. Gymnosperm are all wind pollinated, and gymnosperm has a greater portion of strong masting species.
 \end{enumerate}
 \item Resource matching: nothing significant
 
