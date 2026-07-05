@@ -74,12 +74,11 @@ We were not able to get complete trait data for every single trait for all speci
 We found relationship between traits related to predator satiation and pollination efficiency and strong masting for angiosperm species. Among traits related to predator satiation, we found seed weight the only significant trait (p-value = 0.01, Table \ref{tab:regressionangio}) related to masting with larger seeds increasing the probability of being a strong masting species (Figure \ref{fig:rawangio}). For angiosperms only, tripling of seed weight (from a median seed weight of 90.9g to 272.7g) is predicted to increase the likelihood of strong masting from 0.45 to 0.51 (Figure \ref{fig:seedweight}). And this increase has a larger log-odds in biotic-dispersed seed group, as tripling of seed weight (from a median seed weight of 1087.15g to 3261.45g) is predicted to increase the likelihood of strong masting from 0.72 to 0.80 (Table \ref{tab:regressionseed}; Figure \ref{fig:seedweight}).
 
 Among traits related to pollination efficiency, we found pollination mode the only significant trait (p-value = 0.01, Table \ref{tab:regressionangio}) related to masting for angiosperm with likelihood for wind-pollinated species is predicted to increase the likelihood of strong masting to 0.62, whereas the likelihood is 0.20 for animal-pollinated species. For gymnosperm, all the species are wind pollinated, and gymnosperm has a greater portion of strong masting species overall.
-
-
-
 \subsubsection{Multivariate analysis}
+Masting is not aligned well along any axis in the NMDS analysis. We do not find any evidence that the combination of traits for any of the hypotheses is driving the pattern of masting.
 \subsubsection{Phylogenetic signal}
-
+Strong masting has a moderate moderate phylogenetic signal in both gymnosperms group (estimated D = 0.51) and angiosperms (estimated D = 0.58) group (Table \ref{tab:dstat}).
+Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = 0.95) and gymnosperm ($\lambda$ = 0.97). We can see the similarity in certain group in Figure \ref{fig:coneptangio} it's relatively reliable estimate. Dispersal mode, leaf longevity, pollination mode and reproductive type also showed high phylogenetic signal in Table \ref{tab:lambda}, but be cautious that $\lambda$ for categorical traits might not be accurate. 
 \bibliographystyle{besjournals}
 \bibliography{mastTreeRef} 
 
@@ -96,7 +95,7 @@ Among traits related to pollination efficiency, we found pollination mode the on
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Fri Jul  3 16:16:11 2026
+% Sat Jul  4 23:18:50 2026
 \begin{tabular}{lllrrrrrr}
   \hline
 Trait & Type & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-time \\ 
@@ -124,7 +123,7 @@ Seed weight (log) & Numeric & Seed weight (log) &  89 & 0.22 & 0.09 & 0.01 & 11.
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Fri Jul  3 16:16:11 2026
+% Sat Jul  4 23:18:50 2026
 \begin{tabular}{lllrrrrrr}
   \hline
 Trait & Type & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-time \\ 
@@ -148,7 +147,7 @@ Seed weight (log) & Numeric & Seed weight (log) &  58 & -0.01 & 0.24 & 0.98 & 53
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Fri Jul  3 16:16:11 2026
+% Sat Jul  4 23:18:51 2026
 \begin{tabular}{lllrrrrrr}
   \hline
 Trait & Group & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-time \\ 
@@ -165,7 +164,7 @@ Seed weight (log) & Biotic and both & Seed weight (log) &  53 & 0.40 & 0.15 & 0.
 \centering
 
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Fri Jul  3 16:16:11 2026
+% Sat Jul  4 23:18:51 2026
 \begin{tabular}{llr}
   \hline
 Group & Trait & $\lambda$ \\ 
@@ -194,7 +193,7 @@ Angiosperm & Seed weight (Log) & 0.95 \\
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Fri Jul  3 16:16:11 2026
+% Sat Jul  4 23:18:51 2026
 \begin{tabular}{lllll}
   \hline
 Group & Trait & Estimated D & P(random) & P(Brownian) \\ 
