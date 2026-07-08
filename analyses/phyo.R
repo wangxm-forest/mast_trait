@@ -1078,3 +1078,17 @@ d_conifer <- data.frame(
 
 lambda <- rbind(lambda_angio,lambda_conifer)
 dStat <- rbind(d_angio,d_conifer)
+
+###intercept only model with phylolm ----
+
+fit <- phylolm(logSeedWeight ~ 1,
+               data = conifer,
+               phy = phyconifer,
+               model = "OUrandomRoot")
+fit$optpar
+# alpha is 50, exceed the upper bound.
+fit1 <- phylolm(logSeedWeight ~ 1,
+               data = angio,
+               phy = phyangio,
+               model = "OUrandomRoot")
+fit1$optpar
