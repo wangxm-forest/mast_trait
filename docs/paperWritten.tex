@@ -16,15 +16,14 @@
 \author{Xiaomao Wang}
 
 
-\section{Method} %emw25May2026 -- Overall, this is a GREAT first draft; I think we can move quickly to a draft closer to final (or at least we can leave it for a while) ... more edits below, please work on these and pass back to me to review again. 
+\section{Method} 
 \subsection{Data Collection}
 \subsubsection{Trait selection}
-%emw25May2026  -- we need less passive voice below and we need to reverse the order of information -- put the reason generally FIRST ... I suggest you ask Victor about this, perhaps remind him of a book chapter I gave him to read (ask him for the book). 
 We selected traits in the context of three hypotheses. For the predation satiation hypothesis we selected traits associated with seed attractiveness to predators and the potential for surviving in seed caches: seed weight, fruit size, oil content, dispersal mode and seed dormancy. For the pollination coupling hypothesis we aimed for traits related to higher pollination efficiency: pollination mode and reproductive type. For resource matching hypothesis we included traits responsible for higher flexibility in resource use under varying environmental conditions.
 \subsubsection{Data scraping}
-For our analyses, we obtained the full species list from the two volumes of \textit{Silvics of North America} \cite{burns1990silvics,burns1990silvics2} (hereafter referred as \textit{Silvics}). We extracted masting data primarily from \textit{Silvics}, with MASTREE used as a supplementary source when there was no description on the seed production patterns in \textit{Silvics}. Pollination mode and seed dispersal data were also obtained mainly from \textit{Silvics}. Seed weight data were collected from the Seed Information Database by the Society for Ecological Restoration. Seed dormancy data were gathered from \textit{Seeds} by Baskin and Baskin. Leaf longevity and oil content data were accessed through the TRY database. Fruit size and drought tolerance data were compiled from multiple sources, including: \textit{Silvics}, the USDA Fire Effects Information System, the USA National Phenology Network, and The Gymnosperm Database.
+For our analyses, we obtained the full species list from the two volumes of \textit{Silvics of North America} \cite{burns1990silvics,burns1990silvics2} (hereafter referred as \textit{Silvics}). We extracted masting data primarily from \textit{Silvics}, using MASTREE as a supplementary source when there was no description on the seed production patterns in \textit{Silvics}. Pollination mode and seed dispersal data were also obtained mainly from \textit{Silvics}. We collected seed weight data from the Seed Information Database by the Society for Ecological Restoration; gathered seed dormancy data from \textit{Seeds} by Baskin and Baskin and accessed the leaf longevity and oil content data through the TRY database. We compiled fruit size and drought tolerance data from multiple sources, including: \textit{Silvics}, the USDA Fire Effects Information System, the USA National Phenology Network, and The Gymnosperm Database.
 
-We defined masting based on qualitative description of seed production patterns. If the description said the species "have a good crop almost every year", we considered this species a non-masting species, whereas if the description said the species " have a good crop every several years or have irregular seed production", we considered this species as a masting species. 
+We defined masting based on relatively qualitative description of seed production patterns. We were aware that recent literature emphasized the importance of quantatative definition of masting, but we are missing such data on the species level. If the description said the species "have a good crop almost every year", we considered this species a weak masting species, whereas if the description said the species " have a good crop every several years or have irregular seed production", we considered this species as a strong masting species. 
 %emw25May2026 -- I am not sure where the below goes but not in a topic sentence! I suggest you could contrast your approach with CV in one or two sentences at the end of the paragraph perhaps? (Though eventually we may have to move it to the discussion.)
 %  instead of using the more commonly used coefficient of variation (CV),
 
@@ -95,7 +94,7 @@ Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = 0.95
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Sat Jul  4 23:18:50 2026
+% Tue Jul  7 22:16:44 2026
 \begin{tabular}{lllrrrrrr}
   \hline
 Trait & Type & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-time \\ 
@@ -123,7 +122,7 @@ Seed weight (log) & Numeric & Seed weight (log) &  89 & 0.22 & 0.09 & 0.01 & 11.
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Sat Jul  4 23:18:50 2026
+% Tue Jul  7 22:16:44 2026
 \begin{tabular}{lllrrrrrr}
   \hline
 Trait & Type & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-time \\ 
@@ -147,7 +146,7 @@ Seed weight (log) & Numeric & Seed weight (log) &  58 & -0.01 & 0.24 & 0.98 & 53
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Sat Jul  4 23:18:51 2026
+% Tue Jul  7 22:16:44 2026
 \begin{tabular}{lllrrrrrr}
   \hline
 Trait & Group & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-time \\ 
@@ -164,7 +163,7 @@ Seed weight (log) & Biotic and both & Seed weight (log) &  53 & 0.40 & 0.15 & 0.
 \centering
 
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Sat Jul  4 23:18:51 2026
+% Tue Jul  7 22:16:44 2026
 \begin{tabular}{llr}
   \hline
 Group & Trait & $\lambda$ \\ 
@@ -193,7 +192,7 @@ Angiosperm & Seed weight (Log) & 0.95 \\
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Sat Jul  4 23:18:51 2026
+% Tue Jul  7 22:16:44 2026
 \begin{tabular}{lllll}
   \hline
 Group & Trait & Estimated D & P(random) & P(Brownian) \\ 

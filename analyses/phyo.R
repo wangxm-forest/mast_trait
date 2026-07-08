@@ -10,6 +10,7 @@ library(xtable)
 library(stringr)
 library(WorldFlora)
 library(caper)
+library(phylolm)
 # housekeeping
 rm(list=ls()) 
 options(stringsAsFactors = FALSE)
@@ -1081,14 +1082,14 @@ dStat <- rbind(d_angio,d_conifer)
 
 ###intercept only model with phylolm ----
 
-fit <- phylolm(logSeedWeight ~ 1,
-               data = conifer,
-               phy = phyconifer,
-               model = "OUrandomRoot")
-fit$optpar
+#fit <- phylolm(logSeedWeight ~ 1,
+              # data = conifer,
+              # phy = phyconifer,
+              # model = "OUrandomRoot")
+#fit$optpar
 # alpha is 50, exceed the upper bound.
-fit1 <- phylolm(logSeedWeight ~ 1,
-               data = angio,
-               phy = phyangio,
-               model = "OUrandomRoot")
-fit1$optpar
+#fit1 <- phylolm(logSeedWeight ~ 1,
+              # data = angio,
+              # phy = phyangio,
+              # model = "OUrandomRoot")
+#fit1$optpar
