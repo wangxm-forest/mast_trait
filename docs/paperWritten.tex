@@ -35,7 +35,7 @@ For fruit size data, we recorded the full range from the source, and took the me
 \subsection{Statistical Analysis}
 \subsubsection{Masting pattern and single trait}
 %emw25May2026 -- ordering is off here also ... It should start: To analyze the relationship between masting pattern and individual traits ....
-We used \texttt{phyloglm} function in the \texttt{phylolm} package (v. 2.6.2) to analyze the relationship between masting pattern and individual traits, treating masting as a binary response variable. To construct the phylogenetic tree, we verified all species names using the  \texttt{WorldFlora} package (v. 1.14-5) and updated all species names according to WCVP Backbone data (2025). We then constructed an ultrametric phylogenetic tree in R using the \texttt{phytools} (v. 2.4-4) and \texttt{ape} (v. 5.7-1) packages. We calculated the half-time using the equation $(\log(2)/\alpha)$ and compared it with the tree height (standardized to 1). This metric represents the time required for the influence of ancestral states to decrease by half.
+We used \texttt{phyloglm} function in the \texttt{phylolm} package (v. 2.6.2) to analyze the relationship between masting pattern and individual traits, treating masting as a binary response variable. To construct the phylogenetic tree, we verified all species names using the  \texttt{WorldFlora} package (v. 1.14-5) and updated all species names according to WCVP Backbone data (2025). We then constructed an ultrametric phylogenetic tree in R using the \texttt{phytools} (v. 2.4-4) and \texttt{ape} (v. 5.7-1) packages. We calculated the half-life using the equation $(\log(2)/\alpha)$ and compared it with the tree height (standardized to 1). This metric represents the time required for the influence of ancestral states to decrease by half.
 \subsubsection{Masting pattern with a multivariate analysis}
 %emw25May2026 -- ordering is off here also ... and you need to explain WHY you did this first. To supplement our single trait analyses (explained above) we also performed a multi....
 Since most traits in our dataset were categorical, we selected non-metric multidimensional scaling (NMDS) for a multivariate analysis. We used the \texttt{metaMDS} function in the \texttt{vegan} (v. 2.7-1) package and tested both \(k = 2\) and \(k = 3\) and selected \(k = 3\) based on the lower stress score. We then plotted trait distributions on two panels (NMDS1 vs.\ NMDS2 and NMDS2 vs.\ NMDS3) to check for potential patterns.
@@ -94,10 +94,10 @@ Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = 0.95
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Tue Jul  7 22:16:44 2026
+% Thu Jul  9 14:00:01 2026
 \begin{tabular}{lllrrrrrr}
   \hline
-Trait & Type & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-time \\ 
+Trait & Type & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-life \\ 
   \hline
 Seed weight (log) & Numeric & Seed weight (log) &  89 & 0.22 & 0.09 & 0.01 & 11.34 & 0.06 \\ 
   Fruit size (log) & Numeric & Fruit size (log) &  83 & 0.00 & 0.31 & 0.99 & 28.28 & 0.02 \\ 
@@ -114,7 +114,7 @@ Seed weight (log) & Numeric & Seed weight (log) &  89 & 0.22 & 0.09 & 0.01 & 11.
   Leaf longevity (years) & Numeric & Leaf longevity (years) &  16 & 0.26 & 0.95 & 0.78 & 0.90 & 0.77 \\ 
    \hline
 \end{tabular}}
-\caption{Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.}
+\caption{Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.}
 \label{tab:regressionangio}
 \end{table}
 
@@ -122,10 +122,10 @@ Seed weight (log) & Numeric & Seed weight (log) &  89 & 0.22 & 0.09 & 0.01 & 11.
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Tue Jul  7 22:16:44 2026
+% Thu Jul  9 14:00:01 2026
 \begin{tabular}{lllrrrrrr}
   \hline
-Trait & Type & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-time \\ 
+Trait & Type & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-life \\ 
   \hline
 Seed weight (log) & Numeric & Seed weight (log) &  58 & -0.01 & 0.24 & 0.98 & 53.48 & 0.01 \\ 
   Fruit size (log) & Numeric & Fruit size (log) &  59 & 0.03 & 0.35 & 0.94 & 51.67 & 0.01 \\ 
@@ -138,7 +138,7 @@ Seed weight (log) & Numeric & Seed weight (log) &  58 & -0.01 & 0.24 & 0.98 & 53
   Leaf longevity (years) & Numeric & Leaf longevity (years) &  37 & 0.14 & 0.34 & 0.67 & 54.36 & 0.01 \\ 
    \hline
 \end{tabular}}
-\caption{Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.}
+\caption{Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.}
 \label{tab:regressiongym}
 \end{table}
 
@@ -146,16 +146,16 @@ Seed weight (log) & Numeric & Seed weight (log) &  58 & -0.01 & 0.24 & 0.98 & 53
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Tue Jul  7 22:16:44 2026
+% Thu Jul  9 14:00:01 2026
 \begin{tabular}{lllrrrrrr}
   \hline
-Trait & Group & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-time \\ 
+Trait & Group & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-life \\ 
   \hline
 Seed weight (log) & Biotic and both & Seed weight (log) &  53 & 0.40 & 0.15 & 0.01 & 54.57 & 0.01 \\ 
   Seed weight (log) & Abiotic & Seed weight (log) &  36 & 0.12 & 0.13 & 0.36 & 50.33 & 0.01 \\ 
    \hline
 \end{tabular}}
-\caption{Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, and the half-time (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values less than 1 indicating relatively weak phylogenetic signal in the residuals.}
+\caption{Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.}
 \label{tab:regressionseed}
 \end{table}
 
@@ -163,7 +163,7 @@ Seed weight (log) & Biotic and both & Seed weight (log) &  53 & 0.40 & 0.15 & 0.
 \centering
 
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Tue Jul  7 22:16:44 2026
+% Thu Jul  9 14:00:01 2026
 \begin{tabular}{llr}
   \hline
 Group & Trait & $\lambda$ \\ 
@@ -192,7 +192,7 @@ Angiosperm & Seed weight (Log) & 0.95 \\
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Tue Jul  7 22:16:44 2026
+% Thu Jul  9 14:00:01 2026
 \begin{tabular}{lllll}
   \hline
 Group & Trait & Estimated D & P(random) & P(Brownian) \\ 
