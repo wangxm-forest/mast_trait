@@ -127,7 +127,9 @@ conifer_list <- list(
   list(name="Seed dormancy",  formula=mastEvent ~ seedDormancy, data=conifer, phy=phyconifer, method="logistic_MPLE", btol = 10),
   list(name="Reproductive type",       formula=mastEvent ~ typeMonoOrDio, data=conifer, phy=phyconifer, method="logistic_MPLE", btol = 10),
   list(name="Drought tolerance",    formula=mastEvent ~ droughtTolerance, data=conifer, phy=phyconifer, method="logistic_MPLE", btol = 20),
-  list(name="Leaf longevity (years)", formula=mastEvent ~ leafLongevity, data=conifer, phy=phyconifer, method="logistic_IG10", btol = 10)
+  list(name="Leaf longevity (years)", formula=mastEvent ~ leafLongevity, data=conifer, phy=phyconifer, method="logistic_IG10", btol = 10),
+  list(name="Masting only", formula=mastEvent ~ 1, data=conifer, phy=phyconifer, method="logistic_IG10", btol = 10)
+  
 )
 
 
@@ -140,7 +142,8 @@ angio_list <- list(
   list(name="Pollination mode",   formula=mastEvent ~ pollination, data=angio,   phy=phyangio,   method="logistic_MPLE", btol = 10),
   list(name="Reproductive type",         formula=mastEvent ~ typeMonoOrDio, data=angio,   phy=phyangio,   method="logistic_MPLE", btol = 10),
   list(name="Drought tolerance",      formula=mastEvent ~ droughtTolerance, data=angio,   phy=phyangio,   method="logistic_MPLE", btol = 10),
-  list(name="Leaf longevity (years)",   formula=mastEvent ~ leafLongevity, data=angio,   phy=phyangio,   method="logistic_IG10", btol = 10)
+  list(name="Leaf longevity (years)",   formula=mastEvent ~ leafLongevity, data=angio,   phy=phyangio,   method="logistic_IG10", btol = 10),
+  list(name="Masting only",   formula=mastEvent ~ 1, data=angio,   phy=phyangio,   method="logistic_IG10", btol = 10)
 )
 
 
