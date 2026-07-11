@@ -76,8 +76,9 @@ Among traits related to pollination efficiency, we found pollination mode the on
 \subsubsection{Multivariate analysis}
 Masting is not aligned well along any axis in the NMDS analysis. We do not find any evidence that the combination of traits for any of the hypotheses is driving the pattern of masting.
 \subsubsection{Phylogenetic signal}
-Strong masting has a moderate moderate phylogenetic signal in both gymnosperms group (estimated D = 0.51) and angiosperms (estimated D = 0.58) group (Table \ref{tab:dstat}).
-Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = 0.95) and gymnosperm ($\lambda$ = 0.97). We can see the similarity in certain group in Figure \ref{fig:coneptangio} it's relatively reliable estimate. Dispersal mode, leaf longevity, pollination mode and reproductive type also showed high phylogenetic signal in Table \ref{tab:lambda}, but be cautious that $\lambda$ for categorical traits might not be accurate. 
+Strong masting has a moderate phylogenetic signal in both gymnosperms group (estimated D = 0.51) and angiosperms (estimated D = 0.58) group (Table \ref{tab:dstat}).
+Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = 0.95) and gymnosperm ($\lambda$ = 0.97). We can see the similarity in certain group in Figure \ref{fig:coneptangio}. Dispersal mode, leaf longevity, pollination mode and reproductive type also showed high phylogenetic signal in Table \ref{tab:lambda}, but be cautious that $\lambda$ for categorical traits is calculated differently and we should not compare them directly with the $\lambda$ for continuous traits.
+
 \bibliographystyle{besjournals}
 \bibliography{mastTreeRef} 
 
@@ -94,7 +95,7 @@ Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = 0.95
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Thu Jul  9 14:00:01 2026
+% Fri Jul 10 20:12:31 2026
 \begin{tabular}{lllrrrrrr}
   \hline
 Trait & Type & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-life \\ 
@@ -122,7 +123,7 @@ Seed weight (log) & Numeric & Seed weight (log) &  89 & 0.22 & 0.09 & 0.01 & 11.
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Thu Jul  9 14:00:01 2026
+% Fri Jul 10 20:12:31 2026
 \begin{tabular}{lllrrrrrr}
   \hline
 Trait & Type & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-life \\ 
@@ -146,7 +147,7 @@ Seed weight (log) & Numeric & Seed weight (log) &  58 & -0.01 & 0.24 & 0.98 & 53
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Thu Jul  9 14:00:01 2026
+% Fri Jul 10 20:12:31 2026
 \begin{tabular}{lllrrrrrr}
   \hline
 Trait & Group & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-life \\ 
@@ -163,7 +164,7 @@ Seed weight (log) & Biotic and both & Seed weight (log) &  53 & 0.40 & 0.15 & 0.
 \centering
 
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Thu Jul  9 14:00:01 2026
+% Fri Jul 10 20:12:31 2026
 \begin{tabular}{llr}
   \hline
 Group & Trait & $\lambda$ \\ 
@@ -192,7 +193,7 @@ Angiosperm & Seed weight (Log) & 0.95 \\
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Thu Jul  9 14:00:01 2026
+% Fri Jul 10 20:12:31 2026
 \begin{tabular}{lllll}
   \hline
 Group & Trait & Estimated D & P(random) & P(Brownian) \\ 
