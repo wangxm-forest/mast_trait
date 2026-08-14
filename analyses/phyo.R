@@ -53,6 +53,8 @@ if(maketree){
   d$latbi <- paste(d$genusName, d$speciesName, sep = "_")
   unique(d$latbi)
   d$latbi <- gsub(" ", "_", d$latbi)
+  d <- subset(d, select = 3:34)
+  write.csv(d,"cleanSilvicsSp.csv")
   ## getting a list of genera in S&B's phylo
   phy.genera<-unlist(
     lapply(strsplit(phy.plants$tip.label, "_"),function(x){return(x[1])})
@@ -254,6 +256,7 @@ if(maketree){
   unique(d$latbi)
   
   setdiff(d$latbi,silvicsSpliced$tip.label)
+  setdiff(silvicsSpliced$tip.label, d$latbi)
   # write out the tree
   write.tree(silvicsSpliced,"output/silvicsPhylogenyFull.tre")
 }
