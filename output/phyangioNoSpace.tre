@@ -1,0 +1,265 @@
+#NEXUS
+[R-package PHYTOOLS, Fri Aug 14 14:28:42 2026]
+
+BEGIN TAXA;
+	DIMENSIONS NTAX = 126;
+	TAXLABELS
+		Acaciakoa
+		Acerglabrumvar.glabrum
+		Acermacrophyllum
+		Acernegundo
+		Acerpensylvanicum
+		Acerrubrum
+		Acersaccharinum
+		Acersaccharum
+		Acersaccharumsubsp.nigrum
+		Aesculusflava
+		Aesculusglabra
+		Ailanthusaltissima
+		Alnusglutinosa
+		Alnusrubra
+		Arbutusmenziesii
+		Betulaalleghaniensis
+		Betulalenta
+		Betulanigra
+		Betulapapyrifera
+		Calophyllumcalaba
+		Carpinuscaroliniana
+		Caryaaquatica
+		Caryacordiformis
+		Caryaglabra
+		Caryaillinoinensis
+		Caryalaciniosa
+		Caryamyristiciformis
+		Caryaovata
+		Caryatomentosa
+		Cecropiapeltata
+		Cedrelaodorata
+		Celtislaevigata
+		Celtisoccidentalis
+		Cerciscanadensis
+		Chrysolepischrysophylla
+		Cordiaalliodora
+		Cornusflorida
+		Dacryodesexcelsa
+		Didymopanaxmorototoni
+		Diospyrosvirginiana
+		Eucalyptusglobulus
+		Eucalyptusgrandis
+		Eucalyptusrobusta
+		Eucalyptussaligna
+		Fagusgrandifolia
+		Fraxinusamericana
+		Fraxinuslatifolia
+		Fraxinusnigra
+		Fraxinuspennsylvanica
+		Fraxinusprofunda
+		Gleditsiatriacanthos
+		Gordonialasianthus
+		Grevillearobusta
+		Halesiacarolina
+		Ilexopaca
+		Juglanscinerea
+		Juglansnigra
+		Liquidambarstyraciflua
+		Liriodendrontulipifera
+		Maclurapomifera
+		Magnoliaacuminata
+		Magnoliafraseri
+		Magnoliagrandiflora
+		Magnoliavirginiana
+		Manilkarabidentata
+		Melaleucaquinquenervia
+		Metrosiderospolymorpha
+		Morusrubra
+		Neltumapallida
+		Notholithocarpusdensiflorus
+		Nyssaaquatica
+		Nyssabiflora
+		Nyssaogeche
+		Ostryavirginiana
+		Oxydendrumarboreum
+		Paulowniatomentosa
+		Perseaborbonia
+		Platanusoccidentalis
+		Populusbalsamifera
+		Populusdeltoidessubsp.monilifera
+		Populusgrandidentata
+		Populusheterophylla
+		Populustremuloides
+		Populustrichocarpa
+		Prunuspensylvanica
+		Prunusserotina
+		Quercusalba
+		Quercusbicolor
+		Quercuschrysolepis
+		Quercuscoccinea
+		Quercusdouglasii
+		Quercusfalcata
+		Quercusgarryana
+		Quercuskelloggii
+		Quercuslaevis
+		Quercuslaurifolia
+		Quercuslyrata
+		Quercusmacrocarpa
+		Quercusmichauxii
+		Quercusmuehlenbergii
+		Quercusnigra
+		Quercuspagoda
+		Quercuspalustris
+		Quercusphellos
+		Quercusprinus
+		Quercusrubra
+		Quercusshumardii
+		Quercusstellata
+		Quercustexana
+		Quercusvelutina
+		Quercusvirginiana
+		Robiniapseudoacacia
+		Sabalpalmetto
+		Salixnigra
+		Samaneasaman
+		Sassafrasalbidum
+		Tabebuiaheterophylla
+		Tiliaamericana
+		Tiliaheterophylla
+		Ulmusalata
+		Ulmusamericana
+		Ulmuscrassifolia
+		Ulmusrubra
+		Ulmusserotina
+		Ulmusthomasii
+		Umbellulariacalifornica
+	;
+END;
+BEGIN TREES;
+	TRANSLATE
+		1	Acaciakoa,
+		2	Acerglabrumvar.glabrum,
+		3	Acermacrophyllum,
+		4	Acernegundo,
+		5	Acerpensylvanicum,
+		6	Acerrubrum,
+		7	Acersaccharinum,
+		8	Acersaccharum,
+		9	Acersaccharumsubsp.nigrum,
+		10	Aesculusflava,
+		11	Aesculusglabra,
+		12	Ailanthusaltissima,
+		13	Alnusglutinosa,
+		14	Alnusrubra,
+		15	Arbutusmenziesii,
+		16	Betulaalleghaniensis,
+		17	Betulalenta,
+		18	Betulanigra,
+		19	Betulapapyrifera,
+		20	Calophyllumcalaba,
+		21	Carpinuscaroliniana,
+		22	Caryaaquatica,
+		23	Caryacordiformis,
+		24	Caryaglabra,
+		25	Caryaillinoinensis,
+		26	Caryalaciniosa,
+		27	Caryamyristiciformis,
+		28	Caryaovata,
+		29	Caryatomentosa,
+		30	Cecropiapeltata,
+		31	Cedrelaodorata,
+		32	Celtislaevigata,
+		33	Celtisoccidentalis,
+		34	Cerciscanadensis,
+		35	Chrysolepischrysophylla,
+		36	Cordiaalliodora,
+		37	Cornusflorida,
+		38	Dacryodesexcelsa,
+		39	Didymopanaxmorototoni,
+		40	Diospyrosvirginiana,
+		41	Eucalyptusglobulus,
+		42	Eucalyptusgrandis,
+		43	Eucalyptusrobusta,
+		44	Eucalyptussaligna,
+		45	Fagusgrandifolia,
+		46	Fraxinusamericana,
+		47	Fraxinuslatifolia,
+		48	Fraxinusnigra,
+		49	Fraxinuspennsylvanica,
+		50	Fraxinusprofunda,
+		51	Gleditsiatriacanthos,
+		52	Gordonialasianthus,
+		53	Grevillearobusta,
+		54	Halesiacarolina,
+		55	Ilexopaca,
+		56	Juglanscinerea,
+		57	Juglansnigra,
+		58	Liquidambarstyraciflua,
+		59	Liriodendrontulipifera,
+		60	Maclurapomifera,
+		61	Magnoliaacuminata,
+		62	Magnoliafraseri,
+		63	Magnoliagrandiflora,
+		64	Magnoliavirginiana,
+		65	Manilkarabidentata,
+		66	Melaleucaquinquenervia,
+		67	Metrosiderospolymorpha,
+		68	Morusrubra,
+		69	Neltumapallida,
+		70	Notholithocarpusdensiflorus,
+		71	Nyssaaquatica,
+		72	Nyssabiflora,
+		73	Nyssaogeche,
+		74	Ostryavirginiana,
+		75	Oxydendrumarboreum,
+		76	Paulowniatomentosa,
+		77	Perseaborbonia,
+		78	Platanusoccidentalis,
+		79	Populusbalsamifera,
+		80	Populusdeltoidessubsp.monilifera,
+		81	Populusgrandidentata,
+		82	Populusheterophylla,
+		83	Populustremuloides,
+		84	Populustrichocarpa,
+		85	Prunuspensylvanica,
+		86	Prunusserotina,
+		87	Quercusalba,
+		88	Quercusbicolor,
+		89	Quercuschrysolepis,
+		90	Quercuscoccinea,
+		91	Quercusdouglasii,
+		92	Quercusfalcata,
+		93	Quercusgarryana,
+		94	Quercuskelloggii,
+		95	Quercuslaevis,
+		96	Quercuslaurifolia,
+		97	Quercuslyrata,
+		98	Quercusmacrocarpa,
+		99	Quercusmichauxii,
+		100	Quercusmuehlenbergii,
+		101	Quercusnigra,
+		102	Quercuspagoda,
+		103	Quercuspalustris,
+		104	Quercusphellos,
+		105	Quercusprinus,
+		106	Quercusrubra,
+		107	Quercusshumardii,
+		108	Quercusstellata,
+		109	Quercustexana,
+		110	Quercusvelutina,
+		111	Quercusvirginiana,
+		112	Robiniapseudoacacia,
+		113	Sabalpalmetto,
+		114	Salixnigra,
+		115	Samaneasaman,
+		116	Sassafrasalbidum,
+		117	Tabebuiaheterophylla,
+		118	Tiliaamericana,
+		119	Tiliaheterophylla,
+		120	Ulmusalata,
+		121	Ulmusamericana,
+		122	Ulmuscrassifolia,
+		123	Ulmusrubra,
+		124	Ulmusserotina,
+		125	Ulmusthomasii,
+		126	Umbellulariacalifornica
+	;
+	TREE * UNTITLED = [&R] ((((((((20:94.8654616,(114:38.0388446,(((80:2.9558196,(79:2.6120036,84:2.6120036):0.343816):1.252627,(83:1.9030126,81:1.9030126):2.305434):0.512763,82:4.7212096):33.317635):56.826617):20.920776,((((45:40.2317006,(35:12.9109076,((97:7.2434936,(94:4.3834156,(100:4.0119546,(93:3.1791976,(108:3.0661446,((88:2.7810986,(99:1.6736756,98:1.6736756):1.107423):0.065101,(87:2.4966496,111:2.4966496):0.34955):0.219945):0.113053):0.832757):0.371461):2.860078):4.533498,((104:4.9019516,((96:4.6663796,((103:3.3530316,106:3.3530316):1.083252,110:4.4362836):0.230096):0.025239,(90:3.9282316,((101:2.8972626,(95:2.1171136,109:2.1171136):0.780149):0.49811,107:3.3953726):0.532859):0.763387):0.210333):4.797188,89:9.6991396):2.077852,92:11.7769916,91:11.7769916,102:11.7769916,105:11.7769916):1.133916):27.320793,70:40.2317006):57.648155,((((25:1.6985236,(28:1.0187666,(23:0.9515506,(((22:0.6180636,27:0.6180636):0.027919,26:0.6459826):0.036752,24:0.6827346):0.268816):0.067216):0.679757):3.067633,29:4.7661566):21.776645,(57:13.1569426,56:13.1569426):13.385859):64.106521,((14:32.5879696,13:32.5879696):35.687772,((18:36.8689856,((19:2.9794096,16:2.9794096):33.566959,17:36.5463686):0.322617):27.990205,(74:12.8512256,21:12.8512256):52.007965):3.416551):22.373581):7.230533):13.268825,((85:26.5303246,86:26.5303246):72.431492,((((60:42.4639176,68:42.4639176):26.048553,30:68.5124706):4.956685,(32:0.9703706,33:0.9703706):72.498785):5.701507,(123:6.4360706,(121:3.6266716,120:3.6266716):2.809399,125:6.4360706,122:6.4360706,124:6.4360706):72.734592):19.791154)Rosales.rn.d8s.tre:12.186864)mrcaott371ott2511:1.553188,((112:77.9635096,(((1:25.5370416,115:25.5370416):3.088805,69:28.6258466):29.477392,51:58.1032386):19.860271):6.063258,34:84.0267676):28.675101)mrcaott371ott579:3.084369)mrcaott2ott371:2.793039,(((118:52.1293658,119:52.1293658)NA:52.1293658,(38:79.9183466,((((7:1.3420206,6:1.3420206):11.989244,(3:12.8102866,((4:11.7498046,5:11.7498046):0.716653,((8:0.2038256,2:0.2038256):0.624889,9:0.8287146):11.637743):0.343829):0.520978):31.805872,(10:4.0600526,11:4.0600526):41.077084):34.011271,(12:66.8898036,31:66.8898036):12.258604):0.769939):24.340385)mrcaott96ott378:12.120034,(66:40.2334226,(67:36.3736266,((44:12.5195876,42:12.5195876):22.014847,41:34.5344346,43:34.5344346):1.839192):3.859796):76.145343)mrcaott96ott1276:2.200511)rosids:3.826488,58:122.4057646)mrcaott2ott2464:1.329145,((((36:88.2484496,((76:47.2717006,117:47.2717006):23.749171,((48:8.0456336,(49:1.6435416,46:1.6435416):6.402092):0.009078,47:8.0547116,50:8.0547116):62.96616):17.227578)mrcaott248ott2108:18.493634,(39:102.6935136,55:102.6935136)campanulids:4.04857)mrcaott248ott320:5.599318,((40:94.3585536,(65:61.9121616,52:61.9121616):32.446392):0.525102,((75:46.1438786,15:46.1438786):47.089932,54:93.2338106):1.649845):17.457746)mrcaott248ott650:2.225571,(((73:18.3464096,71:18.3464096):0.876389,72:19.2227986):73.37895,37:92.6017486):21.965224)mrcaott248ott27233:9.167937)Pentapetalae:6.590294,(53:106.2217056,78:106.2217056):24.103498)mrcaott2ott969:5.433534,113:135.7587376)mrcaott2ott121:0.154122,(((126:9.7354556,116:9.7354556):15.518379,77:25.2538346):102.448025,((61:56.7867476,63:56.7867476,62:56.7867476,64:56.7867476):8.484911,59:65.2716586):62.430201)mrcaott890ott9684:8.211)Mesangiospermae;
+END;
