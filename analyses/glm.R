@@ -21,7 +21,7 @@ setwd("C:/PhD/Project/PhD_thesis/mast_trait")
 ## Data preparation ----
 
 # Load & prepare Data
-d <- read.csv("data/cleanSilvics.csv")
+d <- read.csv("data/cleanSilvicsSp.csv")
 phytree <- read.tree("output/silvicsPhylogenyFull.tre")
 
 d$latbi <- gsub(" ", "_", d$latbi)
@@ -32,6 +32,9 @@ d$mastEvent <- ifelse(d$mastEvent == "Y", 1, 0)
 d$group <- ifelse(d$familyName %in% c("Pinaceae", "Taxodiaceae"),
                   "conifer", "angiosperm")
 d$group <- factor(d$group)
+
+setdiff(d$latbi, phytree$tip.label)
+setdiff(phytree$tip.label, d$latbi)
 
 conifer <- d[d$familyName %in% c("Pinaceae", "Taxodiaceae"), ]
 angio   <- d[!(d$familyName %in% c("Pinaceae", "Taxodiaceae")), ]
@@ -73,6 +76,8 @@ phyangio   <- drop.tip(phytree, setdiff(phytree$tip.label, angio$latbi))
 # Standardize tree height to be 1
 phyconifer <- phytools::rescale(phyconifer, model="depth", depth=1)
 phyangio <- phytools::rescale(phyangio, model="depth", depth=1) 
+
+
 #smallTreeUltra <- force.ultrametric(
 #  smallTree,
 #  method = "extend"  # Extends terminal branches

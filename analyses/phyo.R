@@ -1,6 +1,6 @@
-#### Phylogeny####
-####Start by Mao####
-####Sep 17####
+## Phylogeny##
+##Start by Mao##
+##Sep 17##
 
 library(ape)
 library(phytools)
@@ -16,8 +16,9 @@ rm(list=ls())
 options(stringsAsFactors = FALSE)
 
 setwd("C:/PhD/Project/PhD_thesis/mast_trait/")
-d <- read.csv("data/cleanSilvics.csv")
+d <- read.csv("data/cleanSilvicsSp.csv")
 
+## Make the phylogenetic tree ----
 maketree <- FALSE
 if(maketree){
   phy.plants<-read.tree("C:/PhD/Project/egret/analyses/input/ALLMB.tre")
@@ -156,7 +157,7 @@ if(maketree){
   missing_idx <- is.na(d$sppMatch)
   matched_values <- match(d$latbi[missing_idx], matchnona$silvicsname)
   
-  # match spp names back in usda df
+  # match spp names back in original df
   d$sppMatch[missing_idx] <- matchnona$sppMatch[matched_values]
   # check
   d[!duplicated(d$latbi), c("latbi", "sppMatch")]
@@ -235,7 +236,7 @@ if(maketree){
   matchednamessilvics1 <- matchednamessilvics[!is.na(matchednamessilvics$sppMatch), ]
   name_map <- setNames(matchednamessilvics1$silvicsname, matchednamessilvics1$sppMatch)
   
-  # replace the tip name with the name in usda
+  # replace the tip name with the name in original data
   silvicsTree$tip.label <- ifelse(silvicsTree$tip.label %in% names(name_map),
                                   name_map[silvicsTree$tip.label],
                                   silvicsTree$tip.label)
@@ -254,13 +255,14 @@ if(maketree){
   silvicsSpliced$tip.label[duplicated(silvicsSpliced$tip.label)]
   unique(silvicsSpliced$tip.label)
   unique(d$latbi)
-  
+  # sanity check
   setdiff(d$latbi,silvicsSpliced$tip.label)
   setdiff(silvicsSpliced$tip.label, d$latbi)
   # write out the tree
   write.tree(silvicsSpliced,"output/silvicsPhylogenyFull.tre")
 }
 
+## Data preparation ----
 silvicsTree <- read.tree("output/silvicsPhylogenyFull.tre")
 masting <- d[!duplicated(d$latbi), c("latbi","mastEvent")]
 masting$mastEvent[is.na(masting$mastEvent)] <- "No information"
@@ -286,6 +288,7 @@ angio$logSeedSize   <- log(angio$seedSizeAve)
 
 allspp <- silvicsTree$tip.label
 
+## Preliminary visualization on phylogenetic tree ----
 preliminaryPhylo <- FALSE
 if(preliminaryPhylo){
   # Assign colors to each dormancy class
@@ -496,6 +499,8 @@ if(preliminaryPhylo){
   
   dev.off()
 }
+
+## Plot Querces tree  ----
 quercus <- FALSE
 if(quercus){# Quercus tree
   phy.plants<-read.tree("data/quercusFullTree.tre")
@@ -530,7 +535,8 @@ if(quercus){# Quercus tree
   
   dev.off()
 }
-# Calculating phylogenetic signal -- angiosperm
+## Calculating phylogenetic signal -- angiosperm ----
+
 # Continuous
 weight <- angio$logSeedWeight
 names(weight) <- angio$latbi
@@ -653,7 +659,7 @@ weightTree <- drop.tip(phyangio,
                                names(weight)))
 name.check(weightTree, weight)
 
-
+## Final phylogenetic tree with different color coding ----
 phyloTraits <- FALSE
 if(phyloTraits){
   pdf("output/figures/weightTree1.pdf", width = 12, height = 13)
@@ -976,7 +982,7 @@ if(phyloTraits){
   
 }
 
-# Calculating phylogenetic signal -- gymnosperm
+### Calculating phylogenetic signal -- gymnosperm ----
 weight <- conifer$logSeedWeight
 names(weight) <- conifer$latbi
 weightLambda <- phylosig(phyconifer, weight, method = "lambda", test = TRUE)
