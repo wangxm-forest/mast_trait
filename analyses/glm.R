@@ -187,7 +187,9 @@ for (m in angio_list) {
   angio_results <- rbind(angio_results, tbl)
 }
 
+glmResult <- rbind(conifer_results, angio_results)
 
+write.csv(glmResult, "output/glmResult.csv")
 
 #Make a table to present the results:
 clean_results <- function(results) {
@@ -306,11 +308,11 @@ seed_results <- cbind(
 
 ###Plot seed weight and model fit ----
 
-b0 <- -1.189452530
-b1 <- 0.219796507
+b0 <- -1.180608067
+b1 <- 0.212662421
 
-b0_bio <- -1.9024530
-b1_bio <- 0.4045427
+b0_bio <- -1.8535132
+b1_bio <- 0.4080696
 
 median(angio$seedWeights, na.rm = TRUE)
 median(angioBio$seedWeights, na.rm = TRUE)
@@ -864,3 +866,16 @@ ggsave(
   height = 18
 )
 
+###Rerun the phyloglm model with z-scored values to check if alpha changes ----
+
+angio$z_score_weight <- (angio$logSeedWeight - mean(angio$logSeedWeight, na.rm = TRUE)) / sd(angio$logSeedWeight, na.rm = TRUE)
+
+z_score_model <- phyloglm(
+  mastEvent ~ z_score_weight,
+  data = angio,
+  phy = phyangio,
+  method = "logistic_IG10",
+  btol = 10
+)
+
+# alpha is the same even after z-scored

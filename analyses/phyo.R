@@ -54,7 +54,7 @@ if(maketree){
   d$latbi <- paste(d$genusName, d$speciesName, sep = "_")
   unique(d$latbi)
   d$latbi <- gsub(" ", "_", d$latbi)
-  d <- subset(d, select = 3:34)
+  d <- subset(d, select = 2:33)
   write.csv(d,"cleanSilvicsSp.csv")
   ## getting a list of genera in S&B's phylo
   phy.genera<-unlist(
@@ -133,7 +133,7 @@ if(maketree){
   #phy.sps.uniqu[grepl("Acer_saccharum", phy.sps.uniqu)]
   matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Acer_glabrum_var._glabrum")] <-  "Acer_saccharum_subsp._saccharum"
   
-  phy.sps.uniqu[grepl("Schefflera_morototoni", phy.sps.uniqu)]
+  #phy.sps.uniqu[grepl("Schefflera_morototoni", phy.sps.uniqu)]
   matchednamessilvics$sppMatch[which(matchednamessilvics$silvicsname == "Didymopanax_morototoni")] <-  "Schefflera_morototoni"
   
   #phy.sps.uniqu[grepl("Eucalyptus_globulus", phy.sps.uniqu)]
