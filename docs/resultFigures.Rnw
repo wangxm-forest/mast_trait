@@ -139,14 +139,14 @@ colnames(lambda) <-
 \begin{figure}[p]
 \centering
 \includegraphics[width=\textwidth, height=0.8\textheight]{../output/figures/rawDataWithStatsAngio.pdf}
-\caption{How plant traits related to different hypotheses differ in strong masting and weak masting for angiosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (a-c, i) or proportional histograms (d-h) separated by species categorized as strong masting (red) or weak masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate), and phylogenetic signal parameter $\alpha$. Full model results are show in Table \ref{tab:regressionangio}.}
+\caption{How plant traits related to different hypotheses differ in strong masting and weak masting for angiosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (a-c, i) or proportional histograms (d-h) separated by species categorized as strong masting (red) or weak masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate). Full model results are show in Table \ref{tab:regressionangio}.}
 \label{fig:rawangio}
 \end{figure}
 
 \begin{figure}[p]
 \centering
 \includegraphics[width=\textwidth,height=0.8\textheight]{../output/figures/rawDataWithStatsCon.pdf}
-\caption{How plant traits related to different hypotheses differ in strong masting and weak masting for gymnosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (a-c, i) or proportional histograms (d-h) separated by species categorized as strong masting (red) or weak masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate), and phylogenetic signal parameter $\alpha$. Full model results are show in Table \ref{tab:regressiongym}.}
+\caption{How plant traits related to different hypotheses differ in strong masting and weak masting for gymnosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (a-c, i) or proportional histograms (d-h) separated by species categorized as strong masting (red) or weak masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate). Full model results are show in Table \ref{tab:regressiongym}.}
 \label{fig:rawcon}
 \end{figure}
 \restoregeometry
@@ -163,7 +163,7 @@ colnames(lambda) <-
 \begin{enumerate}
 \item Predation satiation: seed weight only with a small effect and only for angiosperm
 \begin{enumerate}
-\item Only seed weight is related to masting with larger seeds increasing the probability of being a strong masting species (Figure \ref{fig:rawangio}). For angiosperms only, tripling of seed weight (from a median seed weight of 90.9g to 272.7g) is predicted to increase the likelihood of strong masting from 0.45 to 0.51 (Figure \ref{fig:seedweight}).
+\item Only seed weight is related to masting with larger seeds increasing the probability of being a strong masting species (Figure \ref{fig:rawangio}). For angiosperms only, tripling of seed weight (from a median seed weight of 90.9g to 272.7g) is predicted to increase the likelihood of strong masting from 0.45 to 0.50 (Figure \ref{fig:seedweight}).
 And this increase is stronger in biotic-dispersed seed group, tripling of seed weight (from a median seed weight of 1087.15g to 3261.45g) is predicted to increase the likelihood of strong masting from 0.72 to 0.80 (Table \ref{tab:regressionseed}; Figure \ref{fig:seedweight}). 
 
 \end{enumerate}
@@ -230,7 +230,7 @@ And this increase is stronger in biotic-dispersed seed group, tripling of seed w
 \resizebox{\textwidth}{!}{
 <<echo=FALSE, results=tex>>=
 angioTable <- xtable(angio_results, 
-                 caption = "Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.", 
+                 caption = "Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), the half-life, which represents the time required for the influence of ancestral states to decrease by half, where larger values suggests the residuals are more affected by phylogenetic history than the environment (and vice versa for larger values). Given our trees are scaled to 1, a value near 1 thus means phylogenetic correlation persists across the phylogenetic depth.", 
                  label = "tab:regressionangio")
 print(angioTable,
       type="latex",
@@ -240,7 +240,7 @@ print(angioTable,
       sanitize.colnames.function = identity)
 @
 }
-\caption{Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.}
+\caption{Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), the half-life, which represents the time required for the influence of ancestral states to decrease by half, where larger values suggests the residuals are more affected by phylogenetic history than the environment (and vice versa for larger values). Given our trees are scaled to 1, a value near 1 thus means phylogenetic correlation persists across the phylogenetic depth. For more interpretation, see \cite{cooper2016cautionary}.}
 \label{tab:regressionangio}
 \end{table}
 
@@ -249,7 +249,7 @@ print(angioTable,
 \resizebox{\textwidth}{!}{
 <<echo=FALSE, results=tex>>=
 conTable <- xtable(conifer_results, 
-                 caption = "Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.", 
+                 caption = "Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), the half-life, which represents the time required for the influence of ancestral states to decrease by half, where larger values suggests the residuals are more affected by phylogenetic history than the environment (and vice versa for larger values). Given our trees are scaled to 1, a value near 1 thus means phylogenetic correlation persists across the phylogenetic depth. For more interpretation, see cooper2016cautionary.", 
                  label = "tab:regressiongym")
 print(conTable,
       type="latex",
@@ -259,7 +259,7 @@ print(conTable,
       sanitize.colnames.function = identity)
 @
 }
-\caption{Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.}
+\caption{Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), the half-life, which represents the time required for the influence of ancestral states to decrease by half, where larger values suggests the residuals are more affected by phylogenetic history than the environment (and vice versa for larger values). Given our trees are scaled to 1, a value near 1 thus means phylogenetic correlation persists across the phylogenetic depth. For more interpretation, see \cite{cooper2016cautionary}.}
 \label{tab:regressiongym}
 \end{table}
 
@@ -268,7 +268,7 @@ print(conTable,
 \resizebox{\textwidth}{!}{
 <<echo=FALSE, results=tex>>=
 seedTable <- xtable(seed_results, 
-                 caption = "Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.", 
+                 caption = "Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), the half-life, which represents the time required for the influence of ancestral states to decrease by half, where larger values suggests the residuals are more affected by phylogenetic history than the environment (and vice versa for larger values). Given our trees are scaled to 1, a value near 1 thus means phylogenetic correlation persists across the phylogenetic depth. For more interpretation, see cooper2016cautionary.", 
                  label = "tab:regressionseed")
 print(seedTable,
       type="latex",
@@ -278,7 +278,7 @@ print(seedTable,
       sanitize.colnames.function = identity)
 @
 }
-\caption{Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.}
+\caption{Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), the half-life, which represents the time required for the influence of ancestral states to decrease by half, where larger values suggests the residuals are more affected by phylogenetic history than the environment (and vice versa for larger values). Given our trees are scaled to 1, a value near 1 thus means phylogenetic correlation persists across the phylogenetic depth. For more interpretation, see \cite{cooper2016cautionary}.}
 \label{tab:regressionseed}
 \end{table}
 
@@ -319,6 +319,9 @@ print(dStatTable,
 \caption{Phylogenetic Signal (D-statistic) for the phylogenetic signal of binary traits, with probabilities calculated under a random phylogenetic structure and under a Brownian motion phylogenetic structure. D = 1 indicates the trait is randomly distributed across the phylogeny; D = 0 indicates the trait follows a Brownian motion model; 0 < D < 1 indivates moderate phylogenetic signal; D < 0 indicates the trait is more clumped than expected under Brownian motion; and D > 1 indicates overdispersion. P random is the p-value for the null hypothesis that the trait is randomly distributed across the phylogeny (no phylogenetic signal), and P Brownian is the p-value for the null hypothesis that the trait follows a Brownian motion model (strong phylogenetic signal). A low p-value indicates rejection of the corresponding null hypothesis.}
 \label{tab:dstat}
 \end{table}
+
+\bibliographystyle{besjournals}
+\bibliography{mastTreeRef} 
 
 \end{document}
 
