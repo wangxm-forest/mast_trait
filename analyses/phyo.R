@@ -1045,12 +1045,6 @@ phylo.d(comp, binvar=seedDormancy)
 # Estimated D :  0.9764245
 # Probability of E(D) resulting from no (random) phylogenetic structure :  0.412
 # Probability of E(D) resulting from Brownian phylogenetic structure    :  0
-dRep <- conifer[, c("typeMonoOrDio", "latbi")]
-comp <- comparative.data(phyconifer, dRep, names.col="latbi", vcv=TRUE)
-phylo.d(comp, binvar=typeMonoOrDio)
-# Estimated D :  -0.5188342
-# Probability of E(D) resulting from no (random) phylogenetic structure :  0
-# Probability of E(D) resulting from Brownian phylogenetic structure    :  0.885
 dMast <- conifer[, c("mastEvent", "latbi")]
 comp <- comparative.data(phyconifer, dMast, names.col="latbi", vcv=TRUE)
 phylo.d(comp, binvar=mastEvent)
@@ -1059,11 +1053,11 @@ phylo.d(comp, binvar=mastEvent)
 #Probability of E(D) resulting from Brownian phylogenetic structure    :  0.097
 lambda_conifer <- data.frame(
   Group = 
-    rep("Gymnosperm", 6)
+    rep("Gymnosperm", 7)
   ,
   Trait = c("Seed weight (Log)", "Fruit size (Log)",
             "Oil content %", "Leaf longevity",
-            "Dispersal mode", 
+            "Dispersal mode",  "Reproductive type",
             "Drought tolerance"),
   lambda = c(
     round(weightLambda$lambda,3),
@@ -1071,17 +1065,18 @@ lambda_conifer <- data.frame(
     round(oilLambda$lambda,3),
     round(leafLambda$lambda,3),
     round(dispLambda$opt$lambda,3),
+    round(repLambda$opt$lambda,3),
     round(droughtLambda$opt$lambda,3)
   ),
   stringsAsFactors = FALSE
 )
 d_conifer <- data.frame(
   Group = 
-    rep("Gymnosperm", 3)
+    rep("Gymnosperm", 2)
   ,
-  Trait = c("Masting", "Seed dormancy", "Reproductive type"),
-  "Estimated D" = c("0.51","0.98", "-0.52"
-  ),"P(random)" = c("0.02","0.41", "0"),"P(Brownian)" = c("0.10","0", "0.89"),
+  Trait = c("Masting", "Seed dormancy"),
+  "Estimated D" = c("0.51","0.98"
+  ),"P(random)" = c("0.02","0.41"),"P(Brownian)" = c("0.10","0"),
   
   stringsAsFactors = FALSE,check.names = FALSE
 )
