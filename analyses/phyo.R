@@ -638,9 +638,9 @@ d_angio <- data.frame(
   Group = 
     rep("Angiosperm", 2)
   ,
-  Trait = c("Seed dormancy", "Masting"),
-  "Estimated D" = c("0.25","0.58"
-  ),"P(random)" = c("0","0"),"P(Brownian)" = c("0.16","0.01"),
+  Trait = c("Masting", "Seed dormancy"),
+  "Estimated D" = c("0.58", "0.25"
+  ),"P(random)" = c("0","0"),"P(Brownian)" = c("0.01", "0.16"),
   
   stringsAsFactors = FALSE,check.names = FALSE
 )
