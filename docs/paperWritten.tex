@@ -61,13 +61,13 @@ To check for the phylogenetic signal for our traits, we used different metrics f
 \section{Results}
 \subsubsection{Structure of Data}
 In total, our dataset included 188 species, comprising 124 angiosperm species and 64 gymnosperm species. Among angiosperms, 79\% (98/124) of species had masting data available, with strong masting and weak masting species occurring in approximately equal proportions 52\% (51/98). Among gymnosperms, 95\% (61/64) of species had masting data available, and nearly all were classified as strong masting species 89\% (54/61).
-We were not able to get complete trait data for every single trait for all species with masting data. The traits with the greatest amount of missing data were oil content and leaf longevity (Fig. \ref{fig:rawangio} and Fig. \ref{fig:rawcon}).
+We were not able to get complete trait data for every single trait for all species with masting data. The traits with the most available data was seed weight. The traits with the sparse data were oil content and leaf longevity (Fig. \ref{fig:rawangio} and Fig. \ref{fig:rawcon}).
 \subsubsection{Results for Each Hypothesis}
 We found relationships between traits related to predator satiation and pollination efficiency and strong masting for angiosperm species. Among the traits related to predator satiation, seed weight was the only traits significantly related to masting (p-value = 0.01, Table \ref{tab:regressionangio}). Larger seed weight was associated with a greater probability of strong masting (Figure \ref{fig:rawangio}). For angiosperms only, increasing seed weight threefold (from a median seed weight of 90.9g to 272.7g) increased the predicted likelihood of strong masting from 0.45 to 0.51 (Figure \ref{fig:seedweight}). The effect was stronger among species with biotically dispersed seeds, where increasing seed weight threefold (from a median seed weight of 1087.15g to 3261.45g) increased the predicted likelihood of strong masting from 0.72 to 0.80 (Table \ref{tab:regressionseed}; Figure \ref{fig:seedweight}).
 
-Among traits related to pollination efficiency, pollination mode was the only pollination-related trait significantly associated with masting (p-value = 0.01, Table \ref{tab:regressionangio}) for angiosperm. Wind-pollinated species had a predicted likelihood of strong masting of 0.62, compared with 0.2 for animal-pollinated species. All gymnosperm species in our dataset were wind-pollinated, and gymnosperms contained a much higher proportion of strong masting species overall.
+Among traits related to pollination efficiency, pollination mode was the only pollination-related trait significantly associated with strong masting (p-value = 0.01, Table \ref{tab:regressionangio}) for angiosperm. Wind-pollinated species had a predicted likelihood of strong masting of 0.62, compared with 0.2 for animal-pollinated species. All gymnosperm species in our dataset were wind-pollinated, and gymnosperms contained a much higher proportion of strong masting species overall. This can also indicate that wind pollination is associated with strong masting.
 \subsubsection{Multivariate analysis}
-Strong and weak masting species were not clearly separated along any axis in the NMDS analysis. We found no evidence that combinations of traits associated with any of the three hypotheses exlained variation in masting pattern.
+Strong and weak masting species were not clearly separated along any axis in the NMDS analysis. We found no evidence that combinations of traits associated with any of the three hypotheses explained variation in masting pattern.
 \subsubsection{Phylogenetic signal}
 Masting pattern showed a moderate phylogenetic signal in both gymnosperms (D = 0.51) and angiosperms (D = 0.58) (Table \ref{tab:dstat}).
 
@@ -88,25 +88,25 @@ Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = 0.95
 \begin{table}[ht]
 \centering
 \resizebox{\textwidth}{!}{
-% latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Sun Jul 12 10:23:16 2026
-\begin{tabular}{lllrrrrrr}
+% latex table generated in R 4.2.3 by xtable 1.8-8 package
+% Sat Sep  5 15:12:08 2026
+\begin{tabular}{lllrrrrr}
   \hline
-Trait & Type & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-life \\ 
+Trait & Type & Predictor & N & Estimate & SE & P & Half-life \\ 
   \hline
-Seed weight (log) & Numeric & Seed weight (log) &  89 & 0.22 & 0.09 & 0.01 & 11.34 & 0.06 \\ 
-  Fruit size (log) & Numeric & Fruit size (log) &  83 & 0.00 & 0.31 & 0.99 & 28.28 & 0.02 \\ 
-  Oil content (\%) & Numeric & Oil content (\%) &  19 & 0.04 & 0.03 & 0.20 & 19.22 & 0.04 \\ 
-  Seed dormancy & Categorical & Dormant vs. non-dormant &  81 & 0.28 & 0.53 & 0.60 & 11.48 & 0.06 \\ 
-  Dispersal mode & Categorical & Biotic vs. abiotic &  88 & 0.69 & 0.54 & 0.20 & 9.86 & 0.07 \\ 
-  Dispersal mode & Categorical & Both vs. abiotic &  88 & 0.66 & 0.58 & 0.25 & 9.86 & 0.07 \\ 
-  Pollination mode & Categorical & Wind vs. animal &  48 & 1.88 & 0.73 & 0.01 & 53.51 & 0.01 \\ 
-  Pollination mode & Categorical & Wind vs. animal and animals &  48 & -0.25 & 2.76 & 0.93 & 53.51 & 0.01 \\ 
-  Reproductive type & Categorical & Monoecious vs. dioecious &  84 & 0.93 & 0.69 & 0.18 & 13.81 & 0.05 \\ 
-  Reproductive type & Categorical & Monoecious vs. polygamous &  84 & -0.13 & 0.96 & 0.89 & 13.81 & 0.05 \\ 
-  Drought tolerance & Categorical & Low vs. high drought tolerance &  76 & 0.02 & 0.46 & 0.97 & 8.77 & 0.08 \\ 
-  Drought tolerance & Categorical & Moderate vs. high drought tolerance &  76 & -0.31 & 0.46 & 0.50 & 8.77 & 0.08 \\ 
-  Leaf longevity (years) & Numeric & Leaf longevity (years) &  16 & 0.26 & 0.95 & 0.78 & 0.90 & 0.77 \\ 
+Seed weight (log) & Numeric & Seed weight (log) &  91 & 0.21 & 0.09 & 0.02 & 0.08 \\ 
+  Fruit size (log) & Numeric & Fruit size (log) &  88 & 0.08 & 0.31 & 0.79 & 0.04 \\ 
+  Oil content (\%) & Numeric & Oil content (\%) &  19 & 0.04 & 0.03 & 0.20 & 0.04 \\ 
+  Seed dormancy & Categorical & Dormant vs. non-dormant &  85 & 0.05 & 0.51 & 0.92 & 0.06 \\ 
+  Dispersal mode & Categorical & Biotic vs. abiotic &  93 & 0.53 & 0.53 & 0.32 & 0.09 \\ 
+  Dispersal mode & Categorical & Both vs. abiotic &  93 & 0.53 & 0.57 & 0.35 & 0.09 \\ 
+  Pollination mode & Categorical & Wind vs. animal &  52 & 1.72 & 0.72 & 0.02 & 0.01 \\ 
+  Pollination mode & Categorical & Wind vs. animal and animals &  52 & 1.18 & 1.15 & 0.31 & 0.01 \\ 
+  Reproductive type & Categorical & Monoecious vs. dioecious &  89 & 0.76 & 0.68 & 0.26 & 0.05 \\ 
+  Reproductive type & Categorical & Monoecious vs. polygamous &  89 & -0.29 & 0.96 & 0.76 & 0.05 \\ 
+  Drought tolerance & Categorical & Low vs. high drought tolerance &  79 & 0.15 & 0.47 & 0.76 & 0.06 \\ 
+  Drought tolerance & Categorical & Moderate vs. high drought tolerance &  79 & -0.15 & 0.45 & 0.74 & 0.06 \\ 
+  Leaf longevity (years) & Numeric & Leaf longevity (years) &  16 & 0.26 & 0.95 & 0.78 & 0.77 \\ 
    \hline
 \end{tabular}}
 \caption{Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.}
@@ -116,21 +116,21 @@ Seed weight (log) & Numeric & Seed weight (log) &  89 & 0.22 & 0.09 & 0.01 & 11.
 \begin{table}[ht]
 \centering
 \resizebox{\textwidth}{!}{
-% latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Sun Jul 12 10:23:16 2026
-\begin{tabular}{lllrrrrrr}
+% latex table generated in R 4.2.3 by xtable 1.8-8 package
+% Sat Sep  5 15:12:08 2026
+\begin{tabular}{lllrrrrr}
   \hline
-Trait & Type & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-life \\ 
+Trait & Type & Predictor & N & Estimate & SE & P & Half-life \\ 
   \hline
-Seed weight (log) & Numeric & Seed weight (log) &  58 & -0.01 & 0.24 & 0.98 & 53.48 & 0.01 \\ 
-  Fruit size (log) & Numeric & Fruit size (log) &  59 & 0.03 & 0.35 & 0.94 & 51.67 & 0.01 \\ 
-  Seed dispersal & Categorical & Biotic vs. abiotic &  59 & -0.82 & 0.81 & 0.31 & 1.99 & 0.35 \\ 
-  Seed dispersal & Categorical & Both vs. abiotic &  59 & -1.11 & 0.67 & 0.10 & 1.99 & 0.35 \\ 
-  Seed dormancy & Categorical & Dormant vs. non-dormant &  58 & 0.69 & 0.70 & 0.33 & 52.49 & 0.01 \\ 
-  Reproductive type & Categorical & Monoecious vs. dioecious &  60 & -1.15 & 1.02 & 0.26 & 0.91 & 0.76 \\ 
-  Drought tolerance & Categorical & Low vs. high drought tolerance &  51 & 12.96 & 249.43 & 0.96 & 0.03 & 23.10 \\ 
-  Drought tolerance & Categorical & Moderate vs. high drought tolerance &  51 & -0.19 & 0.57 & 0.74 & 0.03 & 23.10 \\ 
-  Leaf longevity (years) & Numeric & Leaf longevity (years) &  37 & 0.14 & 0.34 & 0.67 & 54.36 & 0.01 \\ 
+Seed weight (log) & Numeric & Seed weight (log) &  59 & 0.01 & 0.24 & 0.98 & 0.01 \\ 
+  Fruit size (log) & Numeric & Fruit size (log) &  60 & 0.03 & 0.36 & 0.94 & 0.01 \\ 
+  Seed dispersal & Categorical & Biotic vs. abiotic &  60 & -0.83 & 0.81 & 0.30 & 0.36 \\ 
+  Seed dispersal & Categorical & Both vs. abiotic &  60 & -1.11 & 0.67 & 0.10 & 0.36 \\ 
+  Seed dormancy & Categorical & Dormant vs. non-dormant &  59 & 0.69 & 0.69 & 0.32 & 0.01 \\ 
+  Reproductive type & Categorical & Monoecious vs. dioecious &  61 & -1.13 & 1.01 & 0.26 & 0.78 \\ 
+  Drought tolerance & Categorical & Low vs. high drought tolerance &  52 & 11.36 & 98.16 & 0.91 & 34.66 \\ 
+  Drought tolerance & Categorical & Moderate vs. high drought tolerance &  52 & -0.29 & 0.60 & 0.63 & 34.66 \\ 
+  Leaf longevity (years) & Numeric & Leaf longevity (years) &  38 & 0.15 & 0.35 & 0.67 & 0.01 \\ 
    \hline
 \end{tabular}}
 \caption{Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.}
@@ -140,14 +140,14 @@ Seed weight (log) & Numeric & Seed weight (log) &  58 & -0.01 & 0.24 & 0.98 & 53
 \begin{table}[ht]
 \centering
 \resizebox{\textwidth}{!}{
-% latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Sun Jul 12 10:23:16 2026
-\begin{tabular}{lllrrrrrr}
+% latex table generated in R 4.2.3 by xtable 1.8-8 package
+% Sat Sep  5 15:12:08 2026
+\begin{tabular}{lllrrrrr}
   \hline
-Trait & Group & Predictor & N & Estimate & SE & P & Phylo $\alpha$ & Half-life \\ 
+Trait & Group & Predictor & N & Estimate & SE & P & Half-life \\ 
   \hline
-Seed weight (log) & Biotic and both & Seed weight (log) &  53 & 0.40 & 0.15 & 0.01 & 54.57 & 0.01 \\ 
-  Seed weight (log) & Abiotic & Seed weight (log) &  36 & 0.12 & 0.13 & 0.36 & 50.33 & 0.01 \\ 
+Seed weight (log) & Biotic and both & Seed weight (log) &  55 & 0.41 & 0.16 & 0.01 & 0.01 \\ 
+  Seed weight (log) & Abiotic & Seed weight (log) &  36 & 0.12 & 0.13 & 0.36 & 0.01 \\ 
    \hline
 \end{tabular}}
 \caption{Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.}
@@ -157,8 +157,8 @@ Seed weight (log) & Biotic and both & Seed weight (log) &  53 & 0.40 & 0.15 & 0.
 \begin{table}[ht]
 \centering
 
-% latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Sun Jul 12 10:23:16 2026
+% latex table generated in R 4.2.3 by xtable 1.8-8 package
+% Sat Sep  5 15:12:08 2026
 \begin{tabular}{llr}
   \hline
 Group & Trait & $\lambda$ \\ 
@@ -167,16 +167,17 @@ Angiosperm & Seed weight (Log) & 0.95 \\
   Angiosperm & Fruit size (Log) & 0.93 \\ 
   Angiosperm & Oil content & 0.25 \\ 
   Angiosperm & Leaf longevity & 1.02 \\ 
-  Angiosperm & Dispersal mode & 0.00 \\ 
+  Angiosperm & Dispersal mode & 1.00 \\ 
   Angiosperm & Pollination mode & 1.00 \\ 
-  Angiosperm & Reproductive type & 1.00 \\ 
+  Angiosperm & Reproductive type & 0.00 \\ 
   Angiosperm & Drought tolerance & 0.00 \\ 
-  Gymnosperm & Seed weight (Log) & 0.97 \\ 
-  Gymnosperm & Fruit size (Log) & 0.90 \\ 
+  Gymnosperm & Seed weight (Log) & 0.98 \\ 
+  Gymnosperm & Fruit size (Log) & 0.91 \\ 
   Gymnosperm & Oil content \% & 0.00 \\ 
   Gymnosperm & Leaf longevity & 0.90 \\ 
   Gymnosperm & Dispersal mode & 0.00 \\ 
-  Gymnosperm & Drought tolerance & 1.00 \\ 
+  Gymnosperm & Reproductive type & 1.00 \\ 
+  Gymnosperm & Drought tolerance & 0.00 \\ 
    \hline
 \end{tabular}
 \caption{Phylogenetic Signal (Pagel's $\lambda$) for continous traits and multi-level categorical traits. $\lambda$ = 0 indicates no phylogenetic signal, trait districuted independent of the phylogeny; 0 < $\lambda$ < 1 means moderate phylogenetic signal, trait is partially structured by the phylogeny; $\lambda$ = 1 indicates strong phylogenetic signal, trait follows Brownian motion.}
@@ -186,17 +187,16 @@ Angiosperm & Seed weight (Log) & 0.95 \\
 \begin{table}[ht]
 \centering
 \resizebox{\textwidth}{!}{
-% latex table generated in R 4.2.3 by xtable 1.8-4 package
-% Sun Jul 12 10:23:16 2026
+% latex table generated in R 4.2.3 by xtable 1.8-8 package
+% Sat Sep  5 15:12:08 2026
 \begin{tabular}{lllll}
   \hline
 Group & Trait & Estimated D & P(random) & P(Brownian) \\ 
   \hline
-Angiosperm & Seed dormancy & 0.25 & 0 & 0.16 \\ 
-  Angiosperm & Masting & 0.58 & 0 & 0.01 \\ 
+Angiosperm & Masting & 0.58 & 0 & 0.01 \\ 
+  Angiosperm & Seed dormancy & 0.25 & 0 & 0.16 \\ 
   Gymnosperm & Masting & 0.51 & 0.02 & 0.10 \\ 
   Gymnosperm & Seed dormancy & 0.98 & 0.41 & 0 \\ 
-  Gymnosperm & Reproductive type & -0.52 & 0 & 0.89 \\ 
    \hline
 \end{tabular}}
 \caption{Phylogenetic Signal (D-statistic) for the phylogenetic signal of binary traits, with probabilities calculated under a random phylogenetic structure and under a Brownian motion phylogenetic structure. D = 1 indicates the trait is randomly distributed across the phylogeny; D = 0 indicates the trait follows a Brownian motion model; 0 < D < 1 indivates moderate phylogenetic signal; D < 0 indicates the trait is more clumped than expected under Brownian motion; and D > 1 indicates overdispersion. P random is the p-value for the null hypothesis that the trait is randomly distributed across the phylogeny (no phylogenetic signal), and P Brownian is the p-value for the null hypothesis that the trait follows a Brownian motion model (strong phylogenetic signal). A low p-value indicates rejection of the corresponding null hypothesis.}
