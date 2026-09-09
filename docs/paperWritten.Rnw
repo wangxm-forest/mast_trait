@@ -128,6 +128,17 @@ lambda[] <- lapply(lambda, function(x) {
 colnames(lambda) <-
     fix_unicode(colnames(lambda))
 
+pWeight <- angio_results$P[angio_results$Predictor=="Seed weight (log)"]
+pWind <-  angio_results$P[angio_results$Predictor=="Wind vs. animal"]
+
+p_mastingWeight <- plogis(b0 + b1 * log(medianWeight))
+p_mastingWeight3 <- plogis(b0 + b1 * log(medianWeight*3))
+p_mastingBioWeight <- plogis(b0_bio + b1_bio * log(medianBioWeight))
+p_mastingBioWeight3 <- plogis(b0_bio + b1_bio * log(medianBioWeight*3))
+
+angioWeightLambda <- as.numeric(lambda$lambda[lambda$Group=="Angiosperm" & lambda$Trait=="Seed weight (Log)"])
+gymnoWeightLambda <- as.numeric(lambda$lambda[lambda$Group=="Gymnoperm" & lambda$Trait=="Seed weight (Log)"])
+
 @
 
 \newgeometry{margin=1cm}
@@ -153,20 +164,39 @@ colnames(lambda) <-
 \label{fig:seedweight}
 \end{figure}
 
+% ------------------------------------------
+\newgeometry{margin=1cm}
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{../output/figures/weightTree1.pdf}
+\caption{Phylogenetic tree for all angioperm species included in the analysis. The color scheme of the branch is the trait value for seed weight (log). The color tip is colored by strong masting or not. The other traits are labeled after the tip labels with different color and size. We also show the predictions of relationship between traits and strong masting. We calculated the Pagel's $\lambda$ for continuous traits as well as multilevel categorical traits, and calculated D-statistic for binary traits.}
+\label{fig:coneptangio}
+\end{figure}
+\restoregeometry
+\newpage
+% ------------------------------------------
+% ------------------------------------------
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/nmdsFinal_scalearea.pdf}
+\caption{Non-metric multidimensional scaling (NMDS) of trait composition for angiosperm and gymnosperm species. Each point represents a species, with position determined by NMDS axes. Points are colored by drought tolerance, filled by strong masting or not, shaped by reproductive type, sized by seed weight. Panels are arranged as (a) angiosperm NMDS1–NMDS2, (b) angiosperm NMDS2–NMDS3, (c) gymnosperm NMDS1–NMDS2, and (d) gymnosperm NMDS2–NMDS3.}
+\label{fig:nmds}
+\end{figure}
+
 \section{Results}
 \subsubsection{Structure of Data}
 In total, our dataset included 188 species, comprising 124 angiosperm species and 64 gymnosperm species. Among angiosperms, \Sexpr{gsub("%", "\\\\%", angio_sum)} of species had masting data available, with strong masting and weak masting species occurring in approximately equal proportions \Sexpr{gsub("%", "\\\\%", angio_mast)}. Among gymnosperms, \Sexpr{gsub("%", "\\\\%", gymno_sum)} of species had masting data available, and nearly all were classified as strong masting species \Sexpr{gsub("%", "\\\\%", gymno_mast)}.
 We were not able to get complete trait data for every single trait for all species with masting data. The traits with the most available data was seed weight. The traits with the sparse data were oil content and leaf longevity (Fig. \ref{fig:rawangio} and Fig. \ref{fig:rawcon}).
 \subsubsection{Results for Each Hypothesis}
-We found relationships between traits related to predator satiation and pollination efficiency and strong masting for angiosperm species. Among the traits related to predator satiation, seed weight was the only traits significantly related to masting (p-value = 0.01, Table \ref{tab:regressionangio}). Larger seed weight was associated with a greater probability of strong masting (Figure \ref{fig:rawangio}). For angiosperms only, increasing seed weight threefold (from a median seed weight of 90.9g to 272.7g) increased the predicted likelihood of strong masting from 0.45 to 0.51 (Figure \ref{fig:seedweight}). The effect was stronger among species with biotically dispersed seeds, where increasing seed weight threefold (from a median seed weight of 1087.15g to 3261.45g) increased the predicted likelihood of strong masting from 0.72 to 0.80 (Table \ref{tab:regressionseed}; Figure \ref{fig:seedweight}).
+We found relationships between traits related to predator satiation and pollination efficiency and strong masting for angiosperm species. Among the traits related to predator satiation, seed weight was the only traits significantly related to masting (p-value = \Sexpr{round(pWeight, digits=2)}, Table \ref{tab:regressionangio}). Larger seed weight was associated with a greater probability of strong masting (Figure \ref{fig:rawangio}). For angiosperms only, increasing seed weight threefold (from a median seed weight of \Sexpr{as.numeric(medianWeight)}g to \Sexpr{as.numeric(medianWeight)*3}g) increased the predicted likelihood of strong masting from \Sexpr{round(p_mastingWeight, digits=2)} to \Sexpr{round(p_mastingWeight3, digits=2)} (Figure \ref{fig:seedweight}). The effect was stronger among species with biotically dispersed seeds, where increasing seed weight threefold (from a median seed weight of \Sexpr{as.numeric(medianBioWeight)}g to \Sexpr{as.numeric(medianBioWeight)*3}g) increased the predicted likelihood of strong masting from \Sexpr{round(p_mastingBioWeight, digits=2)} to \Sexpr{round(p_mastingBioWeight3, digits=2)} (Table \ref{tab:regressionseed}; Figure \ref{fig:seedweight}).
 
-Among traits related to pollination efficiency, pollination mode was the only pollination-related trait significantly associated with strong masting (p-value = 0.01, Table \ref{tab:regressionangio}) for angiosperm. Wind-pollinated species had a predicted likelihood of strong masting of 0.62, compared with 0.2 for animal-pollinated species. All gymnosperm species in our dataset were wind-pollinated, and gymnosperms contained a much higher proportion of strong masting species overall. This can also indicate that wind pollination is associated with strong masting.
+Among traits related to pollination efficiency, pollination mode was the only pollination-related trait significantly associated with strong masting (p-value = \Sexpr{round(pWind, digits=2)}, Table \ref{tab:regressionangio}) for angiosperm. Wind-pollinated species had a predicted likelihood of strong masting of 0.62, compared with 0.2 for animal-pollinated species. All gymnosperm species in our dataset were wind-pollinated, and gymnosperms contained a much higher proportion of strong masting species overall. This can also indicate that wind pollination is associated with strong masting.
 \subsubsection{Multivariate analysis}
-Strong and weak masting species were not clearly separated along any axis in the NMDS analysis. We found no evidence that combinations of traits associated with any of the three hypotheses explained variation in masting pattern.
+Strong and weak masting species were not clearly separated along any axis in the NMDS analysis (Fig. \ref{fig:nmds}). We found no evidence that combinations of traits associated with any of the three hypotheses explained variation in masting pattern.
 \subsubsection{Phylogenetic signal}
 Masting pattern showed a moderate phylogenetic signal in both gymnosperms (D = 0.51) and angiosperms (D = 0.58) (Table \ref{tab:dstat}).
 
-Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = 0.95) and gymnosperm ($\lambda$ = 0.97). This pattern is also evident in Fig. \ref{fig:coneptangio}. Dispersal mode, leaf longevity, pollination mode and reproductive type also showed high phylogenetic signal in Table \ref{tab:lambda}. However, these values should be interpreted cautiously because Pagel's $\lambda$ is estimated differently for categorical and continuous traits, making direct comparisons inappropriate.
+Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = \Sexpr{round(angioWeightLambda, digits=2)}) and gymnosperm ($\lambda$ = \Sexpr{round(gymnoWeightLambda, digits=2)}). This pattern is also evident in Fig. \ref{fig:coneptangio}. Dispersal mode, leaf longevity, pollination mode and reproductive type also showed high phylogenetic signal in Table \ref{tab:lambda}. However, these values should be interpreted cautiously because Pagel's $\lambda$ is estimated differently for categorical and continuous traits, making direct comparisons inappropriate.
 
 \bibliographystyle{besjournals}
 \bibliography{mastTreeRef} 
@@ -185,7 +215,7 @@ Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = 0.95
 \resizebox{\textwidth}{!}{
 <<echo=FALSE, results=tex>>=
 angioTable <- xtable(angio_results, 
-                 caption = "Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.", 
+                 caption = "Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical or continuous (Type column). For categorical traits, we report the the difference in log-odds between a given level and its designated baseline reference level; for continuous traits, we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor) and the half-life. The half-life represents the time required for the influence of ancestral states to decrease by half; where larger values suggests the residuals are more affected by phylogenetic history than the environment (and vice versa for smaller values). Given out trees are scaled to 1, a value near 1 thus means phylogenetic correlation persists across the phylogenetic depth. For more inerpretation, see cooper2016cautionary.", 
                  label = "tab:regressionangio")
 print(angioTable,
       type="latex",
@@ -195,7 +225,7 @@ print(angioTable,
       sanitize.colnames.function = identity)
 @
 }
-\caption{Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.}
+\caption{Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical or continuous (Type column). For categorical traits, we report the the difference in log-odds between a given level and its designated baseline reference level; for continuous traits, we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor) and the half-life. The half-life represents the time required for the influence of ancestral states to decrease by half; where larger values suggests the residuals are more affected by phylogenetic history than the environment (and vice versa for smaller values). Given out trees are scaled to 1, a value near 1 thus means phylogenetic correlation persists across the phylogenetic depth. For more inerpretation, see \cite{cooper2016cautionary}.}
 \label{tab:regressionangio}
 \end{table}
 
@@ -204,7 +234,7 @@ print(angioTable,
 \resizebox{\textwidth}{!}{
 <<echo=FALSE, results=tex>>=
 conTable <- xtable(conifer_results, 
-                 caption = "Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.", 
+                 caption = "Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical or continuous (Type column). For categorical traits, we report the the difference in log-odds between a given level and its designated baseline reference level; for continuous traits, we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor) and the half-life. The half-life represents the time required for the influence of ancestral states to decrease by half; where larger values suggests the residuals are more affected by phylogenetic history than the environment (and vice versa for smaller values). Given out trees are scaled to 1, a value near 1 thus means phylogenetic correlation persists across the phylogenetic depth. For more inerpretation, see cooper2016cautionary.", 
                  label = "tab:regressiongym")
 print(conTable,
       type="latex",
@@ -214,7 +244,7 @@ print(conTable,
       sanitize.colnames.function = identity)
 @
 }
-\caption{Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical (Type column), where we report (Estimate column) the the difference in log-odds between a given level and its designated baseline reference level, or continuous, where we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.}
+\caption{Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical or continuous (Type column). For categorical traits, we report the the difference in log-odds between a given level and its designated baseline reference level; for continuous traits, we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor) and the half-life. The half-life represents the time required for the influence of ancestral states to decrease by half; where larger values suggests the residuals are more affected by phylogenetic history than the environment (and vice versa for smaller values). Given out trees are scaled to 1, a value near 1 thus means phylogenetic correlation persists across the phylogenetic depth. For more inerpretation, see \cite{cooper2016cautionary}.}
 \label{tab:regressiongym}
 \end{table}
 
@@ -223,7 +253,7 @@ print(conTable,
 \resizebox{\textwidth}{!}{
 <<echo=FALSE, results=tex>>=
 seedTable <- xtable(seed_results, 
-                 caption = "Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.", 
+                 caption = "Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor) and the half-life.", 
                  label = "tab:regressionseed")
 print(seedTable,
       type="latex",
@@ -233,7 +263,7 @@ print(seedTable,
       sanitize.colnames.function = identity)
 @
 }
-\caption{Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor), Phylo $\alpha$, which represents the the phylogenetic signal in the residuals estimated for each trait, it has an upper bound of 54. If $\alpha$ reached 54, then the phylogenetic correlation is estimated to be negligible. We also calculated half-life (log(2)/$\alpha$), which represents the time required for the influence of ancestral states to decrease by half, where values greater than 1 also indicate weak phylogenetic signal in the residuals.}
+\caption{Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor) and the half-life.}
 \label{tab:regressionseed}
 \end{table}
 
