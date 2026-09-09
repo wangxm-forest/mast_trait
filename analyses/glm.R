@@ -187,6 +187,9 @@ for (m in angio_list) {
   angio_results <- rbind(angio_results, tbl)
 }
 
+conifer_results$Group <- "conifer"
+angio_results$Group <- "angio"
+
 glmResult <- rbind(conifer_results, angio_results)
 
 write.csv(glmResult, "output/glmResult.csv")
@@ -293,27 +296,31 @@ for (m in angio_seed_list) {
   
   angio_seed_results <- rbind(angio_seed_results, tbl)
 }
+angio_seed_results <- cbind(
+  angio_seed_results,
+  Group = c("Biotic and both", "Biotic and both", "Abiotic", "Abiotic"))
 
-angio_seed_results <- clean_results(angio_seed_results)
+angio_seed_cleanResults <- clean_results(angio_seed_results)
 
 seed_results <- cbind(
-  angio_seed_results[1],
+  angio_seed_cleanResults[1],
   Group = c("Biotic and both", "Abiotic"),
-  angio_seed_results[-1]
+  angio_seed_cleanResults[-1]
 )
 
 
 
 ###Plot seed weight and model fit ----
 
-b0 <- -1.180608067
-b1 <- 0.212662421
+b0 <- glmResult$estimate[glmResult$term=="(Intercept)"& glmResult$trait=="Seed weight (log)" & glmResult$Group == "angio"]
+b1 <- glmResult$estimate[glmResult$term=="logSeedWeight"& glmResult$trait=="Seed weight (log)" & glmResult$Group == "angio"]
 
-b0_bio <- -1.8535132
-b1_bio <- 0.4080696
+b0_bio <- angio_seed_results$estimate[angio_seed_results$term=="(Intercept)"& angio_seed_results$Group == "Biotic and both"]
+b1_bio <- angio_seed_results$estimate[angio_seed_results$term=="logSeedWeight"& angio_seed_results$Group == "Biotic and both"]
 
-median(angio$seedWeights, na.rm = TRUE)
-median(angioBio$seedWeights, na.rm = TRUE)
+medianWeight <- median(angio$seedWeights, na.rm = TRUE)
+medianBioWeight <- median(angioBio$seedWeights, na.rm = TRUE)
+
 
 pdf("output/figures/modelFitSeedWeight.pdf",
     width = 8, height = 6)
