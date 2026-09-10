@@ -136,8 +136,14 @@ p_mastingWeight3 <- plogis(b0 + b1 * log(medianWeight*3))
 p_mastingBioWeight <- plogis(b0_bio + b1_bio * log(medianBioWeight))
 p_mastingBioWeight3 <- plogis(b0_bio + b1_bio * log(medianBioWeight*3))
 
-angioWeightLambda <- as.numeric(lambda$lambda[lambda$Group=="Angiosperm" & lambda$Trait=="Seed weight (Log)"])
-gymnoWeightLambda <- as.numeric(lambda$lambda[lambda$Group=="Gymnoperm" & lambda$Trait=="Seed weight (Log)"])
+p_animal <- plogis(animalLikelihood)
+p_wind <- plogis(animalLikelihood + windLikelihood)
+
+angioWeightLambda <- as.numeric(lambda[["$\\lambda$"]][lambda$Group=="Angiosperm" & lambda$Trait=="Seed weight (Log)"])
+gymnoWeightLambda <- as.numeric(lambda[["$\\lambda$"]][lambda$Group=="Gymnosperm" & lambda$Trait=="Seed weight (Log)"])
+
+mastAngioD <- dStat$`Estimated D`[dStat$Group=="Angiosperm" & dStat$Trait=="Masting"]
+mastGymnoD <- dStat$`Estimated D`[dStat$Group=="Gymnosperm" & dStat$Trait=="Masting"]
 
 @
 
@@ -190,11 +196,11 @@ We were not able to get complete trait data for every single trait for all speci
 \subsubsection{Results for Each Hypothesis}
 We found relationships between traits related to predator satiation and pollination efficiency and strong masting for angiosperm species. Among the traits related to predator satiation, seed weight was the only traits significantly related to masting (p-value = \Sexpr{round(pWeight, digits=2)}, Table \ref{tab:regressionangio}). Larger seed weight was associated with a greater probability of strong masting (Figure \ref{fig:rawangio}). For angiosperms only, increasing seed weight threefold (from a median seed weight of \Sexpr{as.numeric(medianWeight)}g to \Sexpr{as.numeric(medianWeight)*3}g) increased the predicted likelihood of strong masting from \Sexpr{round(p_mastingWeight, digits=2)} to \Sexpr{round(p_mastingWeight3, digits=2)} (Figure \ref{fig:seedweight}). The effect was stronger among species with biotically dispersed seeds, where increasing seed weight threefold (from a median seed weight of \Sexpr{as.numeric(medianBioWeight)}g to \Sexpr{as.numeric(medianBioWeight)*3}g) increased the predicted likelihood of strong masting from \Sexpr{round(p_mastingBioWeight, digits=2)} to \Sexpr{round(p_mastingBioWeight3, digits=2)} (Table \ref{tab:regressionseed}; Figure \ref{fig:seedweight}).
 
-Among traits related to pollination efficiency, pollination mode was the only pollination-related trait significantly associated with strong masting (p-value = \Sexpr{round(pWind, digits=2)}, Table \ref{tab:regressionangio}) for angiosperm. Wind-pollinated species had a predicted likelihood of strong masting of 0.62, compared with 0.2 for animal-pollinated species. All gymnosperm species in our dataset were wind-pollinated, and gymnosperms contained a much higher proportion of strong masting species overall. This can also indicate that wind pollination is associated with strong masting.
+Among traits related to pollination efficiency, pollination mode was the only pollination-related trait significantly associated with strong masting (p-value = \Sexpr{round(pWind, digits=2)}, Table \ref{tab:regressionangio}) for angiosperm. Wind-pollinated species had a predicted likelihood of strong masting of \Sexpr{round(p_wind, digits=2)}, compared with \Sexpr{round(p_animal, digits=2)} for animal-pollinated species. All gymnosperm species in our dataset were wind-pollinated, and gymnosperms contained a much higher proportion of strong masting species overall. This can also indicate that wind pollination is associated with strong masting.
 \subsubsection{Multivariate analysis}
 Strong and weak masting species were not clearly separated along any axis in the NMDS analysis (Fig. \ref{fig:nmds}). We found no evidence that combinations of traits associated with any of the three hypotheses explained variation in masting pattern.
 \subsubsection{Phylogenetic signal}
-Masting pattern showed a moderate phylogenetic signal in both gymnosperms (D = 0.51) and angiosperms (D = 0.58) (Table \ref{tab:dstat}).
+Masting pattern showed a moderate phylogenetic signal in both gymnosperms (D = \Sexpr{mastGymnoD}) and angiosperms (D = \Sexpr{mastAngioD}) (Table \ref{tab:dstat}).
 
 Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = \Sexpr{round(angioWeightLambda, digits=2)}) and gymnosperm ($\lambda$ = \Sexpr{round(gymnoWeightLambda, digits=2)}). This pattern is also evident in Fig. \ref{fig:coneptangio}. Dispersal mode, leaf longevity, pollination mode and reproductive type also showed high phylogenetic signal in Table \ref{tab:lambda}. However, these values should be interpreted cautiously because Pagel's $\lambda$ is estimated differently for categorical and continuous traits, making direct comparisons inappropriate.
 

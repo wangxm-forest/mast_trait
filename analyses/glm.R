@@ -192,6 +192,9 @@ angio_results$Group <- "angio"
 
 glmResult <- rbind(conifer_results, angio_results)
 
+animalLikelihood <- angio_results$estimate[angio_results$term=="(Intercept)" & angio_results$trait=="Pollination mode"]
+windLikelihood <- angio_results$estimate[angio_results$term=="pollinationwind"]
+
 write.csv(glmResult, "output/glmResult.csv")
 
 #Make a table to present the results:
