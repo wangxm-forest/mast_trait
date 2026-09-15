@@ -27,7 +27,7 @@
 \item Wind pollination is related to masting
 \item Animal dispersed seeds have higher masting than wind dispersed seeds
 \item Larger seed is associate with masting
-\item All these studies use CV to quantify masting but we use a binary definition, whether this species is a strong masting species or weak masting species on a broader species-level
+\item All these studies use CV to quantify masting, explain the pros and cons of CV.
 \item If evolutionary associations are sufficiently strong, we should be able to detect it even under a coarse binary classification
 \item Recent papers also focus on resource perspective using leaf and shoot traits
 \end{enumerate}
@@ -37,8 +37,8 @@
 
 \item Introduce framework linking hypothesis x traits x masting
 \begin{enumerate}
-\item Linking traits to specific hypotheses helps us understand the underlying drivers of masting across different species
 \item This framework is especially useful when considering whether evolutionary drivers are more similar within closely related species (clades)
+\item Linking traits to specific hypotheses helps us understand the underlying drivers of masting across different species
 \end{enumerate}
 \item We try to do this using data from one specific geographical region
 \begin{enumerate}
@@ -46,7 +46,7 @@
 \begin{enumerate}
 \item Masting info available
 \item Includes both strong masting and weak masting species
-\item Not using CV data because don't have stand-level traits data
+\item We try to understand this on species level, so we are using a binary trait here instead of CV
 \end{enumerate}
 \end{enumerate}
 \end{enumerate}
