@@ -204,6 +204,15 @@ Masting pattern showed a moderate phylogenetic signal in both gymnosperms (D = \
 
 Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = \Sexpr{round(angioWeightLambda, digits=2)}) and gymnosperm ($\lambda$ = \Sexpr{round(gymnoWeightLambda, digits=2)}). This pattern is also evident in Fig. \ref{fig:coneptangio}. Dispersal mode, leaf longevity, pollination mode and reproductive type also showed high phylogenetic signal in Table \ref{tab:lambda}. However, these values should be interpreted cautiously because Pagel's $\lambda$ is estimated differently for categorical and continuous traits, making direct comparisons inappropriate.
 
+\section{Discussion}
+We found that masting was associated with traits related to both pollination and seed dispersal as well as establishment, providing support for multiple mechanisms underlying interannual variation in seed production. The positive relationship between wind pollination and strong masting in angiosperm supports the pollination coupling hypothesis, while the positive relationship between seed weight and strong masting provides evidence consistent with the predator satiation hypothesis. These associations point to selective pressure acting at both early and late stages of the reproductive cycle, which are critical for successful reproduction and gene transmission.
+
+Previous literature have also reported positive relationship between seed mass and masting, with one explanation being that bigger seeds require more resource investment and simply cannot reproduce every year. However, from an evolutionary perspective, the association between seed mass and masting may reflect more than the resource costs of producing large seeds. For predator satiation to favour synchronized reproduction, seed crops must provide a sufficiently large resource to overwhelm seed consumers. For some species, seed predators are also seed dispersers. Larger seeds probably make them more attractive to these mammals and help with the further seed dispersal. At the same time, larger seeds generally contain greater nutritional reserves, which can enhance seedling establishment and early survival following dispersal. Thus, the positive association between seed weight and masting may reflect coordinated reproductive strategies in which synchronized production reduces the relative impact of seed predation while larger seeds increase the probability of successful establishment. Together, these processes could generate selection favouring reproductive strategies that enhance seed dispersal and survival.
+
+\subsection{}
+
+
+
 \bibliographystyle{besjournals}
 \bibliography{mastTreeRef} 
 

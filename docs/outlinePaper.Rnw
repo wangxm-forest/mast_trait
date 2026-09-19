@@ -73,7 +73,7 @@
 \begin{enumerate}
 \item Other traits may matter to masting below the species level, like population level
 \item Examples of species that mast only under certain environmental conditions (E.g., \textit{Hymenaea coubaril})
-\item To address, this traits need to be measured locally and match with masting data -- we need more data below the level of species!
+\item To address, this traits need to be measured locally and match with masting data--we need more data below the level of species!
 \end{enumerate}
 \item Different species selected under different hypotheses
 \begin{enumerate}
@@ -84,8 +84,8 @@
 \end{enumerate}
 \item Phylogenetic signal for traits and masting
 \begin{enumerate}
-\item Many traits have strong phylogenetic signal, it is hard to tease out traits from masting, which limits the inference
-\item The lit on this mostly talk about adaptive significance, we need to understand its broader macroevolutionary patterns
+\item Many traits have strong phylogenetic signal, it is hard to tease out traits from masting, which limits inference
+\item The lit on this mostly talks about adaptive significance, we need to understand its broader macroevolutionary patterns
 \item Data is strongly nested in phylogeny, and data is sparse.
 \end{enumerate}
 \item Deep evolutionary split between angiosperm and gymnosperm 
@@ -108,7 +108,7 @@
 \begin{enumerate}
 \item Existing literature points out the potentials within certain clade for evolutionary investigations (\cite{satake2021studying})
 \item This requires more data collection on species-level and population-level within certain genus groups, for example: (\textit{Quercus.})
-\item So we need more data lower than species and more targeted data across species that considers deeper evolutionary time (we're missing both the super recent evolution. -- populations -- and the super deep)
+\item So we need more data lower than species and more targeted data across species that considers deeper evolutionary time (we're missing both the super recent evolution.--populations--and the super deep)
 \end{enumerate}
 \end{enumerate}
 \bibliographystyle{besjournals}
