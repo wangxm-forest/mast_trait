@@ -97,8 +97,19 @@ We found that masting was associated with traits related to both pollination and
 
 Previous literature have also reported positive relationship between seed mass and masting, with one explanation being that bigger seeds require more resource investment and simply cannot reproduce every year. However, from an evolutionary perspective, the association between seed mass and masting may reflect more than the resource costs of producing large seeds. For predator satiation to favour synchronized reproduction, seed crops must provide a sufficiently large resource to overwhelm seed consumers. For some species, seed predators are also seed dispersers. Larger seeds probably make them more attractive to these mammals and help with the further seed dispersal. At the same time, larger seeds generally contain greater nutritional reserves, which can enhance seedling establishment and early survival following dispersal. Thus, the positive association between seed weight and masting may reflect coordinated reproductive strategies in which synchronized production reduces the relative impact of seed predation while larger seeds increase the probability of successful establishment. Together, these processes could generate selection favouring reproductive strategies that enhance seed dispersal and survival.
 
-\subsection{}
+\subsection{Scale dependence in trait–masting relationships}
+Recent work has emphasized that masting is better represented as a continuous rather than categorical trait, which is mostly available at the population level. The coefficient of variation (CV) is one of the most widely used continuous measures of masting. However, the use of CV as a measure of masting has been widely discussed, as it does not capture all characteristics of masting and can be strongly distorted by years with zero seed production. At the same time, evaluating the evolutionary associations between traits and masting requires comparisons across species. If a trait has a sufficiently strong and consistent association with the evolution of masting, we expect this relationship to be detectable at the species level using binary masting data.
 
+At the same time, many of the traits considred in our analysis are phenotypically plastic and may vary among populations, potentially in response to local environmental conditions. Thus, traits for which we fail to detect a species -level association with masting may still be important at the population level. There are certain species only exhibit masting under certain environmental conditions. For example, \textit{Hymenaea coubaril} has been reported to mast only on the island where seed predators are present, suggesting that htexpression of masting can depend on local ecological conditions. As a result, understanding how reproductive traits are associated with masting may require measurements of both traits and reproductive variation at the population level, considering local environmental conditions and intraspecific variation.
+
+\subsection{Distinguishing selection across types of masting}
+Masting has originally been studied primarily as interannual variation in seed production, but recent work has refined the definition between seed mastin and flower masting. These two forms of reproductive synchrony occur at different stages of the reproductive cycel: seed masting focuses on the final reproductive outcome, whereas flower masting occurs at the beginning of reproduction. Importantly, variation in flowering and seed production does not necessarily occur at the same time, suggesting that these two forms of masting may be shapred by different selective pressures. For example, we would expect mechanisms related to pollination to perform stronger slection on flowering synchrony, whereas mechanisms related to seed predation, dispersal and establishment may be more directly associated with synchrony in seed production. Separating species according to their dominant form of masting could there fore provide a more refined test of hypotheses underlying reproductive synchrony. Examining the associations between different types of masting and corresponding subset of reproductive traits therefore is necessary for us to understand how different selective pressures contribute to the evolution of reproductive synchrony at different stages of the reproductive cycle.
+
+\subsection{Phylogenetic signal limits inference}
+We found strong phylogenetic signal for many traits we selected and also masting has a phylogenetic signal, so for the analysis we did, it is hard to tease out effect of phylogeny. Also, many traits we included have relatively sparse data, and these data are nested in certain clade. This makes the phylogenetic bias a potentially bigger problem.
+\subsection{Deep evolutionary split between angiosperm and gymnosperm}
+It is also important to look for the evidence of evolution seperately for angiosperm and gymnosperm.
+\subsection{Importance of testing within clade}
 
 
 \bibliographystyle{besjournals}
@@ -117,7 +128,7 @@ Previous literature have also reported positive relationship between seed mass a
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-8 package
-% Fri Sep 18 19:55:01 2026
+% Mon Sep 21 09:58:53 2026
 \begin{tabular}{lllrrrrr}
   \hline
 Trait & Type & Predictor & N & Estimate & SE & P & Half-life \\ 
@@ -145,7 +156,7 @@ Seed weight (log) & Numeric & Seed weight (log) &  91 & 0.21 & 0.09 & 0.02 & 0.0
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-8 package
-% Fri Sep 18 19:55:01 2026
+% Mon Sep 21 09:58:53 2026
 \begin{tabular}{lllrrrrr}
   \hline
 Trait & Type & Predictor & N & Estimate & SE & P & Half-life \\ 
@@ -169,7 +180,7 @@ Seed weight (log) & Numeric & Seed weight (log) &  59 & 0.01 & 0.24 & 0.98 & 0.0
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-8 package
-% Fri Sep 18 19:55:01 2026
+% Mon Sep 21 09:58:53 2026
 \begin{tabular}{lllrrrrr}
   \hline
 Trait & Group & Predictor & N & Estimate & SE & P & Half-life \\ 
@@ -186,7 +197,7 @@ Seed weight (log) & Biotic and both & Seed weight (log) &  55 & 0.41 & 0.16 & 0.
 \centering
 
 % latex table generated in R 4.2.3 by xtable 1.8-8 package
-% Fri Sep 18 19:55:01 2026
+% Mon Sep 21 09:58:53 2026
 \begin{tabular}{llr}
   \hline
 Group & Trait & $\lambda$ \\ 
@@ -216,7 +227,7 @@ Angiosperm & Seed weight (Log) & 0.95 \\
 \centering
 \resizebox{\textwidth}{!}{
 % latex table generated in R 4.2.3 by xtable 1.8-8 package
-% Fri Sep 18 19:55:01 2026
+% Mon Sep 21 09:58:53 2026
 \begin{tabular}{lllll}
   \hline
 Group & Trait & Estimated D & P(random) & P(Brownian) \\ 
