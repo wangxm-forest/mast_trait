@@ -13,6 +13,9 @@ Data scraped from different books and datasets:
 ### docs
 Where all writing docs for this project will be in:
   - traitSelection: A preliminary file recording the potential reproductive traits we decided to collect data on
-  - mastTrait: The actually file including some analysis and text.
+  - resultFigures: Seperated results section with all the figures and tables
+  - preliminaryResults: Data visualization and some exploratory results
+  - paperWritten: Final manuscript
+  - ourlinePpaer: The outline of our manuscript
 ### Literatures
 Some references for this project
