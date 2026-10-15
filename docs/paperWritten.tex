@@ -40,7 +40,7 @@ For our analyses, we obtained the full species list from the two volumes of \tex
 
 We defined masting based on qualitative descriptions of seed production patterns. Although recent studies emphasize quantitative definitions of masting, many forestry manuals view masting as a species-level categorical trait, including \textit{Silvics}. Thus, we classified species according to key phrases describing their seed production patterns. Species described as producing "a good crop almost every year" were classified as weak masting species, whereas species described as producing "a good crop every several years" or having "irregular seed production" were classified as strong masting species.
 
-For some statistical analyses we grouped or otherwise adjusted the data on traits related to masting hypotheses. For numerical traits with a range (seed weight and fruit size), we recorded the full range from the source, and took the mean value for further analyses. For categorical traits (pollination mode, reproductive type and dispersal mode), we grouped them into broader categories, For example, we classified pollination mode into wind, animal (bird, bat, or insect), or both. The complete raw and processed datasets are available through KNB.
+For some statistical analyses we grouped or otherwise adjusted the data on traits related to masting hypotheses. For numerical traits with a range (seed weight and fruit size), we recorded the full range from the source, and took the mean value for further analyses. (We took the log form of seed weight and fruit size because the range of data is large.) For categorical traits (pollination mode, reproductive type and dispersal mode), we grouped them into broader categories, For example, we classified pollination mode into wind, animal (birds, bats, or insects), or both. The complete raw and processed datasets are available through KNB.
 
 \subsection{Statistical Analysis}
 \subsubsection{Masting pattern and single trait}
@@ -52,109 +52,221 @@ In addition to these univariate analyses looking at the relationship between mas
 \subsubsection{Phylogenetic signal for individual traits}
 %emwSep21 -- natural order is binary to cat. to cont. I also edited the first sentence. 
 To check for the phylogenetic signal for our traits, we used different metrics depending on the type of data. For traits that were binary, we calculated Fritz and Purvis' D-statistics using the function \texttt{phylo.d} in the \texttt{caper}  (v. 1.0.4) package. For categorical traits, we estimated the Pagel's $\lambda$ using the function \texttt{fitDiscrete} in the \texttt{geiger} (v. 2.0.11) package.
-For continuous traits, we calculated Pagel's $\lambda$ using the function \texttt{phylosig} in the \texttt{phytools} (v. 2.4-4) package. <<setup, echo=FALSE>>=
-setwd("C:/PhD/Project/PhD_thesis/mast_trait/docs")
-angio_n <- length(angio$latbi)
-N_angio <- 124
-N_angio_mast <- sum(angio$mastEvent == "1", na.rm = TRUE)
-angio_sum <- paste0(round(100 * angio_n/N_angio),
-  "\\% (",
-  angio_n,
-  "/",
-  N_angio,
-  ")"
-)
-angio_mast <- paste0(round(100 * N_angio_mast/angio_n),
-  "\\% (",
-  N_angio_mast,
-  "/",
-  angio_n,
-  ")"
-)
+For continuous traits, we calculated Pagel's $\lambda$ using the function \texttt{phylosig} in the \texttt{phytools} (v. 2.4-4) package. 
 
-gymno_n <- length(conifer$latbi)
-N_gymno <- 64
-N_gymno_mast <- sum(conifer$mastEvent == "1", na.rm = TRUE)
-gymno_sum <- paste0(round(100 * gymno_n/N_gymno),
-  "\\% (",
-  gymno_n,
-  "/",
-  N_gymno,
-  ")"
-)
-gymno_mast <- paste0(round(100 * N_gymno_mast/gymno_n),
-  "\\% (",
-  N_gymno_mast,
-  "/",
-  gymno_n,
-  ")"
-)
+\newgeometry{margin=1cm}
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth, height=0.8\textheight]{../output/figures/rawDataWithStatsAngio.pdf}
+\caption{How plant traits related to different hypotheses differ in strong masting and weak masting for angiosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (a-c, i) or proportional histograms (d-h) separated by species categorized as strong masting (red) or weak masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate), and phylogenetic signal parameter $\alpha$. Full model results are show in Table \ref{tab:regressionangio}.}
+\label{fig:rawangio}
+\end{figure}
 
-fix_unicode <- function(x) {
-  x <- gsub("\u2212", "-", x)
-  x <- gsub("–", "-", x)
-  x <- gsub("—", "-", x)
-  x <- gsub("%", "\\\\%", x)
-  x <- gsub("\\balpha\\b", "$\\\\alpha$", x)
-  x <- gsub("\\blambda\\b", "$\\\\lambda$", x)
-  x
-}
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth,height=0.8\textheight]{../output/figures/rawDataWithStatsCon.pdf}
+\caption{How plant traits related to different hypotheses differ in strong masting and weak masting for gymnosperm species: We show data for traits related to the predator satiation hypothesis (a-e), pollination coupling hypothesis (f-g) and the resource matching hypothesis (h-i) as either violin plots (a-c, i) or proportional histograms (d-h) separated by species categorized as strong masting (red) or weak masting (green). We show model summaries only where significant (P-value < 0.5) and also report the model sample size (N), regression coefficient (Estimate), and phylogenetic signal parameter $\alpha$. Full model results are show in Table \ref{tab:regressiongym}.}
+\label{fig:rawcon}
+\end{figure}
+\restoregeometry
 
-angio_results[] <- lapply(angio_results, function(x) {
-  if (is.character(x))
-    fix_unicode(x)
-  else
-    x
-})
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{../output/figures/modelFitSeedWeight.pdf}
+\caption{Predicted likelihood of masting as a function of seed weight for all angiosperm species (solid red line) and the biotic-dispersed subgroup (dashed green line), estimated using phylogenetic logistic regression. Individual species observations are plotted as binary data points at 0 (weak masting) and 1 (strong masting).}
+\label{fig:seedweight}
+\end{figure}
 
-colnames(angio_results) <-
-    fix_unicode(colnames(angio_results))
+% ------------------------------------------
+\newgeometry{margin=1cm}
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth,height=0.9\textheight,keepaspectratio]{../output/figures/weightTree1.pdf}
+%emwSep21 -- lots of TYPOS! Please set up a way to clean your spelling in tex if you do not already have one.
+%emwSep21 -- add table for signal? 
+\caption{Phylogenetic tree for all angioperm species included in the analysis. The color scheme of the branch is the trait value for seed weight (log), which showed strong phylogenetic signal (Table XX). The color tip is colored by strong masting or not. The other traits are labeled after the tip labels with different color and size. We also show the predictions of relationship between traits and strong masting. We calculated the Pagel's $\lambda$ for continuous traits as well as multilevel categorical traits, and calculated D-statistic for binary traits.}
+\label{fig:coneptangio}
+\end{figure}
+\restoregeometry
+\newpage
+% ------------------------------------------
+% ------------------------------------------
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{../output/figures/nmdsFinal_scalearea.pdf}
+\caption{Non-metric multidimensional scaling (NMDS) of trait composition for angiosperm and gymnosperm species. Each point represents a species, with position determined by NMDS axes. Points are colored by drought tolerance, filled by strong masting or not, shaped by reproductive type, sized by seed weight. Panels are arranged as (a) angiosperm NMDS1–NMDS2, (b) angiosperm NMDS2–NMDS3, (c) gymnosperm NMDS1–NMDS2, and (d) gymnosperm NMDS2–NMDS3.}
+\label{fig:nmds}
+\end{figure}
 
-conifer_results[] <- lapply(conifer_results, function(x) {
-  if (is.character(x))
-    fix_unicode(x)
-  else
-    x
-})
+\section{Results}
+\subsubsection{Structure of Data}
+In total, our dataset included 188 species, comprising 124 angiosperm species and 64 gymnosperm species. Among angiosperms, 79\% (98/124) of species had masting data available, with strong masting and weak masting species occurring in approximately equal proportions 52\% (51/98). Among gymnosperms, 95\% (61/64) of species had masting data available, and nearly all were classified as strong masting species 89\% (54/61).
+%emwSep21 -- do not use 'to get' in sci papers, I think it is too colloquial. 
+We were not able to find complete trait data for every single trait for all species with masting data. The traits with the most available data was seed weight. The traits with the sparse data were oil content and leaf longevity (Fig. \ref{fig:rawangio} and Fig. \ref{fig:rawcon}).
+\subsubsection{Results for Each Hypothesis}
+We found relationships between traits related to predator satiation and pollination efficiency and strong masting for angiosperm species. Among the traits related to predator satiation, seed weight was the only traits significantly related to masting (p-value = 0.02, Table \ref{tab:regressionangio}). Larger seed weight was associated with a greater probability of strong masting (Figure \ref{fig:rawangio}). For angiosperms only, increasing seed weight threefold (from a median seed weight of 90.9g to 272.7g) increased the predicted likelihood of strong masting from 0.44 to 0.5 (Figure \ref{fig:seedweight}). The effect was stronger among species with biotically dispersed seeds, where increasing seed weight threefold (from a median seed weight of 1087.15mg to 3261.45mg) increased the predicted likelihood of strong masting from 0.73 to 0.81 (Table \ref{tab:regressionseed}; Figure \ref{fig:seedweight}). %emwSep21 -- I think you should add a line in your methods about how choose the log odds seed weights ... I still don't fully know why one is so small (90-270) and the other so big (1000 to 3200) but I think you do ... does it have something to do with the 'designated baseline ref level you mention in Table S1 caption? 
 
-colnames(conifer_results) <-
-    fix_unicode(colnames(conifer_results))
+Among traits related to pollination efficiency, pollination mode was the only pollination-related trait significantly associated with strong masting (p-value = 0.02, Table \ref{tab:regressionangio}) for angiosperm. Wind-pollinated species had a predicted likelihood of strong masting of 0.59, compared with 0.2 for animal-pollinated species. All gymnosperm species in our dataset were wind-pollinated, and gymnosperms contained a much higher proportion of strong masting species overall. This can also indicate that wind pollination is associated with strong masting.
+\subsubsection{Multivariate analysis}
+Strong and weak masting species were not clearly separated along any axis in the NMDS analysis (Fig. \ref{fig:nmds}). We found no evidence that combinations of traits associated with any of the three hypotheses explained variation in masting pattern.
+\subsubsection{Phylogenetic signal}
+Masting pattern showed a moderate phylogenetic signal in both gymnosperms (D = 0.51) and angiosperms (D = 0.58) (Table \ref{tab:dstat}).
 
-seed_results[] <- lapply(seed_results, function(x) {
-  if (is.character(x))
-    fix_unicode(x)
-  else
-    x
-})
+Seed weight has strong phylogenetic signal for both angiosperm ($\lambda$ = 0.96) and gymnosperm ($\lambda$ = 0.98). This pattern is also evident in Fig. \ref{fig:coneptangio}. Dispersal mode, leaf longevity, pollination mode and reproductive type also showed high phylogenetic signal in Table \ref{tab:lambda}. However, these values should be interpreted cautiously because Pagel's $\lambda$ is estimated differently for categorical and continuous traits, making direct comparisons inappropriate.
 
-colnames(seed_results) <-
-    fix_unicode(colnames(seed_results))
+\section{Discussion}
+We found that masting was associated with traits related to both pollination and seed dispersal as well as establishment, providing support for multiple mechanisms underlying interannual variation in seed production. The positive relationship between wind pollination and strong masting in angiosperm supports the pollination coupling, while the positive relationship between seed weight and strong masting provides evidence consistent with the predator satiation. These associations point to selective pressure acting at both early and late stages of the reproductive cycle, which are critical for successful reproduction and gene transmission.
+
+Previous literature has proposed a positive relationship between seed mass and masting \cite{kelly1994evolutionary}, with one explanation being that larger seeds require more resource investment and simply cannot reproduce every year. In contrast, the other study has reported  opposite relationship between seed mass and masting, suggesting that small seeds are usually associated with seed bank which reduce the fitness costs associated with years of low or failed reproduction \cite{{journe2023evolution}. We found a weak but significant positive relationship between seed mass and masting, suggesting that the association between these traits may reflect processes beyond the resource costs of producing large seeds. For predator satiation to favour synchronized reproduction, seed crops must provide a sufficiently large resource to overwhelm seed consumers \cite{janzen1971seed,kelly1994evolutionary}. In some species, seed predators also function as seed dispersers. Larger seeds may provide greater rewards to animal dispersers and therefore facilitate dispersal of these species. At the same time, larger seeds generally contain greater nutritional reserves, which can increase the probability of successful germination and establishment following dispersal, even in the case when seeds experience some degree of predation or damage \cite{bonal2007satiation, moles2004seedling}. Thus, large seeds may provide benefits at multiple stages following seed production, from attracting dispersers to supporting seedling establishment. Seed size and seed crop size are also often subject to a trade-off because greater investment in individual seeds can reduce the number of seeds\cite{castro2024seed, parciak2002seed}. Masting may partially relieve this constraint by concentrating reproduction into episodic years, allowing a species to produce a large number of relatively costly seeds while at the same time reducing the proportion of seeds consumed. Together, these processes could generate selection favouring reproductive strategies that enhance seed dispersal and survival.
 
 
-lambda[] <- lapply(lambda, function(x) {
-  if (is.character(x))
-    fix_unicode(x)
-  else
-    x
-})
+Despite the differences in environment latitude etc, still can find a pattern that is universally strong.
 
-colnames(lambda) <-
-    fix_unicode(colnames(lambda))
+\subsection{Scale dependence in trait–masting relationships}
+Recent work has emphasized that masting is better represented as a continuous rather than categorical trait, which is mostly available at the population level. The coefficient of variation (CV) is one of the most widely used continuous measures of masting. However, the use of CV as a measure of masting has been widely discussed, as it does not capture all characteristics of masting and can be strongly distorted by years with zero seed production. At the same time, evaluating the evolutionary associations between traits and masting requires comparisons across species. If a trait has a sufficiently strong and consistent association with the evolution of masting, we expect this relationship to be detectable at the species level using binary masting data.
 
-pWeight <- angio_results$P[angio_results$Predictor=="Seed weight (log)"]
-pWind <-  angio_results$P[angio_results$Predictor=="Wind vs. animal"]
+At the same time, many of the traits considered in our analysis are phenotypically plastic and may vary among populations, potentially in response to local environmental conditions. Thus, traits for which we fail to detect a species -level association with masting may still be important at the population level. There are certain species only exhibit masting under certain environmental conditions\cite{fleurot2023oak, bogdziewicz2025dynamics}. As a result, understanding how reproductive traits are associated with masting may require measurements of both traits and reproductive variation at the population level, considering local environmental conditions and intraspecific variation.
 
-p_mastingWeight <- plogis(b0 + b1 * log(medianWeight))
-p_mastingWeight3 <- plogis(b0 + b1 * log(medianWeight*3))
-p_mastingBioWeight <- plogis(b0_bio + b1_bio * log(medianBioWeight))
-p_mastingBioWeight3 <- plogis(b0_bio + b1_bio * log(medianBioWeight*3))
+\subsection{Distinguishing selection across types of masting}
+Masting has originally been studied primarily as interannual variation in seed production, but recent work has refined the definition between seed-maturation masting and flower masting. These two forms of reproductive synchrony occur at different stages of the reproductive cycle: seed masting focuses on the final reproductive outcome, whereas flower masting occurs at the beginning of reproduction. Importantly, variation in flowering and seed production does not necessarily occur at the same time, suggesting that these two forms of masting may be shapred by different selective pressures. For example, we would expect mechanisms related to pollination to perform stronger selection on flowering synchrony, whereas mechanisms related to seed predation, dispersal and establishment may be more directly associated with synchrony in seed production. Separating species according to their dominant form of masting could there fore provide a more refined test of hypotheses underlying reproductive synchrony. Examining the associations between different types of masting and corresponding subset of reproductive traits therefore is necessary for us to understand how different selective pressures contribute to the evolution of reproductive synchrony at different stages of the reproductive cycle.
 
-p_animal <- plogis(animalLikelihood)
-p_wind <- plogis(animalLikelihood + windLikelihood)
+\subsection{Phylogenetic signal limits inference}
+We found strong phylogenetic signal for many traits we selected and also masting has a phylogenetic signal. For the analysis we did, it is hard to tease out effect of phylogeny from the correlation between single trait and masting. Also, many traits we included have relatively sparse data, and these data are nested in certain clade. This makes the phylogenetic bias a potentially bigger problem. Direct and Indirect.
 
-angioWeightLambda <- as.numeric(lambda[["$\\lambda$"]][lambda$Group=="Angiosperm" & lambda$Trait=="Seed weight (Log)"])
-gymnoWeightLambda <- as.numeric(lambda[["$\\lambda$"]][lambda$Group=="Gymnosperm" & lambda$Trait=="Seed weight (Log)"])
+\subsection{Deep evolutionary split between angiosperm and gymnosperm}
+It is also important to look for the evidence of evolution separately for angiosperm and gymnosperm. Gymnosperms and angiosperms occupy fundamentally different functional spaces. In our dataset, the proportion of species exhibit strong masting is greater in gymnosperm, wind pollination is also universal among gymnosperms. The leaf longevity is also in general longer than angiosperm species. The mechanisms behind masting for angiosperm and gymnosperm might be different. The abundant of certain traits and masting in gymnosperm might indicate this is a more important and efficient reproductive strategy for them, but not necessarily for more diverse angiosperm. There might be interests to test if masting was gradually diluted in angiosperm as they transitioned to biotic pollination and faster life histories.
 
-mastAngioD <- dStat$`Estimated D`[dStat$Group=="Angiosperm" & dStat$Trait=="Masting"]
-mastGymnoD <- dStat$`Estimated D`[dStat$Group=="Gymnosperm" & dStat$Trait=="Masting"]
+\subsection{Importance of testing within clade}
+Given that the evolutionary mechanisms underlying masting may differ among lineages and operate at different biological scales, investigating evolutionary patterns within clades is an important next step. Previous studies have highlighted the potential of clade-specific comparisons to investigate the evolution of masting\cite{satake2021studying}. Clades that contain species exhibiting both strong masting and weak masting such as \textit{Quercus} and \textit{Pinus}, offer particularly valuable opportunities to investigate how traits and selective pressures are associated with variation in masting. To achieve this, we need more comprehensive data on both species-level and population-level for comparison. Such an approach would help our understanding of masting evolution by filling the gaps on how masting varies among populations in response to contemporary ecological conditions and how reproductive strategies have diverged over longer evolutionary timescales. Integrating all these perspectives together will provide a more comprehensive and comparable understanding of how ecological conditions, life-history traits and evolutionary history jointly shape the diversity of reproductive strategies.
 
+\bibliographystyle{besjournals}
+\bibliography{mastTreeRef} 
+
+\clearpage
+\appendix
+\section{Supplementary Material}
+\setcounter{table}{0}
+\renewcommand{\thetable}{S\arabic{table}}
+
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{S\arabic{figure}}
+
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{
+% latex table generated in R 4.2.3 by xtable 1.8-8 package
+% Wed Oct 14 22:59:28 2026
+\begin{tabular}{lllrrrrr}
+  \hline
+Trait & Type & Predictor & N & Estimate & SE & P & Half-life \\ 
+  \hline
+Seed weight (log) & Numeric & Seed weight (log) &  91 & 0.21 & 0.09 & 0.02 & 0.08 \\ 
+  Fruit size (log) & Numeric & Fruit size (log) &  88 & 0.08 & 0.31 & 0.79 & 0.04 \\ 
+  Oil content (\%) & Numeric & Oil content (\%) &  19 & 0.04 & 0.03 & 0.20 & 0.04 \\ 
+  Seed dormancy & Categorical & Dormant vs. non-dormant &  85 & 0.05 & 0.51 & 0.92 & 0.06 \\ 
+  Dispersal mode & Categorical & Biotic vs. abiotic &  93 & 0.53 & 0.53 & 0.32 & 0.09 \\ 
+  Dispersal mode & Categorical & Both vs. abiotic &  93 & 0.53 & 0.57 & 0.35 & 0.09 \\ 
+  Pollination mode & Categorical & Wind vs. animal &  52 & 1.72 & 0.72 & 0.02 & 0.01 \\ 
+  Pollination mode & Categorical & Wind vs. animal and animals &  52 & 1.18 & 1.15 & 0.31 & 0.01 \\ 
+  Reproductive type & Categorical & Monoecious vs. dioecious &  89 & 0.76 & 0.68 & 0.26 & 0.05 \\ 
+  Reproductive type & Categorical & Monoecious vs. polygamous &  89 & -0.29 & 0.96 & 0.76 & 0.05 \\ 
+  Drought tolerance & Categorical & Low vs. high drought tolerance &  79 & 0.15 & 0.47 & 0.76 & 0.06 \\ 
+  Drought tolerance & Categorical & Moderate vs. high drought tolerance &  79 & -0.15 & 0.45 & 0.74 & 0.06 \\ 
+  Leaf longevity (years) & Numeric & Leaf longevity (years) &  16 & 0.26 & 0.95 & 0.78 & 0.77 \\ 
+   \hline
+\end{tabular}}
+\caption{Phylogenetic generalized linear model results for angiosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical or continuous (Type column). For categorical traits, we report the the difference in log-odds between a given level and its designated baseline reference level; for continuous traits, we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor) and the half-life. The half-life represents the time required for the influence of ancestral states to decrease by half; where larger values suggests the residuals are more affected by phylogenetic history than the environment (and vice versa for smaller values). Given our trees are scaled to 1, a value near 1 thus means phylogenetic correlation persists across the phylogenetic depth. For more inerpretation, see \cite{cooper2016cautionary}.}
+\label{tab:regressionangio}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{
+% latex table generated in R 4.2.3 by xtable 1.8-8 package
+% Wed Oct 14 22:59:28 2026
+\begin{tabular}{lllrrrrr}
+  \hline
+Trait & Type & Predictor & N & Estimate & SE & P & Half-life \\ 
+  \hline
+Seed weight (log) & Numeric & Seed weight (log) &  59 & 0.01 & 0.24 & 0.98 & 0.01 \\ 
+  Fruit size (log) & Numeric & Fruit size (log) &  60 & 0.03 & 0.36 & 0.94 & 0.01 \\ 
+  Seed dispersal & Categorical & Biotic vs. abiotic &  60 & -0.83 & 0.81 & 0.30 & 0.36 \\ 
+  Seed dispersal & Categorical & Both vs. abiotic &  60 & -1.11 & 0.67 & 0.10 & 0.36 \\ 
+  Seed dormancy & Categorical & Dormant vs. non-dormant &  59 & 0.69 & 0.69 & 0.32 & 0.01 \\ 
+  Reproductive type & Categorical & Monoecious vs. dioecious &  61 & -1.13 & 1.01 & 0.26 & 0.78 \\ 
+  Drought tolerance & Categorical & Low vs. high drought tolerance &  52 & 11.36 & 98.16 & 0.91 & 34.66 \\ 
+  Drought tolerance & Categorical & Moderate vs. high drought tolerance &  52 & -0.29 & 0.60 & 0.63 & 34.66 \\ 
+  Leaf longevity (years) & Numeric & Leaf longevity (years) &  38 & 0.15 & 0.35 & 0.67 & 0.01 \\ 
+   \hline
+\end{tabular}}
+\caption{Phylogenetic generalized linear model results for gymnosperm species. We modeled each trait separately with masting as a binary variable and traits as either categorical or continuous (Type column). For categorical traits, we report the the difference in log-odds between a given level and its designated baseline reference level; for continuous traits, we report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor) and the half-life. The half-life represents the time required for the influence of ancestral states to decrease by half; where larger values suggests the residuals are more affected by phylogenetic history than the environment (and vice versa for smaller values). Given our trees are scaled to 1, a value near 1 thus means phylogenetic correlation persists across the phylogenetic depth, and values much higher suggest it persists far deeper than the root of our tree. For more inerpretation, see \cite{cooper2016cautionary}.}
+\label{tab:regressiongym}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{
+% latex table generated in R 4.2.3 by xtable 1.8-8 package
+% Wed Oct 14 22:59:28 2026
+\begin{tabular}{lllrrrrr}
+  \hline
+Trait & Group & Predictor & N & Estimate & SE & P & Half-life \\ 
+  \hline
+Seed weight (log) & Biotic and both & Seed weight (log) &  55 & 0.41 & 0.16 & 0.01 & 0.01 \\ 
+  Seed weight (log) & Abiotic & Seed weight (log) &  36 & 0.12 & 0.13 & 0.36 & 0.01 \\ 
+   \hline
+\end{tabular}}
+\caption{Phylogenetic generalized linear model results for only seed weight for biotic-dispersed subgroup (both group included) and abiotic-dsipersed subgroup. We report the change in log-odds per unit increase of the predictor (Estimate column). We also report the standard error (SE), P-value (with P < 0.05 considered significant and marked with an asterisk next to the Predictor) and the half-life (for a description of half-life, see caption of table S1 and S2).}
+\label{tab:regressionseed}
+\end{table}
+
+\begin{table}[ht]
+\centering
+
+% latex table generated in R 4.2.3 by xtable 1.8-8 package
+% Wed Oct 14 22:59:28 2026
+\begin{tabular}{llr}
+  \hline
+Group & Trait & $\lambda$ \\ 
+  \hline
+Angiosperm & Seed weight (Log) & 0.95 \\ 
+  Angiosperm & Fruit size (Log) & 0.93 \\ 
+  Angiosperm & Oil content & 0.25 \\ 
+  Angiosperm & Leaf longevity & 1.02 \\ 
+  Angiosperm & Dispersal mode & 1.00 \\ 
+  Angiosperm & Pollination mode & 1.00 \\ 
+  Angiosperm & Reproductive type & 0.00 \\ 
+  Angiosperm & Drought tolerance & 0.00 \\ 
+  Gymnosperm & Seed weight (Log) & 0.98 \\ 
+  Gymnosperm & Fruit size (Log) & 0.91 \\ 
+  Gymnosperm & Oil content \% & 0.00 \\ 
+  Gymnosperm & Leaf longevity & 0.90 \\ 
+  Gymnosperm & Dispersal mode & 0.00 \\ 
+  Gymnosperm & Reproductive type & 1.00 \\ 
+  Gymnosperm & Drought tolerance & 0.00 \\ 
+   \hline
+\end{tabular}
+\caption{Phylogenetic Signal (Pagel's $\lambda$) for continous traits and multi-level categorical traits. $\lambda$ = 0 indicates no phylogenetic signal, trait districuted independent of the phylogeny; 0 < $\lambda$ < 1 means moderate phylogenetic signal, trait is partially structured by the phylogeny; $\lambda$ = 1 indicates strong phylogenetic signal under a Brownian motion of evolution.}
+\label{tab:lambda}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{
+% latex table generated in R 4.2.3 by xtable 1.8-8 package
+% Wed Oct 14 22:59:28 2026
+\begin{tabular}{lllll}
+  \hline
+Group & Trait & Estimated D & P(random) & P(Brownian) \\ 
+  \hline
+Angiosperm & Masting & 0.58 & 0 & 0.01 \\ 
+  Angiosperm & Seed dormancy & 0.25 & 0 & 0.16 \\ 
+  Gymnosperm & Masting & 0.51 & 0.02 & 0.10 \\ 
+  Gymnosperm & Seed dormancy & 0.98 & 0.41 & 0 \\ 
+   \hline
+\end{tabular}}
+\caption{Phylogenetic Signal (D-statistic) for the phylogenetic signal of binary traits, with probabilities calculated under a random phylogenetic structure and under a Brownian motion phylogenetic structure. D = 1 indicates the trait is randomly distributed across the phylogeny; D = 0 indicates the trait follows a Brownian motion model; 0 < D < 1 indivates moderate phylogenetic signal; D < 0 indicates the trait is more clumped than expected under Brownian motion; and D > 1 indicates overdispersion. P random is the p-value for the null hypothesis that the trait is randomly distributed across the phylogeny (no phylogenetic signal), and P Brownian is the p-value for the null hypothesis that the trait follows a Brownian motion model (strong phylogenetic signal). A low p-value indicates rejection of the corresponding null hypothesis.}
+\label{tab:dstat}
+\end{table}
+
+\end{document}
