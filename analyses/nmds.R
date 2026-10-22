@@ -365,7 +365,7 @@ angioN23 <- ggplot(angioScoresN, aes(NMDS2, NMDS3)) +
   labs(
     colour = "Drought Tolerance",
     shape  = "Reproductive Type",
-    size   = "Seed Weight",
+    size   = "Seed Weight (Log)",
     alpha  = "Mast"
   )  +
   theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 

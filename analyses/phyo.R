@@ -516,8 +516,8 @@ if(quercus){# Quercus tree
   quercusY <- silvicsQuercus$latbi[silvicsQuercus$mastEvent == "Y"]
   quercusN  <- silvicsQuercus$latbi[silvicsQuercus$mastEvent == "N"]
   tipColors <- rep("black", length(quercusTree$tip.label))
-  tipColors[quercusTree$tip.label %in% quercusY] <- "#ED562C"
-  tipColors[quercusTree$tip.label %in% quercusN] <- "#A9D5B1"
+  tipColors[quercusTree$tip.label %in% quercusY] <- "#f1a226"
+  tipColors[quercusTree$tip.label %in% quercusN] <- "#298c8c"
   
   pdf("output/figures/quercusTree.pdf", width = 100, height = 100)
   
@@ -527,8 +527,8 @@ if(quercus){# Quercus tree
   )
   
   legend("bottomright",
-         legend = c("Masting", "Non-masting"),
-         col = c("#ED562C", "#A9D5B1"),
+         legend = c("Strong masting", "Weak mmasting"),
+         col = c("#f1a226", "#298c8c"),
          pch = 19,
          bty = "n",
          cex = 5)
@@ -660,21 +660,21 @@ weightTree <- drop.tip(phyangio,
 name.check(weightTree, weight)
 
 ## Final phylogenetic tree with different color coding ----
-phyloTraits <- FALSE
+phyloTraits <- TRUE
 if(phyloTraits){
-  pdf("output/figures/weightTree1.pdf", width = 12, height = 13)
+  pdf("output/figures/weightTree1.pdf", width = 10, height = 12)
   plotTree <- weightTree
   H <- max(nodeHeights(plotTree))
   plotTree$edge.length <- plotTree$edge.length / H
   plotTree$edge.length <- plotTree$edge.length * 3
   weightMap <- contMap(plotTree,
-                       weight,fsize=c(0.3,1),
+                       weight,fsize=c(0.3,1), lwd = 0.5,
                        plot = FALSE)
   #lastPP<-get("last_plot.phylo",envir=.PlotPhyloEnv)
   ## for fun, let's change our contMap gradient
-  object <- setMap(weightMap, colors = colorRampPalette(c("navy", "white", "darkred"))(100))
+  object <- setMap(weightMap, colors = colorRampPalette(c("white", "#d8a6a6", "#a00000"))(100))
   plot(object,ftype="off",type="fan",fsize=c(0.6,0.8), xlim = c(-5, 5),
-       leg.txt="Seed weight (Log)",legend=3,sig=1,lwd=2)
+       leg.txt="Seed weight (Log)",legend=3,sig=1,lwd=1)
   lastPP<-get("last_plot.phylo",envir=.PlotPhyloEnv)
   ## make sure our discrete character is in the order of our tree
   weightDf <- d[!is.na(d$seedWeights), ]
@@ -682,7 +682,7 @@ if(phyloTraits){
   names(weightMast) <- weightDf$latbi
   weightMast  <- weightMast[weightTree$tip.label]
   cols <- setNames(
-    c("#A9D5B1", "#ED562C"),
+    c("#298c8c", "#f1a226"),
     levels(factor(weightMast))
   )
   weightDisp <- weightDf$seedDispersal
@@ -894,7 +894,7 @@ if(phyloTraits){
   
   legend_sizes <- sizeMin + legend_sizes * (sizeMax - sizeMin)
   
-  text(x = usr[2] * -0.9, y = usr[4] * -0.62, labels = paste(c("Oil content")), adj = c(0.5,0.5), cex = 0.8)
+  text(x = usr[2] * -0.9, y = usr[4] * -0.62, labels = paste(c("Oil content (%)")), adj = c(0.5,0.5), cex = 0.8)
   legend(x = usr[2] * -0.95,
          y = usr[4] * -0.62,
          legend = round(legend_vals, 2),
@@ -965,7 +965,7 @@ if(phyloTraits){
   
   legend_sizes <- sizeMin + legend_sizes * (sizeMax - sizeMin)
   
-  text(x = usr[2] * 0.8, y = usr[4] * -0.85, labels = paste(c("Leaf longevity")), adj = c(0.5,0.5), cex = 0.8)
+  text(x = usr[2] * 0.8, y = usr[4] * -0.85, labels = paste(c("Leaf longevity (year)")), adj = c(0.5,0.5), cex = 0.8)
   legend(x = usr[2] * 0.75,
          y = usr[4] * -0.85,
          legend = round(legend_vals, 2),
