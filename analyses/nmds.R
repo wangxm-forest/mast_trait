@@ -162,14 +162,22 @@ angioScoresN$Mast <- ifelse(angioScoresN$Mast == 1,
 
 conN12 <- ggplot(conScoresN, aes(NMDS1, NMDS2)) +
   geom_point(aes(
+    shape = Reproductive,
+    size = Weight,
+    alpha = factor(Mast)
+  ),
+  colour = "black",
+  fill = NA,
+  stroke = 1.2
+  ) +
+  geom_point(aes(
     colour = Drought,
-    fill   = interaction(Drought, Mast),
-    shape  = Reproductive,
-    size   = Weight,
-    alpha  = factor(Mast),
-    stroke = 1-as.numeric(Mast)/2+0.1
-  )
-  # stroke = 1.2
+    fill = interaction(Drought, Mast),
+    shape = Reproductive,
+    size = Weight,
+    alpha = factor(Mast)
+  ),
+  stroke = 0.5
   ) +
   scale_shape_manual(values = c(21, 22), guide = "none") +   # fillable shapes only
   scale_colour_manual(values = c("#da691f","#e79259","#f0bb98", "grey"), guide = 'none') +
@@ -202,7 +210,7 @@ conN12 <- ggplot(conScoresN, aes(NMDS1, NMDS2)) +
   labs(
     colour = "Drought Tolerance",
     shape  = "Reproductive Type",
-    size   = "Seed Weight",
+    size   = "Seed Weight (Log)",
     alpha  = "Mast"
   ) +
   theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
@@ -215,14 +223,22 @@ conN12 <- ggplot(conScoresN, aes(NMDS1, NMDS2)) +
 
 conN23 <- ggplot(conScoresN, aes(NMDS2, NMDS3)) +
   geom_point(aes(
+    shape = Reproductive,
+    size = Weight,
+    alpha = factor(Mast)
+  ),
+  colour = "black",
+  fill = NA,
+  stroke = 1.2
+  ) +
+  geom_point(aes(
     colour = Drought,
-    fill   = interaction(Drought, Mast),
-    shape  = Reproductive,
-    size   = Weight,
-    alpha  = factor(Mast),
-    stroke = 1-as.numeric(Mast)/2+0.1
-  )
-  # stroke = 1.2
+    fill = interaction(Drought, Mast),
+    shape = Reproductive,
+    size = Weight,
+    alpha = factor(Mast)
+  ),
+  stroke = 0.5
   ) +
   scale_shape_manual(values = c(21, 22), guide = "none") +   # fillable shapes only
   scale_colour_manual(values = c("#da691f","#e79259","#f0bb98", "grey"), guide = 'none') +
@@ -255,7 +271,7 @@ conN23 <- ggplot(conScoresN, aes(NMDS2, NMDS3)) +
   labs(
     colour = "Drought Tolerance",
     shape  = "Reproductive Type",
-    size   = "Seed Weight",
+    size   = "Seed Weight (Log)",
     alpha  = "Mast"
   ) +
   theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
@@ -268,14 +284,22 @@ conN23 <- ggplot(conScoresN, aes(NMDS2, NMDS3)) +
 
 angioN12 <- ggplot(angioScoresN, aes(NMDS1, NMDS2)) +
   geom_point(aes(
+    shape = Reproductive,
+    size = Weight,
+    alpha = factor(Mast)
+  ),
+  colour = "black",
+  fill = NA,
+  stroke = 1.2
+  ) +
+  geom_point(aes(
     colour = Drought,
-    fill   = interaction(Drought, Mast),
-    shape  = Reproductive,
-    size   = Weight,
-    alpha  = factor(Mast),
-    stroke = 1-as.numeric(Mast)/2+0.1
-  )
-  #stroke = 1.2
+    fill = interaction(Drought, Mast),
+    shape = Reproductive,
+    size = Weight,
+    alpha = factor(Mast)
+  ),
+  stroke = 0.5
   ) +
   scale_shape_manual(values = c(21, 22, 23), na.value = 24,
                      guide = guide_legend(override.aes = list(size = 3))) +   # fillable shapes only
@@ -310,7 +334,7 @@ angioN12 <- ggplot(angioScoresN, aes(NMDS1, NMDS2)) +
   labs(
     colour = "Drought Tolerance",
     shape  = "Reproductive Type",
-    size   = "Seed Weight",
+    size   = "Seed Weight (Log)",
     alpha  = "Mast"
   ) +
   theme(axis.title = element_text(size = 10, face = "bold", colour = "grey30"), 
@@ -323,14 +347,22 @@ angioN12 <- ggplot(angioScoresN, aes(NMDS1, NMDS2)) +
 
 angioN23 <- ggplot(angioScoresN, aes(NMDS2, NMDS3)) +
   geom_point(aes(
+    shape = Reproductive,
+    size = Weight,
+    alpha = factor(Mast)
+  ),
+  colour = "black",
+  fill = NA,
+  stroke = 1.2
+  ) +
+  geom_point(aes(
     colour = Drought,
-    fill   = interaction(Drought, Mast),
-    shape  = Reproductive,
-    size   = Weight,
-    alpha  = factor(Mast),
-    stroke = 1-as.numeric(Mast)/2+0.1
-  )
-  # stroke = 1.2
+    fill = interaction(Drought, Mast),
+    shape = Reproductive,
+    size = Weight,
+    alpha = factor(Mast)
+  ),
+  stroke = 0.5
   ) +
   scale_shape_manual(values = c(21, 22, 23), na.value = 24,
                      guide = guide_legend(override.aes = list(size = 3))) +   # fillable shapes only
