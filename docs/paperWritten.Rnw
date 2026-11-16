@@ -89,37 +89,33 @@ setwd("C:/PhD/Project/PhD_thesis/mast_trait/docs")
 angio_n <- length(angio$latbi)
 N_angio <- 124
 N_angio_mast <- sum(angio$mastEvent == "1", na.rm = TRUE)
-angio_sum <- paste0(round(100 * angio_n/N_angio),
-  "\\% (",
+angio_sum <- paste0(round(100 * angio_n/N_angio), 
+  ",\\%, ",
   angio_n,
   "/",
-  N_angio,
-  ")"
+  N_angio
 )
-angio_mast <- paste0(round(100 * N_angio_mast/angio_n),
-  "\\% (",
+angio_mast <- paste0(round(100 * N_angio_mast/angio_n), 
+  ",\\%, ",
   N_angio_mast,
   "/",
-  angio_n,
-  ")"
+  angio_n
 )
 
 gymno_n <- length(conifer$latbi)
 N_gymno <- 64
 N_gymno_mast <- sum(conifer$mastEvent == "1", na.rm = TRUE)
-gymno_sum <- paste0(round(100 * gymno_n/N_gymno),
-  "\\% (",
+gymno_sum <- paste0(round(100 * gymno_n/N_gymno), 
+  ",\\%, ",
   gymno_n,
   "/",
-  N_gymno,
-  ")"
+  N_gymno
 )
-gymno_mast <- paste0(round(100 * N_gymno_mast/gymno_n),
-  "\\% (",
+gymno_mast <- paste0(round(100 * N_gymno_mast/gymno_n), 
+  ",\\%, ",
   N_gymno_mast,
   "/",
-  gymno_n,
-  ")"
+  gymno_n
 )
 
 fix_unicode <- function(x) {
@@ -195,7 +191,7 @@ mastGymnoD <- dStat$`Estimated D`[dStat$Group=="Gymnosperm" & dStat$Trait=="Mast
 \section{Results}
 \subsubsection{Structure of Data}
 %emwNov10 -- move around your figures in the order cited, and cite your phylo fig as suggested below.
-In total, our dataset included 188 species, comprising 124 angiosperm species and 64 gymnosperm species (Fig. \ref{fig:coneptangio}). Among angiosperms, (\Sexpr{gsub "%", "\\\\%", angio_sum}) of species had masting data available, with strong masting and weak masting species occurring in approximately equal proportions (\Sexpr{gsub "%", "\\\\%", angio_mast}). Among gymnosperms, \Sexpr{gsub("%", "\\\\%", gymno_sum)} of species had masting data available, and nearly all were classified as strong masting species (\Sexpr{gsub "%", "\\\\%", gymno_mast}). %emwNov10 -- you need to move the last 3 percents to after a comma or into the () ... either way, a little more punctuation needed. 
+In total, our dataset included 188 species, comprising 124 angiosperm species and 64 gymnosperm species (Fig. \ref{fig:coneptangio}). Among angiosperms, (\Sexpr{gsub("%", "\\\\%", angio_sum)}) of species had masting data available, with strong masting and weak masting species occurring in approximately equal proportions (\Sexpr{gsub("%", "\\\\%", angio_mast)}). Among gymnosperms, (\Sexpr{gsub("%", "\\\\%", gymno_sum)}) of species had masting data available, and nearly all were classified as strong masting species (\Sexpr{gsub("%", "\\\\%", gymno_mast)}). %emwNov10 -- you need to move the last 3 percents to after a comma or into the () ... either way, a little more punctuation needed. 
 
 We were not able to find complete trait data for every single trait for all species with masting data. The traits with the most available data was seed weight. The traits with the sparse data were oil content and leaf longevity (Fig. \ref{fig:coneptangio}, Fig. \ref{fig:rawangio} and Fig. \ref{fig:rawcon}).
 \subsubsection{Results for Each Hypothesis}
